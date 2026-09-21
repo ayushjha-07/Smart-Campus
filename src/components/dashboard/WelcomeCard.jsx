@@ -2,11 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   PlusCircle, 
-  ClipboardList, 
-  Sprout, 
-  Building2, 
-  Zap, 
-  Users 
+  ClipboardList 
 } from 'lucide-react';
 import campusAssets from '../../assets/campusAssets';
 import HeroCalligraphy from '../common/HeroCalligraphy';
@@ -75,26 +71,6 @@ export default function WelcomeCard() {
             <ClipboardList className="w-4 h-4 text-[#D4A84F]" />
             <span>View My Complaints</span>
           </Link>
-        </div>
-
-        {/* Bottom Feature Labels in ONE single horizontal row (no wrap) */}
-        <div className="pt-2 flex flex-nowrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs overflow-x-auto no-scrollbar">
-          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
-            <Sprout className="w-3.5 h-3.5 text-[#00B878]" />
-            <span>Clean Campus</span>
-          </span>
-          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
-            <Building2 className="w-3.5 h-3.5 text-[#00B878]" />
-            <span>Better Facilities</span>
-          </span>
-          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
-            <Zap className="w-3.5 h-3.5 text-[#FBBF24]" />
-            <span>Quick Resolutions</span>
-          </span>
-          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
-            <Users className="w-3.5 h-3.5 text-[#00B878]" />
-            <span>Stronger Community</span>
-          </span>
         </div>
 
       </div>
