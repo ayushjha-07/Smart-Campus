@@ -144,7 +144,7 @@ export default function SubmitComplaint() {
             />
 
             {/* Foreground Content */}
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5 w-full">
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-5 w-full">
               
               {/* Left: Badge, Heading, Description, Buttons */}
               <div className="space-y-2.5 max-w-xl">

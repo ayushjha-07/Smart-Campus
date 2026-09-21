@@ -1,70 +1,70 @@
 import React from 'react';
 
 /**
- * HeroCalligraphy — "Your Voice / A Better Campus" badge with an authentic soft white blur
- * cloud backdrop matching the master reference image.
+ * HeroCalligraphy — "Your Voice / A Better Campus" right-side hero banner treatment.
+ * 
+ * Features:
+ * - Subtle soft white translucent background with delicate glass blur (no solid white blob/oval)
+ * - Premium script typography in dark navy (#07121A)
+ * - Balanced, compact sizing positioned in the upper-right area
+ * - Thin curved green underline stroke below "A Better Campus"
+ * - Campus photograph remains visible, sharp, and unobstructed underneath
  */
 export default function HeroCalligraphy({ className = '' }) {
   return (
-    <div className={`hidden sm:block relative select-none pr-2 sm:pr-4 shrink-0 ${className}`}>
+    <div className={`hidden sm:block relative select-none self-start shrink-0 ${className}`}>
       
-      {/* ================================================== */}
-      {/* 1. SOFT WHITE BLUR CLOUD BACKDROP (Exact match to reference) */}
-      {/* ================================================== */}
-      
-      {/* Layer A: Wide diffuse feathering into sky and campus foliage */}
-      <div 
-        className="absolute -inset-x-12 -inset-y-8 pointer-events-none z-0 rounded-full"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.92) 38%, rgba(255, 255, 255, 0.65) 60%, rgba(255, 255, 255, 0.20) 80%, transparent 100%)',
-          filter: 'blur(16px)',
-          transform: 'scale(1.15)',
-        }}
-      />
-
-      {/* Layer B: Dense bright white illumination directly behind the text */}
-      <div 
-        className="absolute -inset-x-7 -inset-y-5 pointer-events-none z-0 rounded-full"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.88) 55%, transparent 100%)',
-          filter: 'blur(8px)',
-        }}
-      />
-
-      {/* Layer C: Crisp core glow for guaranteed high contrast */}
-      <div 
-        className="absolute -inset-x-4 -inset-y-2 pointer-events-none z-0 rounded-full bg-white/75 filter blur-xs"
-      />
-
-      {/* ================================================== */}
-      {/* 2. FOREGROUND CALLIGRAPHY TEXT & GREEN UNDERLINE */}
-      {/* ================================================== */}
-      <div className="relative z-10 text-right px-2 py-1">
-        <p className="font-['Dancing_Script',cursive] text-[28px] sm:text-[32px] lg:text-[36px] text-[#0A1B39] font-bold tracking-tight leading-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
-          Your Voice
-        </p>
-        <p className="font-['Dancing_Script',cursive] text-[26px] sm:text-[30px] lg:text-[34px] text-[#0A1B39] font-bold tracking-tight leading-none mt-1 drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
-          A Better Campus
-        </p>
+      {/* Container with soft translucent gradient & subtle glass effect (NOT a solid white blob) */}
+      <div className="relative px-4 py-2 sm:px-5 sm:py-2.5 rounded-2xl overflow-hidden">
         
-        {/* Dynamic Curved Green Underline Stroke rising upwards to the right */}
-        <div className="flex justify-end mt-1">
-          <svg
-            className="w-36 sm:w-44 h-3 sm:h-3.5 text-[#078A5A]"
-            viewBox="0 0 160 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 11C50 7.5 110 4.5 156 3"
-              stroke="currentColor"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-            />
-          </svg>
+        {/* Subtle soft white translucent gradient backdrop */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none rounded-2xl"
+          style={{
+            background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.22) 55%, rgba(255, 255, 255, 0.05) 80%, transparent 100%)',
+            backdropFilter: 'blur(5px)',
+            WebkitBackdropFilter: 'blur(5px)',
+          }}
+        />
+
+        {/* Delicate horizontal soft fade behind text */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none rounded-2xl"
+          style={{
+            background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.18) 15%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0.20) 85%, transparent 100%)',
+          }}
+        />
+
+        {/* Foreground Elegant Script Text */}
+        <div className="relative z-10 text-right pr-1">
+          <p className="font-['Dancing_Script',cursive] text-[20px] sm:text-[22px] lg:text-[24px] font-bold text-[#07121A] tracking-normal leading-tight drop-shadow-[0_1px_2px_rgba(255,255,255,0.75)]">
+            Your Voice
+          </p>
+          <p className="font-['Dancing_Script',cursive] text-[18px] sm:text-[20px] lg:text-[22px] font-bold text-[#07121A] tracking-normal leading-tight mt-0.5 drop-shadow-[0_1px_2px_rgba(255,255,255,0.75)]">
+            A Better Campus
+          </p>
+
+          {/* Thin Green Underline Stroke */}
+          <div className="flex justify-end mt-0.5">
+            <svg
+              className="w-26 sm:w-30 h-2 text-[#078A5A]"
+              viewBox="0 0 140 10"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 8C40 5.5 90 3 137 2"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
         </div>
+
       </div>
 
     </div>
   );
 }
+

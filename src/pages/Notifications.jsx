@@ -319,7 +319,7 @@ export default function Notifications() {
             />
 
             {/* Foreground Content */}
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-5 w-full">
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-5 w-full">
               
               {/* Left Details */}
               <div className="space-y-2.5 max-w-xl">

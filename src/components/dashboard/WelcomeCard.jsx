@@ -9,6 +9,7 @@ import {
   Users 
 } from 'lucide-react';
 import campusAssets from '../../assets/campusAssets';
+import HeroCalligraphy from '../common/HeroCalligraphy';
 
 export default function WelcomeCard() {
   return (
@@ -98,7 +99,10 @@ export default function WelcomeCard() {
 
       </div>
 
-      {/* Right Side: Kept 100% image-only so the CGC University buildings, greenery, and signage remain unblocked and bright */}
+      {/* 4. Right Side: Script Calligraphy in Upper-Right Area (Subtle glass blur, leaves main university building completely unobstructed) */}
+      <div className="hidden sm:block absolute top-4 right-4 sm:top-5 sm:right-6 lg:top-6 lg:right-8 z-10 pointer-events-none">
+        <HeroCalligraphy />
+      </div>
 
     </div>
   );
