@@ -6,9 +6,8 @@ export default function AdminFooter() {
     <footer className="border-t border-[#1A2E3B] bg-[#050A0C]/80 px-4 sm:px-8 py-5 mt-10 text-xs text-[#9FB1BC] transition-colors">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-white p-0.5 border border-white/20 flex items-center justify-center shrink-0 shadow-sm">
-            <img src={cgcLogo} alt="CGC University" className="h-6 w-auto object-contain" />
-          </div>
+          <img src={cgcLogo} alt="CGC University" className="h-10 sm:h-11 w-auto object-contain shrink-0" />
+
           <div>
             <span className="font-bold text-[#F5F5F0]">
               CGC University • Smart Campus Complaint & Analytics

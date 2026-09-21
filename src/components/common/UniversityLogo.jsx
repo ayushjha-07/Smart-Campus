@@ -22,31 +22,39 @@ export default function UniversityLogo({
   className = '',
   linkTo = '/'
 }) {
-  // Variant-specific image dimensions and styles
+  // Variant-specific image dimensions and styles matching official sizing specifications
   const config = {
     navbar: {
-      imgClasses: 'h-11 sm:h-12 w-auto object-contain shrink-0',
+      imgClasses: 'h-10 sm:h-11 w-auto object-contain shrink-0',
       containerClasses: 'flex items-center gap-3',
-      badgeClasses: 'bg-white rounded-xl p-1 shadow-md border border-white/20 flex items-center justify-center shrink-0',
+      badgeClasses: 'flex items-center justify-center shrink-0',
       titleClasses: 'text-base sm:text-lg font-extrabold tracking-tight text-[#F5F5F0] leading-none',
       institutionClasses: 'text-[11px] sm:text-xs font-semibold text-[#D4A84F] tracking-wide mt-1',
       taglineClasses: 'text-[9px] uppercase tracking-widest text-[#71844A] font-bold hidden md:block mt-0.5',
     },
     sidebar: {
-      imgClasses: 'h-14 sm:h-16 w-auto object-contain mx-auto shrink-0',
+      imgClasses: 'h-16 sm:h-20 w-auto object-contain mx-auto shrink-0',
       containerClasses: 'flex flex-col items-center text-center gap-2.5 w-full',
-      badgeClasses: 'bg-white rounded-2xl p-1.5 shadow-lg border border-white/20 flex items-center justify-center shrink-0 hover:scale-[1.02] transition-transform',
+      badgeClasses: 'flex items-center justify-center shrink-0',
       titleClasses: 'text-lg font-black tracking-tight text-[#F5F5F0] leading-tight',
       institutionClasses: 'text-xs font-bold text-[#D4A84F] tracking-wider uppercase mt-0.5',
       taglineClasses: 'text-[9px] font-medium text-[#71844A] tracking-wider mt-0.5',
     },
     auth: {
-      imgClasses: 'h-20 sm:h-24 w-auto object-contain mx-auto shrink-0',
+      imgClasses: 'h-20 sm:h-24 md:h-28 w-auto object-contain shrink-0',
       containerClasses: 'flex flex-col items-start gap-3 w-full',
-      badgeClasses: 'bg-white rounded-2xl p-2 shadow-xl border border-white/20 flex items-center justify-center shrink-0',
+      badgeClasses: 'flex items-center justify-center shrink-0',
       titleClasses: 'text-xl sm:text-2xl font-black tracking-tight text-[#F5F5F0] leading-tight',
       institutionClasses: 'text-sm sm:text-base font-bold text-[#D4A84F] tracking-wide',
       taglineClasses: 'text-xs text-[#A8B3B0] font-medium mt-1',
+    },
+    footer: {
+      imgClasses: 'h-11 sm:h-12 w-auto object-contain shrink-0',
+      containerClasses: 'flex items-center gap-3',
+      badgeClasses: 'flex items-center justify-center shrink-0',
+      titleClasses: 'text-base sm:text-lg font-extrabold tracking-tight text-[#F5F5F0] leading-none',
+      institutionClasses: 'text-[11px] sm:text-xs font-semibold text-[#D4A84F] tracking-wide mt-1',
+      taglineClasses: 'text-[9px] uppercase tracking-widest text-[#71844A] font-bold hidden md:block mt-0.5',
     },
   };
 

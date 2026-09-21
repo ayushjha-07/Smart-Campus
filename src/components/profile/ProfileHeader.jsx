@@ -107,9 +107,7 @@ export default function ProfileHeader({
 
               {/* Institution Tag */}
               <div className="flex items-center gap-2 pt-0.5">
-                <div className="bg-white px-1 py-0.5 rounded border border-slate-200">
-                  <img src={campusAssets.logo} alt="CGC Mohali" className="h-3.5 w-auto object-contain" />
-                </div>
+                <img src={campusAssets.logo} alt="CGC Mohali" className="h-5 w-auto object-contain shrink-0" />
                 <span className="text-[11px] font-bold text-[#14213D] dark:text-[#F5F5F0]">
                   CGC University Mohali
                 </span>

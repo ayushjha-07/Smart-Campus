@@ -49,12 +49,13 @@ export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchC
           <Menu className="w-5 h-5" />
         </button>
 
-        {/* Official CGC Logo container */}
-        <div className="w-10 h-10 rounded-xl bg-white border border-[#DDE6E2] dark:border-white/15 p-1 flex items-center justify-center shadow-xs shrink-0">
+        {/* Official CGC University Logo (38-48px height, no white box) */}
+        <div className="flex items-center justify-center shrink-0">
           <img
             src={campusAssets.logo}
             alt="Official CGC University Mohali Logo"
-            className="w-full h-full object-contain"
+            className="h-10 sm:h-11 w-auto object-contain shrink-0"
+            loading="eager"
           />
         </div>
 

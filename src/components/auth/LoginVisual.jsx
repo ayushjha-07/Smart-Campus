@@ -28,9 +28,7 @@ export default function LoginVisual() {
         
         {/* Institutional Badge with CGC Logo */}
         <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#07121A]/85 border border-[#315C3A]/60 backdrop-blur-md shadow-lg">
-          <div className="w-5 h-5 bg-white rounded-full p-0.5 flex items-center justify-center shrink-0">
-            <img src={cgcLogo} alt="CGC University" className="w-full h-full object-contain" />
-          </div>
+          <img src={cgcLogo} alt="CGC University" className="h-5 w-auto object-contain shrink-0" />
           <span className="text-xs font-bold tracking-widest uppercase text-[#D4A84F]">
             CGC University Mohali
           </span>

@@ -104,12 +104,12 @@ export default function DashboardSidebar({ mobileOpen, onCloseMobile }) {
             </button>
           )}
 
-          {/* Official CGC University Logo with crisp white rounded card */}
-          <div className="rounded-2xl p-2 bg-white/95 shadow-lg flex items-center justify-center shrink-0 mb-2.5 border border-white/20">
+          {/* Official CGC University Logo (Unmodified, 64-80px, no white box) */}
+          <div className="flex items-center justify-center shrink-0 mb-2.5">
             <img
               src={campusAssets.logo}
               alt="Official CGC University Mohali Logo"
-              className="h-14 sm:h-16 w-auto object-contain"
+              className="h-16 sm:h-20 w-auto object-contain"
               loading="eager"
             />
           </div>

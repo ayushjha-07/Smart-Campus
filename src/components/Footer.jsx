@@ -25,7 +25,7 @@ export default function Footer() {
           
           {/* Brand & Tagline */}
           <div className="md:col-span-6 space-y-4">
-            <UniversityLogo variant="navbar" />
+            <UniversityLogo variant="footer" />
 
 
             <p className="text-base font-semibold text-[#71844A]">
