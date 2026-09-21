@@ -6,6 +6,7 @@ import { NotificationProvider } from './context/NotificationContext';
 import { StudentRoute, DepartmentRoute, AdminRoute } from './components/common/RouteGuards';
 import GlobalSearchModal from './components/common/GlobalSearchModal';
 import GlobalToast from './components/common/GlobalToast';
+import SmartCampusChatbot from './components/chatbot/SmartCampusChatbot';
 
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
@@ -36,6 +37,7 @@ export default function App() {
         <NotificationProvider>
           <GlobalSearchModal />
           <GlobalToast />
+          <SmartCampusChatbot />
           <Routes>
 
           {/* Public Routes */}
