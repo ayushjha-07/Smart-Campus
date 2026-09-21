@@ -1,5 +1,5 @@
 import gateImage from './cgc_gate_entrance_hd.png';
-import aerialImage from './cgc_aerial_campus_hd.jpg';
+import aerialImage from './cgc_aerial_panoramic.png';
 import sculptureImage from './cgc_sculpture.jpg';
 import logo from './cgc_logo.png';
 import heroBannerMaster from './cgc_hero_banner_master.png';
