@@ -60,7 +60,8 @@ class Settings(BaseSettings):
     @classmethod
     def parse_cors_origins(cls, value: Union[str, List[str]]) -> List[str]:
         if isinstance(value, str):
-            # Split comma-separated string if provided in .env
+            if value.strip() == "*":
+                return ["*"]
             return [origin.strip() for origin in value.split(",") if origin.strip()]
         return value
 

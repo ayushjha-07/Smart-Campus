@@ -1,0 +1,43 @@
+services:
+  # ---------------------------------------------------------------------------
+  # 1. SMART CAMPUS FASTAPI BACKEND (Python 3.11)
+  # ---------------------------------------------------------------------------
+  - type: web
+    name: smart-campus-backend
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt && python seed.py
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        value: sqlite:///./smartcampus.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 120
+      - key: ALGORITHM
+        value: HS256
+      - key: UPLOAD_DIR
+        value: uploads
+      - key: CORS_ORIGINS
+        value: "*"
+
+  # ---------------------------------------------------------------------------
+  # 2. SMART CAMPUS VITE + REACT FRONTEND (Static Site)
+  # ---------------------------------------------------------------------------
+  - type: static
+    name: smart-campus-frontend
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      # React Router client-side routing fallback (prevents 404 on page refresh)
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://smart-campus-backend.onrender.com/api/v1
