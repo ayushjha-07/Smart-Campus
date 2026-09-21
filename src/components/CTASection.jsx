@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, ShieldCheck } from 'lucide-react';
+import { campusAssets } from '../assets/campusAssets';
 
 export default function CTASection({ onOpenSubmitModal }) {
   return (
@@ -10,6 +11,15 @@ export default function CTASection({ onOpenSubmitModal }) {
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl bg-gradient-to-b from-[#0D1B22] to-[#07121A] border border-[#315C3A]/40 p-8 sm:p-14 lg:p-16 text-center shadow-2xl overflow-hidden">
+          
+          {/* Subtle Campus Aerial Image in CTA background */}
+          <img
+            src={campusAssets.landingBg}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover object-center opacity-10 pointer-events-none filter contrast-125"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#07121A] via-[#07121A]/80 to-transparent pointer-events-none" />
           
           {/* Subtle decorative grid */}
           <div className="absolute inset-0 bg-grid-dots opacity-20 pointer-events-none" />

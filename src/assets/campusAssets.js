@@ -4,6 +4,7 @@ import sculptureImage from './cgc_sculpture.jpg';
 import logo from './cgc_logo.png';
 import heroBannerMaster from './cgc_hero_banner_master.png';
 import loginBg from './cgc_campus_login_bg.jpg';
+import landingBg from './cgc_landing_campus_hd.jpg';
 
 /**
  * Global Campus Visual Identity System
@@ -15,6 +16,7 @@ import loginBg from './cgc_campus_login_bg.jpg';
  * 4. logo: OFFICIAL CGC UNIVERSITY MOHALI LOGO -> All University Branding
  * 5. heroBannerMaster: Uploaded Master Hero Banner with wide composition and dark-left grading
  * 6. loginBg: Uploaded CGC University Mohali Aerial Campus Photo -> Login Left Background
+ * 7. landingBg: Uploaded CGC University Mohali Campus Entrance/Buildings Photo -> Landing Page Background
  */
 export const campusAssets = {
   gateImage,
@@ -23,6 +25,7 @@ export const campusAssets = {
   logo,
   heroBannerMaster,
   loginBg,
+  landingBg,
 };
 
 export default campusAssets;

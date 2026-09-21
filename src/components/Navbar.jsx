@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Sun, Moon } from 'lucide-react';
 import UniversityLogo from './common/UniversityLogo';
+import { useApp } from '../context/useApp';
 
 export default function Navbar() {
+  const { theme, toggleTheme } = useApp();
+  const isLight = theme === 'light';
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -27,7 +31,7 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#07121A]/90 backdrop-blur-md border-b border-[#315C3A]/25 py-3 shadow-lg shadow-black/40'
+          ? 'bg-white/90 dark:bg-[#07121A]/90 backdrop-blur-md border-b border-[#DDE5E1] dark:border-[#315C3A]/25 py-3 shadow-md shadow-black/10 dark:shadow-black/40'
           : 'bg-transparent py-5'
       }`}
     >
@@ -50,17 +54,36 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Desktop Right CTA Buttons */}
+          {/* Desktop Right Actions */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Light / Dark Theme Toggle */}
+            <button
+              type="button"
+              onClick={toggleTheme}
+              title={isLight ? "Switch to Dark Mode" : "Switch to Light Mode"}
+              aria-label="Toggle theme"
+              className={`p-2 rounded-xl border transition-all cursor-pointer ${
+                isLight
+                  ? 'bg-white hover:bg-slate-100 border-[#DDE5E1] text-[#D4A84F] shadow-2xs'
+                  : 'bg-[#0D1B22] hover:bg-[#132630] border-white/10 text-[#D4A84F]'
+              }`}
+            >
+              {isLight ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
             <Link
               to="/login"
-              className="px-4 py-2 text-sm font-medium text-[#F5F5F0]/85 hover:text-[#F5F5F0] hover:bg-[#0D1B22] rounded-lg border border-transparent hover:border-white/10 transition-all duration-200"
+              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                isLight
+                  ? 'text-[#07121A] hover:bg-slate-100'
+                  : 'text-[#F5F5F0]/85 hover:text-[#F5F5F0] hover:bg-[#0D1B22]'
+              }`}
             >
               Login
             </Link>
             <Link
               to="/register"
-              className="relative group overflow-hidden px-5 py-2 text-sm font-semibold text-[#F5F5F0] rounded-lg bg-gradient-to-r from-[#315C3A] to-[#3D7349] hover:from-[#3D7349] hover:to-[#71844A] border border-[#71844A]/50 shadow-md shadow-[#315C3A]/25 transition-all duration-300 hover:shadow-lg hover:shadow-[#315C3A]/40 flex items-center gap-1.5"
+              className="relative group overflow-hidden px-5 py-2 text-sm font-semibold text-white rounded-lg bg-[#008F63] hover:bg-[#007A54] dark:bg-[#00B878] dark:hover:bg-[#009e66] shadow-md shadow-emerald-950/20 transition-all duration-300 flex items-center gap-1.5"
             >
               <span>Get Started</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -82,31 +105,43 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#07121A]/95 backdrop-blur-xl border-b border-[#315C3A]/30 px-5 pt-3 pb-6 space-y-3 animate-fadeIn">
+        <div className="md:hidden bg-white/95 dark:bg-[#07121A]/95 backdrop-blur-xl border-b border-[#DDE5E1] dark:border-[#315C3A]/30 px-5 pt-3 pb-6 space-y-3 animate-fadeIn text-[#07121A] dark:text-white">
           <div className="flex flex-col space-y-1">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2.5 text-base font-medium text-[#F5F5F0]/90 hover:text-[#D4A84F] hover:bg-[#0D1B22] rounded-lg transition-colors"
+                className="px-3 py-2.5 text-base font-medium text-slate-700 dark:text-[#F5F5F0]/90 hover:text-[#008F63] dark:hover:text-[#D4A84F] hover:bg-slate-100 dark:hover:bg-[#0D1B22] rounded-lg transition-colors"
               >
                 {link.name}
               </a>
             ))}
           </div>
-          <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
+          <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="w-full py-2.5 px-3 rounded-lg border border-[#DDE5E1] dark:border-white/10 flex items-center justify-between text-sm font-semibold text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-[#0D1B22]"
+            >
+              <span>Appearance</span>
+              <span className="flex items-center gap-1.5 text-xs text-[#D4A84F]">
+                {isLight ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                <span>{isLight ? 'Light Mode' : 'Dark Mode'}</span>
+              </span>
+            </button>
+
             <Link
               to="/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-2.5 text-center text-sm font-medium text-[#F5F5F0] bg-[#0D1B22] rounded-lg border border-white/10 hover:border-white/20"
+              className="w-full py-2.5 text-center text-sm font-medium text-slate-800 dark:text-[#F5F5F0] bg-slate-100 dark:bg-[#0D1B22] rounded-lg border border-slate-200 dark:border-white/10"
             >
               Login
             </Link>
             <Link
               to="/register"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-2.5 text-center text-sm font-semibold text-[#F5F5F0] bg-gradient-to-r from-[#315C3A] to-[#71844A] rounded-lg border border-[#71844A]/40 shadow-sm flex items-center justify-center gap-2"
+              className="w-full py-2.5 text-center text-sm font-semibold text-white bg-[#008F63] dark:bg-[#00B878] rounded-lg shadow-sm flex items-center justify-center gap-2"
             >
               <span>Get Started</span>
               <ArrowRight className="w-4 h-4" />
