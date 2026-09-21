@@ -224,5 +224,8 @@ export const benefitsData = {
       title: 'Actionable Analytics and Insights',
       desc: 'Historical pattern discovery highlights frequent breakdown hotspots, informing future campus maintenance budgeting.'
     }
-  ]
+  ],
+  get admins() {
+    return this.administrators;
+  }
 };

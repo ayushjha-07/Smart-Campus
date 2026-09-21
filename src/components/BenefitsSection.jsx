@@ -59,7 +59,7 @@ export default function BenefitsSection({ onOpenSubmitModal }) {
 
               {/* Benefits List */}
               <div className="space-y-5">
-                {benefitsData.students.map((item, idx) => (
+                {(benefitsData?.students || []).map((item, idx) => (
                   <div key={idx} className="flex items-start gap-4">
                     <div className="p-1 rounded-full bg-[#EEF4F1] dark:bg-[#315C3A]/30 text-[#008F63] dark:text-[#71844A] mt-0.5 shrink-0">
                       <CheckCircle className="w-4 h-4 stroke-[2.5]" />
@@ -113,7 +113,7 @@ export default function BenefitsSection({ onOpenSubmitModal }) {
 
               {/* Benefits List */}
               <div className="space-y-5">
-                {benefitsData.admins.map((item, idx) => (
+                {(benefitsData?.administrators || benefitsData?.admins || []).map((item, idx) => (
                   <div key={idx} className="flex items-start gap-4">
                     <div className="p-1 rounded-full bg-[#FEF9EE] dark:bg-[#D4A84F]/20 text-[#D4A84F] mt-0.5 shrink-0">
                       <CheckCircle className="w-4 h-4 stroke-[2.5]" />
