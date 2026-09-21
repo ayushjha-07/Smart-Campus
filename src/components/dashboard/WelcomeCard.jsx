@@ -26,11 +26,11 @@ export default function WelcomeCard() {
         }}
       />
 
-      {/* 2. Subtle Dark Navy/Black Gradient ONLY behind the LEFT text area (Right 45% is 100% transparent & bright) */}
+      {/* 2. Smooth Dark Navy / Forest-Green Gradient ONLY on the LEFT 42% of the image (fading transparent toward center) */}
       <div 
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
-          background: 'linear-gradient(90deg, rgba(5, 13, 18, 0.84) 0%, rgba(5, 13, 18, 0.76) 32%, rgba(5, 13, 18, 0.35) 54%, transparent 72%)'
+          background: 'linear-gradient(90deg, rgba(4, 15, 22, 0.90) 0%, rgba(5, 22, 24, 0.82) 22%, rgba(5, 20, 24, 0.45) 34%, transparent 42%)'
         }}
       />
 
@@ -39,16 +39,16 @@ export default function WelcomeCard() {
         
         {/* Top Badge: Active Grievance SLA Monitoring */}
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#050D12]/75 backdrop-blur-md border border-white/20 text-[#10E894] shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#10E894] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#051118]/75 backdrop-blur-xs border border-white/20 text-[#00B878] shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00B878] animate-pulse" />
             <span>Active Grievance SLA Monitoring</span>
           </div>
         </div>
 
-        {/* Main Heading: White with Ayush! in Smart Campus Green */}
+        {/* Main Heading: White with Ayush! in Bright Green #00B878 */}
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight drop-shadow-md">
-            Good to see you, <span className="text-[#10E894]">Ayush!</span>
+            Good to see you, <span className="text-[#00B878]">Ayush!</span>
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-100 max-w-lg leading-relaxed font-medium drop-shadow-xs">
@@ -61,7 +61,7 @@ export default function WelcomeCard() {
           {/* Primary Submit Complaint button */}
           <Link
             to="/student/complaints/new"
-            className="px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#078A5A] hover:bg-[#06734B] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-2 shadow-md shadow-emerald-950/25"
+            className="px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#00B878] hover:bg-[#009e66] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-2 shadow-md shadow-emerald-950/30"
           >
             <PlusCircle className="w-4 h-4 stroke-[2.5]" />
             <span>+ Submit Complaint</span>
@@ -70,37 +70,37 @@ export default function WelcomeCard() {
           {/* Secondary View My Complaints button */}
           <Link
             to="/student/complaints"
-            className="px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#050D12]/75 hover:bg-[#050D12]/90 border border-white/25 hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-2 shadow-md backdrop-blur-xs"
+            className="px-4 sm:px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm text-white bg-[#051118]/75 hover:bg-[#051118]/90 border border-white/25 hover:border-white/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 flex items-center gap-2 shadow-md backdrop-blur-xs"
           >
             <ClipboardList className="w-4 h-4 text-[#D4A84F]" />
             <span>View My Complaints</span>
           </Link>
         </div>
 
-        {/* Bottom Feature Labels */}
-        <div className="pt-1.5 flex flex-wrap items-center gap-2 text-xs">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#050D12]/60 backdrop-blur-xs border border-white/15 text-white/90 font-medium drop-shadow-xs">
-            <Sprout className="w-3.5 h-3.5 text-[#10E894]" />
+        {/* Bottom Feature Labels in ONE single horizontal row (no wrap) */}
+        <div className="pt-2 flex flex-nowrap items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs overflow-x-auto no-scrollbar">
+          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
+            <Sprout className="w-3.5 h-3.5 text-[#00B878]" />
             <span>Clean Campus</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#050D12]/60 backdrop-blur-xs border border-white/15 text-white/90 font-medium drop-shadow-xs">
-            <Building2 className="w-3.5 h-3.5 text-[#10E894]" />
+          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
+            <Building2 className="w-3.5 h-3.5 text-[#00B878]" />
             <span>Better Facilities</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#050D12]/60 backdrop-blur-xs border border-white/15 text-white/90 font-medium drop-shadow-xs">
+          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
             <Zap className="w-3.5 h-3.5 text-[#FBBF24]" />
             <span>Quick Resolutions</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#050D12]/60 backdrop-blur-xs border border-white/15 text-white/90 font-medium drop-shadow-xs">
-            <Users className="w-3.5 h-3.5 text-[#10E894]" />
+          <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 rounded-full bg-[#051118]/65 backdrop-blur-xs border border-white/10 text-white/90 font-medium whitespace-nowrap shrink-0">
+            <Users className="w-3.5 h-3.5 text-[#00B878]" />
             <span>Stronger Community</span>
           </span>
         </div>
 
       </div>
 
-      {/* 4. Right Side: Script Calligraphy in Upper-Right Area (Subtle glass blur, leaves main university building completely unobstructed) */}
-      <div className="hidden sm:block absolute top-4 right-4 sm:top-5 sm:right-6 lg:top-6 lg:right-8 z-10 pointer-events-none">
+      {/* 4. Right Side: Subtle Integrated Slogan in Upper-Right Area */}
+      <div className="hidden sm:block absolute top-5 right-6 lg:top-6 lg:right-9 z-10 pointer-events-none">
         <HeroCalligraphy />
       </div>
 
