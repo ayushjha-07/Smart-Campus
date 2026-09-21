@@ -1,4 +1,4 @@
-import gateImage from './cgc_gate_entrance_hd.jpg';
+import gateImage from './cgc_gate_entrance_hd.png';
 import aerialImage from './cgc_aerial_campus_hd.jpg';
 import sculptureImage from './cgc_sculpture.jpg';
 import logo from './cgc_logo.png';
