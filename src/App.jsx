@@ -16,6 +16,7 @@ import MyComplaints from './pages/MyComplaints';
 import ComplaintDetails from './pages/ComplaintDetails';
 import Notifications from './pages/Notifications';
 import StudentProfile from './pages/StudentProfile';
+import HelpSupportPage from './pages/HelpSupportPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminComplaints from './pages/admin/AdminComplaints';
 import AdminAnalytics from './pages/admin/AdminAnalytics';
@@ -50,6 +51,7 @@ export default function App() {
           <Route path="/student/complaints/:id" element={<StudentRoute><ComplaintDetails /></StudentRoute>} />
           <Route path="/student/notifications" element={<StudentRoute><Notifications /></StudentRoute>} />
           <Route path="/student/profile" element={<StudentRoute><StudentProfile /></StudentRoute>} />
+          <Route path="/student/help-support" element={<StudentRoute><HelpSupportPage /></StudentRoute>} />
 
           {/* Admin Portal Routes (Guarded for Admin strictly) */}
           <Route path="/admin/dashboard" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
