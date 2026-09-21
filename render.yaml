@@ -1,6 +1,6 @@
 services:
   # ---------------------------------------------------------------------------
-  # 1. SMART CAMPUS FASTAPI BACKEND (Python 3.11)
+  # 1. SMART CAMPUS FASTAPI BACKEND (Python 3.11 Web Service)
   # ---------------------------------------------------------------------------
   - type: web
     name: smart-campus-backend
@@ -26,11 +26,11 @@ services:
         value: "*"
 
   # ---------------------------------------------------------------------------
-  # 2. SMART CAMPUS VITE + REACT FRONTEND (Static Site)
+  # 2. SMART CAMPUS VITE + REACT FRONTEND (Static Site via CDN)
   # ---------------------------------------------------------------------------
-  - type: static
+  - type: web
     name: smart-campus-frontend
-    plan: free
+    runtime: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
     routes:
