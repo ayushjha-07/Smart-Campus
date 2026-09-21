@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Shield, 
   User, 
   Mail, 
   Phone, 
@@ -20,6 +19,7 @@ import DepartmentSelect from './DepartmentSelect';
 import PasswordStrength from './PasswordStrength';
 import SuccessCard from './SuccessCard';
 import UniversityLogo from '../common/UniversityLogo';
+import { campusAssets } from '../../assets/campusAssets';
 import { useAuth } from '../../context/AuthContext';
 import { useApp } from '../../context/useApp';
 import { departmentApi } from '../../services/departmentApi';
@@ -200,7 +200,7 @@ export default function RegisterForm() {
       {/* Mobile Banner */}
       <div className="lg:hidden mb-6 rounded-2xl overflow-hidden relative border border-white/10 shadow-lg max-h-32">
         <img
-          src={campusHeroImage}
+          src={campusAssets.landingBg}
           alt="Smart Campus visual"
           className="w-full h-32 object-cover filter brightness-[0.7]"
         />

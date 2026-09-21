@@ -6,9 +6,9 @@ export default function RegisterVisual() {
     <div className="relative hidden lg:flex lg:w-[45%] min-h-screen bg-[#07121A] overflow-hidden items-center justify-center p-12">
       {/* Background Campus Image */}
       <img
-        src={campusAssets.aerialImage}
+        src={campusAssets.landingBg || campusAssets.aerialImage}
         alt="CGC University Mohali Aerial Campus"
-        className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.75] contrast-[1.05]"
+        className="absolute inset-0 w-full h-full object-cover object-center filter brightness-[0.8] contrast-[1.05]"
       />
 
       {/* Dark Navy + Forest Green Gradient Overlay */}
