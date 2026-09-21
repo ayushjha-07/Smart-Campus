@@ -29,6 +29,7 @@ import { mapNotification } from '../utils/mapper';
 import { dataSource } from '../services/dataSource';
 import { TableSkeleton } from '../components/common/Skeletons';
 import campusAssets from '../assets/campusAssets';
+import HeroCalligraphy from '../components/common/HeroCalligraphy';
 
 export default function Notifications() {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -363,31 +364,8 @@ export default function Notifications() {
                 </div>
               </div>
 
-              {/* Right Side: Script Calligraphy Overlay ("Your Voice / A Better Campus") */}
-              <div className="hidden sm:block text-right select-none pr-3 sm:pr-4 shrink-0">
-                <p className="font-serif italic text-2xl lg:text-3xl text-white font-medium tracking-tight leading-none drop-shadow-md">
-                  Your Voice
-                </p>
-                <p className="font-serif italic text-2xl lg:text-3xl text-[#10E894] font-bold tracking-tight leading-none mt-1 drop-shadow-md">
-                  A Better Campus
-                </p>
-                {/* Elegant Curved Underline Stroke */}
-                <div className="flex justify-end">
-                  <svg
-                    className="w-32 sm:w-40 h-2.5 sm:h-3 text-[#10E894] mt-1"
-                    viewBox="0 0 150 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M4 8.5C45 2.5 105 2.5 146 6.5"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </div>
-              </div>
+              {/* Right Side: Script Calligraphy Overlay with Soft White Blur Cloud */}
+              <HeroCalligraphy />
 
             </div>
           </div>
