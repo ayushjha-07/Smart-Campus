@@ -16,7 +16,7 @@ export default function LandingPage() {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#07121A] text-[#F5F5F0] flex flex-col selection:bg-[#315C3A] selection:text-[#F5F5F0]">
+    <div className="min-h-screen bg-[#F7F9F8] dark:bg-[#07121A] text-[#071A2B] dark:text-[#F5F5F0] transition-colors duration-300 flex flex-col selection:bg-[#008F63] selection:text-white">
       {/* Sticky Navigation Bar */}
       <Navbar onOpenSubmitModal={() => setIsSubmitModalOpen(true)} />
 

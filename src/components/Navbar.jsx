@@ -31,8 +31,8 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/90 dark:bg-[#07121A]/90 backdrop-blur-md border-b border-[#DDE5E1] dark:border-[#315C3A]/25 py-3 shadow-md shadow-black/10 dark:shadow-black/40'
-          : 'bg-transparent py-5'
+          ? 'bg-white/95 dark:bg-[#07121A]/90 backdrop-blur-md border-b border-[#E2E9E6] dark:border-[#315C3A]/25 py-3 shadow-xs dark:shadow-black/40'
+          : 'bg-white/80 dark:bg-transparent backdrop-blur-sm md:backdrop-blur-none border-b border-[#E2E9E6]/60 dark:border-transparent py-4 sm:py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,14 +40,13 @@ export default function Navbar() {
           {/* Official CGC University Logo / Emblem */}
           <UniversityLogo variant="navbar" />
 
-
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2 bg-[#0D1B22]/70 px-4 py-1.5 rounded-full border border-white/5 backdrop-blur-sm">
+          <nav className="hidden md:flex items-center gap-1 lg:gap-2 bg-[#EEF4F1]/90 dark:bg-[#0D1B22]/70 px-4 py-1.5 rounded-full border border-[#DDE8E3] dark:border-white/5 backdrop-blur-sm shadow-xs dark:shadow-none">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="px-3.5 py-1.5 text-sm font-medium text-[#F5F5F0]/80 hover:text-[#F5F5F0] hover:bg-[#315C3A]/30 rounded-full transition-all duration-200"
+                className="px-3.5 py-1.5 text-sm font-medium text-[#536673] hover:text-[#008F63] hover:bg-white/90 dark:text-[#F5F5F0]/80 dark:hover:text-[#F5F5F0] dark:hover:bg-[#315C3A]/30 rounded-full transition-all duration-200"
               >
                 {link.name}
               </a>
@@ -64,18 +63,18 @@ export default function Navbar() {
               aria-label="Toggle theme"
               className={`p-2 rounded-xl border transition-all cursor-pointer ${
                 isLight
-                  ? 'bg-white hover:bg-slate-100 border-[#DDE5E1] text-[#D4A84F] shadow-2xs'
+                  ? 'bg-white hover:bg-slate-100 border-[#DDE8E3] text-[#071A2B] shadow-2xs'
                   : 'bg-[#0D1B22] hover:bg-[#132630] border-white/10 text-[#D4A84F]'
               }`}
             >
-              {isLight ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              {isLight ? <Sun className="w-4 h-4 text-[#071A2B]" /> : <Moon className="w-4 h-4 text-[#D4A84F]" />}
             </button>
 
             <Link
               to="/login"
-              className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+              className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
                 isLight
-                  ? 'text-[#07121A] hover:bg-slate-100'
+                  ? 'bg-transparent text-[#183047] hover:text-[#008F63] hover:bg-[#EEF4F1]'
                   : 'text-[#F5F5F0]/85 hover:text-[#F5F5F0] hover:bg-[#0D1B22]'
               }`}
             >
@@ -83,7 +82,7 @@ export default function Navbar() {
             </Link>
             <Link
               to="/register"
-              className="relative group overflow-hidden px-5 py-2 text-sm font-semibold text-white rounded-lg bg-[#008F63] hover:bg-[#007A54] dark:bg-[#00B878] dark:hover:bg-[#009e66] shadow-md shadow-emerald-950/20 transition-all duration-300 flex items-center gap-1.5"
+              className="relative group overflow-hidden px-5 py-2 text-sm font-semibold text-white rounded-lg bg-[#008F63] hover:bg-[#007A54] shadow-md shadow-emerald-950/20 transition-all duration-300 flex items-center gap-1.5"
             >
               <span>Get Started</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -95,7 +94,7 @@ export default function Navbar() {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle navigation menu"
-              className="p-2 rounded-lg bg-[#0D1B22] border border-white/10 text-[#F5F5F0] hover:border-[#315C3A] transition-colors"
+              className="p-2 rounded-lg bg-white dark:bg-[#0D1B22] border border-[#DDE8E3] dark:border-white/10 text-[#183047] dark:text-[#F5F5F0] hover:border-[#008F63] transition-colors"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
