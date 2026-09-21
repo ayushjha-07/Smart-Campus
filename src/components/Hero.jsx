@@ -1,7 +1,6 @@
 import React from 'react';
 import { ArrowRight, PlusCircle, Sprout, Building2, Zap, Users } from 'lucide-react';
 import { campusAssets } from '../assets/campusAssets';
-import HeroCalligraphy from './common/HeroCalligraphy';
 
 /**
  * Hero — Cinematic Landing Page Hero Section
@@ -11,7 +10,7 @@ import HeroCalligraphy from './common/HeroCalligraphy';
  * - Full-width, ~650–750px height on desktop
  * - Entrance and campus buildings clearly visible
  * - Directional dark navy/black gradient ONLY behind left-side text (rgba(3, 15, 20, 0.75))
- * - Right side remains bright and natural with "Your Voice / A Better Campus" soft light reflection
+ * - Right side remains bright, natural, and unobstructed showing the full campus view
  * - Clean feature chips: Clean Campus, Better Facilities, Quick Resolutions, Stronger Community
  */
 export default function Hero({ onOpenSubmitModal }) {
@@ -127,11 +126,6 @@ export default function Hero({ onOpenSubmitModal }) {
               </span>
             </div>
 
-          </div>
-
-          {/* Right Column: Decorative Slogan with Radiant Light Reflection over Bright Campus */}
-          <div className="lg:col-span-5 hidden lg:flex justify-end items-center pointer-events-none">
-            <HeroCalligraphy />
           </div>
 
         </div>
