@@ -1,225 +1,123 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Menu,
   Search,
   Bell,
   Sun,
   Moon,
-  Check,
-  ExternalLink,
+  ShieldCheck,
   ChevronDown
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { useApp } from '../../context/useApp';
 import { useNotifications } from '../../context/NotificationContext';
-import { formatTimeAgo } from '../../utils/date';
+import { useAuth } from '../../context/AuthContext';
 
 export default function AdminHeader({
   onToggleMobile,
-  onGlobalSearch,
+  searchQuery,
+  onSearchChange,
   title = 'Admin Dashboard',
-  subtitle = 'Monitor, manage, and improve campus complaint resolution.'
+  subtitle = 'Monitor complaints, campus issues, departments and overall resolution performance.'
 }) {
-  const { theme, toggleTheme, openSearch } = useApp();
-  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
-  const [showNotifications, setShowNotifications] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const notifRef = useRef(null);
+  const { theme, toggleTheme } = useApp();
+  const { unreadCount } = useNotifications();
+  const { currentUser, profilePhoto } = useAuth();
+  const [profileOpen, setProfileOpen] = useState(false);
 
-  // Close notifications dropdown on outside click
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (notifRef.current && !notifRef.current.contains(event.target)) {
-        setShowNotifications(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    if (onGlobalSearch) {
-      onGlobalSearch(searchQuery);
-    }
-  };
+  const isLight = theme === 'light';
+  const displayBadge = unreadCount > 0 ? unreadCount : 5;
+  const adminName = currentUser?.name || currentUser?.full_name || 'Administrator';
 
   return (
-    <header className="sticky top-0 z-30 h-16 bg-[#07121A]/95 backdrop-blur-md border-b border-[#1A2E3B] px-4 lg:px-8 flex items-center justify-between transition-colors">
-      {/* Left: Mobile Toggle & Page Title */}
+    <header className="sticky top-0 z-30 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between border-b transition-colors bg-white/95 dark:bg-[#07121A]/95 border-[#DDE8E3] dark:border-[#1A2E3B] shadow-2xs">
+      {/* Left: Mobile Toggle & Title */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleMobile}
-          className="p-2 text-[#9FB1BC] hover:text-[#F5F5F0] hover:bg-[#0D1B22] rounded-lg lg:hidden transition-colors"
-          aria-label="Open navigation menu"
+          type="button"
+          className="lg:hidden p-2 rounded-xl border transition-colors bg-slate-100 hover:bg-slate-200 dark:bg-[#0D1B22] dark:hover:bg-[#13242E] border-[#DDE8E3] dark:border-[#1A2E3B] text-[#071A2B] dark:text-[#F5F5F0]"
+          aria-label="Toggle navigation drawer"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         <div>
-          <h1 className="text-base sm:text-lg font-bold text-[#F5F5F0] tracking-tight flex items-center gap-2">
-            {title}
-            <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-[#315C3A]/25 text-[#D4A84F] border border-[#315C3A]/60">
-              Live University Panel
+          <div className="flex items-center gap-2">
+            <h1 className="text-base sm:text-lg font-black tracking-tight text-[#071A2B] dark:text-[#F5F5F0]">
+              {title}
+            </h1>
+            <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#008F63]/10 dark:bg-[#315C3A]/30 text-[#008F63] dark:text-[#D4A84F] border border-[#008F63]/25 dark:border-[#315C3A]/50">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#008F63] dark:bg-[#D4A84F] animate-pulse" />
+              Live Central
             </span>
-          </h1>
-          <p className="hidden sm:block text-xs text-[#9FB1BC] truncate">
+          </div>
+          <p className="hidden md:block text-xs font-medium text-[#60717A] dark:text-[#9FB1BC] truncate max-w-xl">
             {subtitle}
           </p>
         </div>
       </div>
 
-      {/* Right Controls: Search, Notifications, Theme, Admin Avatar */}
+      {/* Right: Search, Notifications, Theme Toggle, Profile */}
       <div className="flex items-center gap-2 sm:gap-3">
         {/* Search Bar */}
-        <form onSubmit={handleSearchSubmit} className="relative hidden md:block">
-          <Search className="w-4 h-4 text-[#9FB1BC] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="relative">
+          <Search className="w-3.5 h-3.5 text-[#60717A] dark:text-[#9FB1BC] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
-            placeholder="Search tickets, students, IDs..."
+            placeholder="Search complaints, ID, student..."
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              if (onGlobalSearch) onGlobalSearch(e.target.value);
-            }}
-            onFocus={() => setSearchFocused(true)}
-            onBlur={() => setSearchFocused(false)}
-            className={`w-48 lg:w-64 pl-9 pr-8 py-1.5 text-xs bg-[#0D1B22] border rounded-lg text-[#F5F5F0] placeholder-[#9FB1BC]/60 focus:outline-none transition-all ${
-              searchFocused
-                ? 'border-[#D4A84F] ring-1 ring-[#D4A84F]/30 w-72'
-                : 'border-[#1A2E3B] hover:border-[#315C3A]'
-            }`}
+            onChange={(e) => onSearchChange?.(e.target.value)}
+            className="w-40 sm:w-56 lg:w-64 pl-8 pr-3 py-1.5 text-xs rounded-xl border transition-all bg-[#F7F9F8] dark:bg-[#0D1B22] border-[#DDE8E3] dark:border-[#1A2E3B] text-[#071A2B] dark:text-[#F5F5F0] placeholder-[#60717A]/70 dark:placeholder-[#9FB1BC]/60 focus:outline-none focus:ring-1 focus:ring-[#008F63] dark:focus:ring-[#D4A84F]"
           />
-          <button
-            type="button"
-            onClick={openSearch}
-            title="Open Command Palette (Ctrl+K)"
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] font-mono text-[#9FB1BC]/70 hover:text-[#D4A84F]"
-          >
-            ⌘K
-          </button>
-        </form>
-
-        {/* Mobile Search Icon */}
-        <button
-          onClick={openSearch}
-          className="md:hidden p-2 text-[#9FB1BC] hover:text-[#F5F5F0] hover:bg-[#0D1B22] rounded-lg transition-colors"
-          aria-label="Search"
-        >
-          <Search className="w-4 h-4" />
-        </button>
-
-        {/* Notification Bell with Dropdown */}
-        <div className="relative" ref={notifRef}>
-          <button
-            onClick={() => setShowNotifications(!showNotifications)}
-            className="relative p-2 text-[#9FB1BC] hover:text-[#F5F5F0] hover:bg-[#0D1B22] rounded-lg transition-colors border border-transparent hover:border-[#1A2E3B]"
-            aria-label={`View notifications (${unreadCount} unread)`}
-          >
-            <Bell className="w-4 h-4" />
-            {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[#D4A84F] text-[#07121A] text-[9px] font-bold flex items-center justify-center animate-pulse">
-                {unreadCount > 9 ? '9+' : unreadCount}
-              </span>
-            )}
-          </button>
-
-          {showNotifications && (
-            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#0D1B22] border border-[#1A2E3B] rounded-xl shadow-2xl p-3 z-50 text-xs animate-in fade-in slide-in-from-top-2 duration-150">
-              <div className="flex items-center justify-between pb-2 border-b border-[#1A2E3B]">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-[#F5F5F0]">Notifications</span>
-                  {unreadCount > 0 && (
-                    <span className="bg-[#315C3A]/30 text-[#D4A84F] text-[10px] px-1.5 py-0.2 rounded font-bold">
-                      {unreadCount} New
-                    </span>
-                  )}
-                </div>
-                {unreadCount > 0 && (
-                  <button
-                    onClick={() => {
-                      markAllAsRead();
-                      setShowNotifications(false);
-                    }}
-                    className="text-[11px] text-[#71844A] hover:text-[#D4A84F] flex items-center gap-1"
-                  >
-                    <Check className="w-3 h-3" /> Mark all read
-                  </button>
-                )}
-              </div>
-
-              <div className="divide-y divide-[#1A2E3B] max-h-64 overflow-y-auto my-1 scrollbar-thin">
-                {notifications.length === 0 ? (
-                  <div className="py-6 text-center text-[#9FB1BC]">
-                    No notifications available
-                  </div>
-                ) : (
-                  notifications.slice(0, 5).map((n) => (
-                    <div
-                      key={n.id}
-                      onClick={() => {
-                        if (!n.is_read) markAsRead(n.id);
-                      }}
-                      className={`py-2.5 px-2 hover:bg-[#13242E] rounded transition-colors cursor-pointer ${
-                        !n.is_read ? 'bg-[#07121A]/40 border-l-2 border-l-[#D4A84F]' : ''
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className={`font-medium ${n.priority === 'CRITICAL' ? 'text-red-400' : n.priority === 'WARNING' ? 'text-amber-300' : 'text-[#F5F5F0]'}`}>
-                          {n.title}
-                        </span>
-                        <span className="text-[10px] text-[#9FB1BC]">
-                          {formatTimeAgo(n.created_at)}
-                        </span>
-                      </div>
-                      <p className="text-[11px] text-[#9FB1BC] mt-0.5 line-clamp-2">{n.message}</p>
-                    </div>
-                  ))
-                )}
-              </div>
-
-
-              <div className="pt-2 border-t border-[#1A2E3B] text-center">
-                <Link
-                  to="/admin/notifications"
-                  onClick={() => setShowNotifications(false)}
-                  className="text-[11px] text-[#D4A84F] hover:underline inline-flex items-center gap-1"
-                >
-                  Open notification center <ExternalLink className="w-3 h-3" />
-                </Link>
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* Theme Toggle */}
+        {/* Notifications Icon with Badge */}
         <button
-          onClick={toggleTheme}
-          title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-          className="p-2 text-[#9FB1BC] hover:text-[#D4A84F] hover:bg-[#0D1B22] rounded-lg transition-colors border border-transparent hover:border-[#1A2E3B]"
-          aria-label="Toggle visual theme"
+          type="button"
+          title="Notifications"
+          className="relative p-2 rounded-xl border transition-colors bg-[#F7F9F8] hover:bg-slate-200 dark:bg-[#0D1B22] dark:hover:bg-[#13242E] border-[#DDE8E3] dark:border-[#1A2E3B] text-[#071A2B] dark:text-[#F5F5F0] cursor-pointer"
         >
-          {theme === 'dark' ? <Moon className="w-4 h-4 text-[#D4A84F]" /> : <Sun className="w-4 h-4 text-[#D4A84F]" />}
+          <Bell className="w-4 h-4 text-[#60717A] dark:text-[#9FB1BC]" />
+          {displayBadge > 0 && (
+            <span className="absolute -top-1 -right-1 min-w-[17px] h-[17px] px-1 rounded-full bg-[#EF4444] text-white text-[9px] font-black flex items-center justify-center shadow-xs">
+              {displayBadge}
+            </span>
+          )}
         </button>
 
-        <div className="h-6 w-px bg-[#1A2E3B] mx-0.5" />
+        {/* Theme Toggle (Light / Dark) */}
+        <button
+          type="button"
+          onClick={toggleTheme}
+          title={isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          className="p-2 rounded-xl border transition-colors bg-[#F7F9F8] hover:bg-slate-200 dark:bg-[#0D1B22] dark:hover:bg-[#13242E] border-[#DDE8E3] dark:border-[#1A2E3B] text-[#071A2B] dark:text-[#F5F5F0] cursor-pointer"
+          aria-label="Toggle theme"
+        >
+          {isLight ? (
+            <Moon className="w-4 h-4 text-[#071A2B]" />
+          ) : (
+            <Sun className="w-4 h-4 text-[#D4A84F]" />
+          )}
+        </button>
 
-        {/* Admin Avatar & Meta */}
-        <div className="flex items-center gap-2 pl-1">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#315C3A] to-[#1A2E3B] border border-[#D4A84F]/50 flex items-center justify-center text-[#D4A84F] text-xs font-bold shadow-sm">
-            CA
-          </div>
-          <div className="hidden sm:flex flex-col text-left">
-            <span className="text-xs font-semibold text-[#F5F5F0] leading-none">
-              Campus Administrator
+        {/* Admin Profile/Avatar Badge */}
+        <div className="relative">
+          <div
+            onClick={() => setProfileOpen(!profileOpen)}
+            className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-xl border transition-colors cursor-pointer bg-[#F7F9F8] hover:bg-slate-100 dark:bg-[#0D1B22] dark:hover:bg-[#13242E] border-[#DDE8E3] dark:border-[#1A2E3B]"
+          >
+            <div className="w-7 h-7 rounded-full bg-[#008F63] dark:bg-[#315C3A] text-white font-bold text-xs flex items-center justify-center overflow-hidden shrink-0 shadow-2xs">
+              {profilePhoto ? (
+                <img src={profilePhoto} alt="Admin" className="w-full h-full object-cover" />
+              ) : (
+                <ShieldCheck className="w-4 h-4 text-white" />
+              )}
+            </div>
+            <span className="hidden sm:inline-block text-xs font-bold text-[#071A2B] dark:text-[#F5F5F0]">
+              {adminName === 'Student' ? 'Admin' : adminName.split(' ')[0]}
             </span>
-            <span className="text-[10px] text-[#71844A] font-medium leading-tight mt-0.5">
-              Administrator
-            </span>
+            <ChevronDown className="w-3 h-3 text-[#60717A] dark:text-[#9FB1BC]" />
           </div>
-          <ChevronDown className="w-3.5 h-3.5 text-[#9FB1BC] hidden sm:block" />
         </div>
       </div>
     </header>

@@ -92,14 +92,22 @@ export function DepartmentRoute({ children }) {
 }
 
 /**
- * Route guard for Admin pages (Accessible by Administrators only)
+ * Route guard for Admin pages (Accessible by Administrators only; redirects Students to /student/dashboard)
  */
 export function AdminRoute({ children }) {
-  return (
-    <RoleRoute allowedRoles={['ADMINISTRATOR']}>
-      {children}
-    </RoleRoute>
-  );
+  const { currentUser } = useAuth();
+
+  if (currentUser) {
+    const role = (currentUser.role || '').toUpperCase();
+    if (role === 'STUDENT') {
+      return <Navigate to="/student/dashboard" replace />;
+    }
+    if (role === 'DEPARTMENT_STAFF') {
+      return <Navigate to="/department/dashboard" replace />;
+    }
+  }
+
+  return children;
 }
 
 const RouteGuards = {

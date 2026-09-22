@@ -1,99 +1,67 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
-  Zap,
-  ClipboardList,
-  UserCheck,
+  FilePlus,
+  Users,
   Building2,
   BarChart3,
-  FileSpreadsheet
+  ArrowRight
 } from 'lucide-react';
+import { QUICK_ACTIONS_CONFIG } from '../../data/adminDashboardData';
 
-export default function QuickActions({ onAssignFirstUnassigned, onGenerateReportToast }) {
-  const navigate = useNavigate();
+const iconMap = {
+  FilePlus,
+  Users,
+  Building2,
+  BarChart3
+};
 
-  const actions = [
-    {
-      id: 'review',
-      label: 'Review Complaints',
-      icon: ClipboardList,
-      color: '#D4A84F',
-      onClick: () => navigate('/admin/complaints'),
-    },
-    {
-      id: 'assign',
-      label: 'Assign Complaints',
-      icon: UserCheck,
-      color: '#71844A',
-      onClick: onAssignFirstUnassigned,
-    },
-    {
-      id: 'departments',
-      label: 'Manage Departments',
-      icon: Building2,
-      color: '#3B82F6',
-      onClick: () => navigate('/admin/departments'),
-    },
-    {
-      id: 'analytics',
-      label: 'View Analytics',
-      icon: BarChart3,
-      color: '#A855F7',
-      onClick: () => navigate('/admin/analytics'),
-    },
-    {
-      id: 'report',
-      label: 'Generate Report',
-      icon: FileSpreadsheet,
-      color: '#10B981',
-      onClick: onGenerateReportToast,
-    },
-  ];
-
+export default function QuickActions() {
   return (
-    <div className="rounded-xl bg-[#0D1B22] border border-[#1A2E3B] p-5 shadow-card-elevated">
+    <div className="rounded-2xl border p-5 sm:p-6 transition-all bg-white dark:bg-[#0C1518] border-[#DDE8E3] dark:border-[#1A2E3B] shadow-2xs h-full flex flex-col justify-between">
       {/* Header */}
-      <div className="pb-3 border-b border-[#1A2E3B] flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-[#D4A84F]/15 border border-[#D4A84F]/30 text-[#D4A84F]">
-            <Zap className="w-4 h-4" />
-          </div>
-          <h3 className="text-base font-bold text-[#F5F5F0] tracking-tight">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-base font-black tracking-tight text-[#071A2B] dark:text-[#F5F5F0]">
             Quick Actions
           </h3>
+          <p className="text-xs font-medium text-[#60717A] dark:text-[#9FB1BC] mt-0.5">
+            Direct shortcuts to key institutional administration panels
+          </p>
         </div>
-        <span className="text-[11px] text-[#9FB1BC]">Operational Shortcuts</span>
       </div>
 
-      {/* Buttons Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 mt-3.5">
-        {actions.map((act) => {
-          const Icon = act.icon;
+      {/* 4 Action Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-auto">
+        {QUICK_ACTIONS_CONFIG.map((action) => {
+          const Icon = iconMap[action.iconName] || FilePlus;
+
           return (
-            <button
-              key={act.id}
-              onClick={act.onClick}
-              className="flex items-center gap-2.5 p-3 rounded-xl bg-[#07121A] hover:bg-[#13242E] border border-[#1A2E3B] hover:border-[#315C3A] text-left transition-all group"
+            <Link
+              key={action.id}
+              to={action.route}
+              className="group p-4 rounded-xl border transition-all duration-200 bg-[#F7F9F8] dark:bg-[#07121A] hover:bg-white dark:hover:bg-[#111C1F] border-[#DDE8E3] dark:border-[#1A2E3B] hover:border-[#008F63]/50 dark:hover:border-[#D4A84F]/50 shadow-2xs hover:shadow-md hover:-translate-y-0.5 flex flex-col justify-between"
             >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 border transition-transform group-hover:scale-105"
-                style={{
-                  backgroundColor: `${act.color}15`,
-                  borderColor: `${act.color}40`,
-                  color: act.color,
-                }}
-              >
-                <Icon className="w-4 h-4" />
-              </div>
-              <div className="min-w-0">
-                <span className="text-xs font-semibold text-[#F5F5F0] group-hover:text-[#D4A84F] transition-colors truncate block">
-                  + {act.label}
-                </span>
-                <span className="text-[10px] text-[#9FB1BC] truncate block">
-                  Fast Action
+              <div className="flex items-start justify-between mb-2">
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white dark:bg-[#0D1B22] border border-[#DDE8E3] dark:border-[#1A2E3B] shadow-xs text-[#008F63] dark:text-[#D4A84F] group-hover:scale-110 transition-transform">
+                  <Icon className="w-5 h-5 stroke-[2]" />
+                </div>
+
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white dark:bg-[#0D1B22] border border-[#DDE8E3] dark:border-[#1A2E3B] text-[#60717A] dark:text-[#9FB1BC]">
+                  {action.badge}
                 </span>
               </div>
-            </button>
+
+              <div>
+                <h4 className="text-sm font-bold text-[#071A2B] dark:text-[#F5F5F0] group-hover:text-[#008F63] dark:group-hover:text-[#D4A84F] transition-colors flex items-center justify-between">
+                  <span>{action.title}</span>
+                  <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h4>
+                <p className="text-[11px] font-medium text-[#60717A] dark:text-[#9FB1BC] mt-0.5">
+                  {action.subtitle}
+                </p>
+              </div>
+            </Link>
           );
         })}
       </div>
