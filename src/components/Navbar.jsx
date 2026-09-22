@@ -25,6 +25,7 @@ export default function Navbar() {
     { name: 'Features', href: '#features' },
     { name: 'Benefits', href: '#benefits' },
     { name: 'About', href: '#about' },
+    { name: 'Developer', to: '/developer' },
   ];
 
   return (
@@ -43,13 +44,23 @@ export default function Navbar() {
           {/* Desktop Navigation Links */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2 bg-[#EEF4F1]/90 dark:bg-[#0D1B22]/70 px-4 py-1.5 rounded-full border border-[#DDE8E3] dark:border-white/5 backdrop-blur-sm shadow-xs dark:shadow-none">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="px-3.5 py-1.5 text-sm font-medium text-[#536673] hover:text-[#008F63] hover:bg-white/90 dark:text-[#F5F5F0]/80 dark:hover:text-[#F5F5F0] dark:hover:bg-[#315C3A]/30 rounded-full transition-all duration-200"
-              >
-                {link.name}
-              </a>
+              link.to ? (
+                <Link
+                  key={link.name}
+                  to={link.to}
+                  className="px-3.5 py-1.5 text-sm font-medium text-[#536673] hover:text-[#008F63] hover:bg-white/90 dark:text-[#F5F5F0]/80 dark:hover:text-[#F5F5F0] dark:hover:bg-[#315C3A]/30 rounded-full transition-all duration-200"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="px-3.5 py-1.5 text-sm font-medium text-[#536673] hover:text-[#008F63] hover:bg-white/90 dark:text-[#F5F5F0]/80 dark:hover:text-[#F5F5F0] dark:hover:bg-[#315C3A]/30 rounded-full transition-all duration-200"
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </nav>
 
@@ -107,14 +118,25 @@ export default function Navbar() {
         <div className="md:hidden bg-white/95 dark:bg-[#07121A]/95 backdrop-blur-xl border-b border-[#DDE5E1] dark:border-[#315C3A]/30 px-5 pt-3 pb-6 space-y-3 animate-fadeIn text-[#07121A] dark:text-white">
           <div className="flex flex-col space-y-1">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2.5 text-base font-medium text-slate-700 dark:text-[#F5F5F0]/90 hover:text-[#008F63] dark:hover:text-[#D4A84F] hover:bg-slate-100 dark:hover:bg-[#0D1B22] rounded-lg transition-colors"
-              >
-                {link.name}
-              </a>
+              link.to ? (
+                <Link
+                  key={link.name}
+                  to={link.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 text-base font-medium text-slate-700 dark:text-[#F5F5F0]/90 hover:text-[#008F63] dark:hover:text-[#D4A84F] hover:bg-slate-100 dark:hover:bg-[#0D1B22] rounded-lg transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-3 py-2.5 text-base font-medium text-slate-700 dark:text-[#F5F5F0]/90 hover:text-[#008F63] dark:hover:text-[#D4A84F] hover:bg-slate-100 dark:hover:bg-[#0D1B22] rounded-lg transition-colors"
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </div>
           <div className="pt-3 border-t border-slate-200 dark:border-white/10 flex flex-col gap-2">

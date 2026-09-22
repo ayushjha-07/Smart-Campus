@@ -1,5 +1,6 @@
 import React from 'react';
-import { ArrowUp, Mail, MapPin, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowUp, Mail, MapPin, Phone, Heart } from 'lucide-react';
 import UniversityLogo from './common/UniversityLogo';
 
 export default function Footer() {
@@ -13,6 +14,7 @@ export default function Footer() {
     { name: 'Features', href: '#features' },
     { name: 'Benefits', href: '#benefits' },
     { name: 'About', href: '#about' },
+    { name: 'Developer', to: '/developer' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -44,12 +46,21 @@ export default function Footer() {
             <ul className="space-y-2.5">
               {links.map((link) => (
                 <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-[#60717A] hover:text-[#008F63] dark:text-[#9FB1BC] dark:hover:text-[#F5F5F0] transition-colors font-medium"
-                  >
-                    {link.name}
-                  </a>
+                  {link.to ? (
+                    <Link
+                      to={link.to}
+                      className="text-sm text-[#60717A] hover:text-[#008F63] dark:text-[#9FB1BC] dark:hover:text-[#F5F5F0] transition-colors font-medium flex items-center gap-1.5"
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  ) : (
+                    <a
+                      href={link.href}
+                      className="text-sm text-[#60717A] hover:text-[#008F63] dark:text-[#9FB1BC] dark:hover:text-[#F5F5F0] transition-colors font-medium"
+                    >
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Stats from '../components/Stats';
@@ -13,7 +14,20 @@ import Footer from '../components/Footer';
 import ComplaintModal from '../components/ComplaintModal';
 
 export default function LandingPage() {
+  const navigate = useNavigate();
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+
+  // Splash intro redirection on first site visit in a session
+  useEffect(() => {
+    try {
+      const hasSeenIntro = sessionStorage.getItem('seen_developer_intro');
+      if (!hasSeenIntro) {
+        navigate('/developer', { replace: true });
+      }
+    } catch {
+      // Storage access safe fallback
+    }
+  }, [navigate]);
 
   return (
     <div className="min-h-screen bg-[#F7F9F8] dark:bg-[#07121A] text-[#071A2B] dark:text-[#F5F5F0] transition-colors duration-300 flex flex-col selection:bg-[#008F63] selection:text-white">
