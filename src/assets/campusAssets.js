@@ -8,6 +8,7 @@ import landingBg from './cgc_landing_campus_hd.jpg';
 import prachiPriyaPortrait from './prachi_priya.jpg';
 import developerDaylightPortrait from './developer_daylight_portrait_perfect.png';
 import developerShowcaseArt from './developer_showcase_art_perfect.png';
+import developerCleanPortraitComposite from './developer_clean_portrait_composite.png';
 
 /**
  * Global Campus Visual Identity System
@@ -23,6 +24,7 @@ import developerShowcaseArt from './developer_showcase_art_perfect.png';
  * 8. prachiPriyaPortrait: High-Resolution Developer Portrait of Prachi Priya
  * 9. developerDaylightPortrait: Daylight Campus Portrait Composition with Floating Cards
  * 10. developerShowcaseArt: Pristine Developer Showcase Master Artwork
+ * 11. developerCleanPortraitComposite: Clean Portrait of Prachi with CGC Entrance for Live Orbit System
  */
 export const campusAssets = {
   gateImage,
@@ -35,6 +37,7 @@ export const campusAssets = {
   prachiPriyaPortrait,
   developerDaylightPortrait,
   developerShowcaseArt,
+  developerCleanPortraitComposite,
 };
 
 export default campusAssets;

@@ -1,76 +1,197 @@
 import React from 'react';
+import { Code2, BarChart3, GraduationCap, Users, ShieldCheck, Leaf } from 'lucide-react';
 import { campusAssets } from '../../assets/campusAssets';
 import OrbitRings from './OrbitRings';
+import OrbitCard from './OrbitCard';
 import DeveloperDecorations from './DeveloperDecorations';
 
 /**
- * DeveloperPortrait — The large, dominant right-side composition
- * - Features the authentic portrait of Prachi Priya in lavender kurta
- * - Real CGC University Mohali campus backdrop
- * - Curved dark green pill: "Developer • Learner • Problem Solver • Dreamer"
- * - 6 floating glass cards in organic orbital layout
- * - Live animated orbit rings, rotating particles, and script typography
- * - Completely unboxed, organic composition blending seamlessly with background
+ * DeveloperPortrait — Central Showcase with Real-Time Animated Orbital Physics
+ * - Large, dominant authentic portrait of Prachi Priya with CGC University Mohali entrance
+ * - 3 independent elliptical orbits (22s, 16s reverse, 11s)
+ * - 6 live floating cards orbiting continuously around her while remaining upright & readable
+ * - Moving particles (green dots, gold sparkles, tiny hearts, leaves)
+ * - Animated progressive drawing and fading SVG curved line
+ * - Pulsing radial ambient glow behind portrait
+ * - Floating leaves with staggered drift
+ * - Dark-green curved pill with moving 4s shine effect
+ * - Subtle mouse parallax
  */
-export default function DeveloperPortrait() {
+export default function DeveloperPortrait({ mouseOffset = { x: 0, y: 0 }, isVisible = true }) {
+  // 6 Live Floating Cards orbiting smoothly at varied radii and initial angles
+  const cards = [
+    // Orbit 1: Outer (22s clockwise)
+    {
+      orbit: 1,
+      radiusX: 295,
+      radiusY: 260,
+      initialAngle: 155, // Top-Left
+      duration: 22,
+      reverse: false,
+      cardProps: {
+        icon: Code2,
+        line1: 'Clean Code',
+        line2: 'Better Campus',
+        iconBg: 'bg-[#008F63]',
+      },
+    },
+    {
+      orbit: 1,
+      radiusX: 295,
+      radiusY: 260,
+      initialAngle: 335, // Bottom-Right
+      duration: 22,
+      reverse: false,
+      cardProps: {
+        icon: Users,
+        line1: 'Stronger',
+        line2: 'Community',
+        iconBg: 'bg-[#008F63]',
+      },
+    },
+    // Orbit 2: Middle (16s counter-clockwise)
+    {
+      orbit: 2,
+      radiusX: 255,
+      radiusY: 225,
+      initialAngle: 215, // Mid-Left
+      duration: 16,
+      reverse: true,
+      cardProps: {
+        icon: BarChart3,
+        line1: 'Ideas',
+        line2: 'into Impact',
+        iconBg: 'bg-[#D4A84F]',
+      },
+    },
+    {
+      orbit: 2,
+      radiusX: 255,
+      radiusY: 225,
+      initialAngle: 35, // Top-Right
+      duration: 16,
+      reverse: true,
+      cardProps: {
+        icon: ShieldCheck,
+        line1: 'Safer',
+        line2: 'Campus',
+        iconBg: 'bg-[#008F63]',
+      },
+    },
+    // Orbit 3: Inner (11s clockwise)
+    {
+      orbit: 3,
+      radiusX: 220,
+      radiusY: 190,
+      initialAngle: 255, // Lower-Left
+      duration: 11,
+      reverse: false,
+      cardProps: {
+        icon: GraduationCap,
+        line1: 'For a',
+        line2: 'Smarter Campus',
+        iconBg: 'bg-[#008F63]',
+      },
+    },
+    {
+      orbit: 3,
+      radiusX: 220,
+      radiusY: 190,
+      initialAngle: 75, // Upper-Right
+      duration: 11,
+      reverse: false,
+      cardProps: {
+        icon: Leaf,
+        line1: 'Greener',
+        line2: 'Future',
+        iconBg: 'bg-[#008F63]',
+      },
+    },
+  ];
+
   return (
-    <div className="relative w-full max-w-[580px] lg:max-w-[640px] mx-auto flex items-center justify-center select-none overflow-visible">
+    <div className="relative w-full max-w-[650px] lg:max-w-[700px] aspect-square mx-auto flex items-center justify-center select-none overflow-visible">
       
-      {/* Live Animated Orbit Rings around composition */}
-      <OrbitRings />
+      {/* 1. SOFT PULSING GLOW BEHIND PORTRAIT */}
+      <div
+        className="absolute w-[520px] h-[520px] rounded-full bg-radial from-[#008F63]/25 via-[#38D59E]/12 to-transparent blur-3xl pointer-events-none -z-20 animate-glow-pulse"
+        style={{
+          transform: `translate3d(${-mouseOffset.x * 0.3}px, ${-mouseOffset.y * 0.3}px, 0)`,
+          transition: 'transform 0.2s cubic-bezier(0.2, 0, 0, 1)',
+        }}
+      />
 
-      {/* Floating Leaf Accents & Particles */}
-      <DeveloperDecorations />
+      {/* 2. LIVE ORBIT SYSTEM & PARTICLES */}
+      <div
+        className="absolute inset-0 pointer-events-none -z-10"
+        style={{
+          transform: `translate3d(${-mouseOffset.x * 0.5}px, ${-mouseOffset.y * 0.5}px, 0)`,
+          transition: 'transform 0.2s cubic-bezier(0.2, 0, 0, 1)',
+        }}
+      >
+        <OrbitRings isVisible={isVisible} />
+      </div>
 
-      {/* Main Master Artwork Container blending organically into the page */}
-      <div className="relative w-full overflow-visible transition-transform duration-500 hover:scale-[1.012] group">
-        
-        {/* Soft background ambient glow */}
-        <div className="absolute inset-0 bg-radial from-[#008F63]/12 via-transparent to-transparent pointer-events-none -z-10" />
+      {/* 3. 6 CONTINUOUSLY TRAVELING LIVE FLOATING CARDS */}
+      <div 
+        className="absolute inset-0 pointer-events-none z-20"
+        style={{
+          transform: `translate3d(${-mouseOffset.x * 0.4}px, ${-mouseOffset.y * 0.4}px, 0)`,
+          transition: 'transform 0.2s cubic-bezier(0.2, 0, 0, 1)',
+        }}
+      >
+        {cards.map((card, idx) => (
+          <OrbitCard
+            key={idx}
+            radiusX={card.radiusX}
+            radiusY={card.radiusY}
+            initialAngle={card.initialAngle}
+            duration={card.duration}
+            reverse={card.reverse}
+            isVisible={isVisible}
+            cardProps={card.cardProps}
+          />
+        ))}
+      </div>
 
-        {/* Master Showcase Artwork */}
+      {/* 4. LARGE DOMINANT PORTRAIT OF PRACHI & CGC MOHALI ENTRANCE */}
+      <div
+        className="relative w-[440px] sm:w-[510px] aspect-square rounded-full flex items-center justify-center pointer-events-none z-10"
+        style={{
+          transform: `translate3d(${mouseOffset.x * 0.4}px, ${mouseOffset.y * 0.4}px, 0)`,
+          transition: 'transform 0.2s cubic-bezier(0.2, 0, 0, 1)',
+        }}
+      >
+        {/* Soft circular aura backdrop */}
+        <div className="absolute inset-4 rounded-full bg-gradient-to-b from-[#E7F6EF]/65 to-[#F2FAF6]/35 dark:from-[#008F63]/18 dark:to-[#0A1A22]/25 border border-[#008F63]/25 dark:border-white/10 shadow-inner -z-5" />
+
+        {/* Clean Composite Portrait Image */}
         <img
-          src={campusAssets.developerShowcaseArt}
-          alt="Developed by Prachi Priya — Smart Campus CGC University Mohali"
-          className="w-full h-auto object-contain block drop-shadow-lg"
-          loading="lazy"
+          src={campusAssets.developerCleanPortraitComposite}
+          alt="Prachi Priya — Developer of Smart Campus"
+          className="w-full h-full object-contain block drop-shadow-2xl select-none pointer-events-none"
+          loading="eager"
         />
 
-        {/* Interactive hover highlight overlays for the 6 cards */}
-        <div className="absolute inset-0 pointer-events-auto">
-          {/* Card 1: Clean Code / Better Campus */}
-          <div 
-            className="absolute top-[10%] left-[13%] w-[35%] h-[14%] rounded-2xl cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300"
-            title="Clean Code • Better Campus"
-          />
-          {/* Card 2: Ideas into Impact */}
-          <div 
-            className="absolute top-[28%] left-[4%] w-[33%] h-[14%] rounded-2xl cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300"
-            title="Ideas into Impact"
-          />
-          {/* Card 3: For a Smarter Campus */}
-          <div 
-            className="absolute top-[48%] left-[7%] w-[35%] h-[14%] rounded-2xl cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300"
-            title="For a Smarter Campus"
-          />
-          {/* Card 4: Stronger Community */}
-          <div 
-            className="absolute top-[25%] right-[16%] w-[34%] h-[14%] rounded-2xl cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300"
-            title="Stronger Community"
-          />
-          {/* Card 5: Safer Campus */}
-          <div 
-            className="absolute top-[44%] right-[8%] w-[30%] h-[14%] rounded-2xl cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300"
-            title="Safer Campus"
-          />
-          {/* Card 6: Greener Future */}
-          <div 
-            className="absolute top-[60%] right-[10%] w-[30%] h-[14%] rounded-2xl cursor-pointer hover:bg-white/20 dark:hover:bg-white/10 transition-all duration-300"
-            title="Greener Future"
-          />
+        {/* 5. CURVED DARK-GREEN PILL WITH 4S SHIMMER SHINE HIGHLIGHT */}
+        <div className="absolute bottom-1 sm:bottom-3 left-1/2 -translate-x-1/2 z-30 pointer-events-auto">
+          <div className="relative overflow-hidden px-5 sm:px-6 py-2 rounded-full bg-[#0B3B26] dark:bg-[#072B1C] border border-[#16603F] shadow-xl shadow-emerald-950/35 flex items-center justify-center">
+            {/* Soft highlight traveling from left to right every 4 seconds */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none animate-shimmer-pill"
+              style={{ animationPlayState: isVisible ? 'running' : 'paused' }}
+            />
+            {/* Pill Label Text */}
+            <span className="relative z-10 text-[11px] sm:text-xs font-bold text-white tracking-wide whitespace-nowrap">
+              Developer &nbsp;•&nbsp; Learner &nbsp;•&nbsp; Problem Solver &nbsp;•&nbsp; Dreamer
+            </span>
+          </div>
         </div>
 
       </div>
+
+      {/* 6. CALLIGRAPHY & FLOATING SWAYING LEAVES */}
+      <DeveloperDecorations isVisible={isVisible} />
 
     </div>
   );

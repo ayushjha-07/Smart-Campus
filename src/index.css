@@ -272,3 +272,118 @@
 .animate-float-delayed {
   animation: floatDelayed 7s ease-in-out 1.5s infinite;
 }
+
+/* ==============================================================
+   LIVE DEVELOPER SHOWCASE REAL-TIME ANIMATIONS
+   GPU-accelerated transforms & infinite smooth orbital physics
+   ============================================================== */
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitSpinReverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes drawSvgLine {
+  0% {
+    stroke-dashoffset: 800;
+    opacity: 0.1;
+  }
+  40% {
+    stroke-dashoffset: 0;
+    opacity: 0.95;
+  }
+  75% {
+    stroke-dashoffset: 0;
+    opacity: 0.9;
+  }
+  100% {
+    stroke-dashoffset: -800;
+    opacity: 0;
+  }
+}
+
+@keyframes shimmerPill {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes leafDrift {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(9deg);
+  }
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    opacity: 0.88;
+    filter: drop-shadow(0 0 2px rgba(0, 143, 99, 0.2));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(0, 143, 99, 0.5));
+  }
+}
+
+.animate-glow-pulse {
+  animation: pulseGlow 6s ease-in-out infinite;
+}
+
+.animate-svg-line {
+  stroke-dasharray: 800;
+  animation: drawSvgLine 7s ease-in-out infinite;
+}
+
+.animate-shimmer-pill {
+  animation: shimmerPill 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-leaf-drift-1 {
+  animation: leafDrift 6s ease-in-out infinite;
+}
+
+.animate-leaf-drift-2 {
+  animation: leafDrift 8s ease-in-out 1.5s infinite;
+}
+
+.animate-leaf-drift-3 {
+  animation: leafDrift 7s ease-in-out 3s infinite;
+}
+
+.animate-leaf-drift-4 {
+  animation: leafDrift 10s ease-in-out 4.5s infinite;
+}
+
+.animate-text-glow {
+  animation: textGlow 4s ease-in-out infinite;
+}
