@@ -11,6 +11,7 @@ import developerShowcaseArt from './developer_showcase_art_perfect.png';
 import developerCleanPortraitComposite from './developer_clean_portrait_composite.png';
 import cgcCampusBrightBackdrop from './cgc_campus_bright_backdrop.jpg';
 import prachiPortraitCleanCutout from './prachi_portrait_clean_cutout.png';
+import developerShowcaseMaster4Cards from './developer_showcase_master_4cards.png';
 
 /**
  * Global Campus Visual Identity System
@@ -29,6 +30,7 @@ import prachiPortraitCleanCutout from './prachi_portrait_clean_cutout.png';
  * 11. developerCleanPortraitComposite: Clean Portrait of Prachi with CGC Entrance for Live Orbit System
  * 12. cgcCampusBrightBackdrop: Real Bright Daylight CGC Campus Backdrop
  * 13. prachiPortraitCleanCutout: Sharp cutout of Prachi Priya for natural layered depth
+ * 14. developerShowcaseMaster4Cards: Master 4-Card Reference Artwork Matching media_1790099017754.jpg
  */
 export const campusAssets = {
   gateImage,
@@ -44,6 +46,7 @@ export const campusAssets = {
   developerCleanPortraitComposite,
   cgcCampusBrightBackdrop,
   prachiPortraitCleanCutout,
+  developerShowcaseMaster4Cards,
 };
 
 export default campusAssets;
