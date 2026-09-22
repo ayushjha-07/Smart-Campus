@@ -13,8 +13,8 @@ export default function Footer() {
     { name: 'How It Works', href: '#how-it-works' },
     { name: 'Features', href: '#features' },
     { name: 'Benefits', href: '#benefits' },
+    { name: 'Developer', href: '#developer' },
     { name: 'About', href: '#about' },
-    { name: 'Developer', to: '/developer' },
     { name: 'Contact', href: '#contact' },
   ];
 
