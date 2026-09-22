@@ -52,12 +52,14 @@ import {
   saveStudentProfile 
 } from '../data/mockStudentData';
 import { useApp } from '../context/useApp';
+import { useAuth } from '../context/AuthContext';
 import campusAssets from '../assets/campusAssets';
 import HeroCalligraphy from '../components/common/HeroCalligraphy';
 
 export default function StudentProfile() {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useApp();
+  const { currentUser } = useAuth();
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [headerSearch, setHeaderSearch] = useState('');
 
@@ -85,17 +87,19 @@ export default function StudentProfile() {
 
   // Floating toast feedback
   const [toastMessage, setToastMessage] = useState(null);
+  const [toastType, setToastType] = useState('success');
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.title = "My Profile | Smart Campus CGC University Mohali";
   }, []);
 
-  const showToast = (msg) => {
+  const showToast = (msg, type = 'success') => {
     setToastMessage(msg);
+    setToastType(type);
     setTimeout(() => {
       setToastMessage((curr) => (curr === msg ? null : curr));
-    }, 2800);
+    }, 3200);
   };
 
   const updateAndPersistProfile = (updated) => {
@@ -303,15 +307,16 @@ export default function StudentProfile() {
                 {/* Student Portrait Avatar */}
                 <StudentAvatar
                   onAvatarChange={() => showToast('Profile avatar photo upload dialog opened.')}
+                  onToast={showToast}
                   size="large"
                 />
 
                 <div className="space-y-1.5">
                   <h2 className="text-xl sm:text-2xl font-black text-[#10213A] dark:text-[#F5F7F5] tracking-tight">
-                    {profile.name}
+                    {currentUser?.name || currentUser?.full_name || profile.name}
                   </h2>
                   <p className="text-xs sm:text-[13px] font-semibold text-[#687A91] dark:text-[#91A7A5]">
-                    {profile.role}
+                    {currentUser?.role ? `${currentUser.role.charAt(0) + currentUser.role.slice(1).toLowerCase()} User` : profile.role}
                   </p>
 
                   {/* Metadata chips */}
@@ -335,7 +340,9 @@ export default function StudentProfile() {
                   {/* Student ID line */}
                   <div className="pt-1 text-xs font-mono text-[#687A91] dark:text-[#91A7A5]">
                     <span>Student ID: </span>
-                    <span className="font-bold text-[#078A5A] dark:text-[#00B87A]">{profile.studentId}</span>
+                    <span className="font-bold text-[#078A5A] dark:text-[#00B87A]">
+                      {currentUser?.studentId || currentUser?.student_id || profile.studentId}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1254,9 +1261,21 @@ export default function StudentProfile() {
 
       {/* Floating Action Toast */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white dark:bg-[#0B2027] border border-[#DCE7E3] dark:border-white/10 text-xs font-semibold text-[#10213A] dark:text-[#F5F7F5] shadow-xl animate-fadeIn">
-          <div className="w-5 h-5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-[#078A5A] dark:text-[#00B87A] flex items-center justify-center">
-            <Check className="w-3 h-3 stroke-[3]" />
+        <div className={`fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white dark:bg-[#0B2027] border ${
+          toastType === 'error'
+            ? 'border-red-300 dark:border-red-800 text-red-700 dark:text-red-300'
+            : 'border-[#DCE7E3] dark:border-white/10 text-[#10213A] dark:text-[#F5F7F5]'
+        } text-xs font-semibold shadow-xl animate-fadeIn`}>
+          <div className={`w-5 h-5 rounded-full ${
+            toastType === 'error'
+              ? 'bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400'
+              : 'bg-emerald-50 dark:bg-emerald-950/50 text-[#078A5A] dark:text-[#00B87A]'
+          } flex items-center justify-center shrink-0`}>
+            {toastType === 'error' ? (
+              <AlertCircle className="w-3.5 h-3.5 stroke-[2.5]" />
+            ) : (
+              <Check className="w-3 h-3 stroke-[3]" />
+            )}
           </div>
           <span>{toastMessage}</span>
         </div>

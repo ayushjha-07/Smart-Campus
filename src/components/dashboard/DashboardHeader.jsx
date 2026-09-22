@@ -22,7 +22,7 @@ import campusAssets from '../../assets/campusAssets';
 
 export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchChange, forceLight = false }) {
   const { theme, toggleTheme, openSearch } = useApp();
-  const { currentUser } = useAuth();
+  const { currentUser, profilePhoto } = useAuth();
   const isLight = forceLight ? true : theme === 'light';
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
@@ -275,8 +275,12 @@ export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchC
             }`}
           >
             {/* Avatar Circle */}
-            <div className="w-7 h-7 rounded-full bg-[#087F5B] dark:bg-[#16B978] text-white font-bold text-xs flex items-center justify-center shadow-2xs">
-              {headerInitials}
+            <div className="w-7 h-7 rounded-full bg-[#087F5B] dark:bg-[#16B978] text-white font-bold text-xs flex items-center justify-center shadow-2xs overflow-hidden shrink-0">
+              {profilePhoto ? (
+                <img src={profilePhoto} alt={headerFullName} className="w-full h-full object-cover" />
+              ) : (
+                headerInitials
+              )}
             </div>
 
             <div className="hidden sm:block text-left leading-none">
@@ -295,14 +299,23 @@ export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchC
             <div className={`absolute right-0 mt-2 w-56 rounded-2xl border shadow-2xl p-2 z-40 animate-fadeIn ${
               isLight ? 'bg-white border-[#DDE6E2]' : 'bg-[#0B1B22] border-[#1C3A42]'
             }`}>
-              <div className={`p-3 border-b mb-1 ${isLight ? 'border-[#DDE6E2]' : 'border-[#1C3A42]'}`}>
-                <span className={`block text-xs font-bold ${isLight ? 'text-[#0B1736]' : 'text-[#F5F7F5]'}`}>{headerFullName}</span>
-                <span className={`block text-[10px] truncate ${isLight ? 'text-[#607080]' : 'text-[#A8B5B1]'}`}>{headerEmail}</span>
-                <span className={`inline-block mt-1.5 text-[9px] font-mono font-semibold px-2 py-0.5 rounded border ${
-                  isLight ? 'bg-emerald-50 text-[#087F5B] border-emerald-200' : 'bg-[#10242B] text-[#16B978] border-[#1C3A42]'
-                }`}>
-                  {studentProfile.studentId}
-                </span>
+              <div className={`p-3 border-b mb-1 flex items-center gap-2.5 ${isLight ? 'border-[#DDE6E2]' : 'border-[#1C3A42]'}`}>
+                <div className="w-8 h-8 rounded-full bg-[#087F5B] dark:bg-[#16B978] text-white font-bold text-xs flex items-center justify-center overflow-hidden shrink-0">
+                  {profilePhoto ? (
+                    <img src={profilePhoto} alt={headerFullName} className="w-full h-full object-cover" />
+                  ) : (
+                    headerInitials
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className={`block text-xs font-bold truncate ${isLight ? 'text-[#0B1736]' : 'text-[#F5F7F5]'}`}>{headerFullName}</span>
+                  <span className={`block text-[10px] truncate ${isLight ? 'text-[#607080]' : 'text-[#A8B5B1]'}`}>{headerEmail}</span>
+                  <span className={`inline-block mt-1 text-[9px] font-mono font-semibold px-2 py-0.5 rounded border ${
+                    isLight ? 'bg-emerald-50 text-[#087F5B] border-emerald-200' : 'bg-[#10242B] text-[#16B978] border-[#1C3A42]'
+                  }`}>
+                    {currentUser?.studentId || currentUser?.student_id || studentProfile.studentId}
+                  </span>
+                </div>
               </div>
 
               <Link

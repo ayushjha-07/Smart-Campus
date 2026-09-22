@@ -3,9 +3,9 @@
  * Supports both FastAPI backend calls and automatic mock session fallbacks
  * when the backend server is offline or in mock mode.
  */
-import { request, setStoredToken, clearAuthStorage, USER_STORAGE_KEY } from './apiClient';
+import { request, setStoredToken, clearAuthStorage, USER_STORAGE_KEY } from './apiClient.js';
 
-const isMockMode = import.meta.env.VITE_USE_MOCK_DATA !== 'false';
+const isMockMode = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_USE_MOCK_DATA !== 'false');
 
 /**
  * Builds mock user metadata based on email address and role hint
@@ -52,19 +52,24 @@ function buildMockAuthData(email, roleHint) {
   let studentFullName = 'Student';
   let initials = 'ST';
 
+  let studentId = '2024CSB1042';
+
   if (cleanEmail) {
     if (cleanEmail.includes('prachi')) {
       studentName = 'Prachi';
       studentFullName = 'Prachi Priya';
       initials = 'PP';
+      studentId = '2024CSB1098';
     } else if (cleanEmail.includes('rahul')) {
       studentName = 'Rahul';
       studentFullName = 'Rahul Sharma';
       initials = 'RS';
+      studentId = '2024CSB1055';
     } else if (cleanEmail.includes('ayush')) {
       studentName = 'Ayush';
       studentFullName = 'Ayush Kumar Jha';
       initials = 'AJ';
+      studentId = '2024CSB1042';
     } else {
       // General case: derive name from email prefix (e.g. "rohit.verma@..." -> "Rohit")
       const prefix = cleanEmail.split('@')[0];
@@ -73,6 +78,7 @@ function buildMockAuthData(email, roleHint) {
         studentName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
         studentFullName = parts.map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
         initials = parts.map(p => p.charAt(0).toUpperCase()).slice(0, 2).join('');
+        studentId = '2024CSB' + (Math.abs(prefix.split('').reduce((acc, c) => acc + c.charCodeAt(0), 1000)) % 9000);
       }
     }
   }
@@ -89,7 +95,8 @@ function buildMockAuthData(email, roleHint) {
       initials: initials,
       email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail || 'student'}@smartcampus.edu`,
       role: 'STUDENT',
-      student_id: '2024CSB1042',
+      student_id: studentId,
+      studentId: studentId,
       branch: 'Computer Science & Engineering',
       course: 'Bachelor of Technology (B.Tech)',
       department_name: 'School of Computing & Data Sciences',
