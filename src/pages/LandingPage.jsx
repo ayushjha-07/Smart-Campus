@@ -47,11 +47,11 @@ export default function LandingPage() {
         {/* 8. Dual Benefits Section: Students & Administrators */}
         <BenefitsSection onOpenSubmitModal={() => setIsSubmitModalOpen(true)} />
 
-        {/* 9. Developer Introduction: Prachi Priya Spotlight */}
-        <DeveloperSection onOpenSubmitModal={() => setIsSubmitModalOpen(true)} />
-
-        {/* 10. Final Conversion Call to Action */}
+        {/* 9. Final Conversion Call to Action */}
         <CTASection onOpenSubmitModal={() => setIsSubmitModalOpen(true)} />
+
+        {/* 10. Developer Introduction: Prachi Priya Spotlight */}
+        <DeveloperSection />
       </main>
 
       {/* Comprehensive Academic Footer */}
