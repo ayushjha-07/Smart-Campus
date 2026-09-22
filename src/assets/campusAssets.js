@@ -6,14 +6,19 @@ import heroBannerMaster from './cgc_hero_banner_master.png';
 import loginBg from './cgc_campus_login_bg.jpg';
 import landingBg from './cgc_landing_campus_hd.jpg';
 import prachiPriyaPortrait from './prachi_priya.jpg';
-import developerMaster from './developer_prachi_priya_master.jpg';
-import developerHeroArt from './developer_hero_art_clean.png';
-import sec1GateStrip from './sec1_gate_strip.png';
-import campusHeroSection2Art from './campus_hero_section2_clean.png';
 
 /**
  * Global Campus Visual Identity System
  * Reusable image configuration across all portal pages
+ * 
+ * 1. gateImage: CGC University Mohali GATE / ENTRANCE PHOTO -> Left Sidebar Full Background
+ * 2. aerialImage: CGC University Mohali AERIAL CAMPUS / BUILDING PHOTO -> Main Hero / Banner
+ * 3. sculptureImage: CGC University Mohali "CGCU" OPEN HAND SCULPTURE PHOTO -> Notifications Right Card
+ * 4. logo: OFFICIAL CGC UNIVERSITY MOHALI LOGO -> All University Branding
+ * 5. heroBannerMaster: Uploaded Master Hero Banner with wide composition and dark-left grading
+ * 6. loginBg: Uploaded CGC University Mohali Aerial Campus Photo -> Login Left Background
+ * 7. landingBg: Uploaded CGC University Mohali Campus Entrance/Buildings Photo -> Landing Page Background
+ * 8. prachiPriyaPortrait: High-Resolution Developer Portrait of Prachi Priya
  */
 export const campusAssets = {
   gateImage,
@@ -24,10 +29,6 @@ export const campusAssets = {
   loginBg,
   landingBg,
   prachiPriyaPortrait,
-  developerMaster,
-  developerHeroArt,
-  sec1GateStrip,
-  campusHeroSection2Art,
 };
 
 export default campusAssets;

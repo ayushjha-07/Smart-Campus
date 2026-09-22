@@ -8,8 +8,9 @@ export default function DeveloperHero() {
     <div className="space-y-3 sm:space-y-4">
       {/* Hello prefix with decorative horizontal line */}
       <div className="flex items-center gap-2.5">
-        <span className="text-sm sm:text-base font-semibold text-[#60717A] dark:text-[#9FB1BC]">
-          Hello!
+        <span className="text-base sm:text-lg font-bold text-[#071A2B] dark:text-[#F5F5F0] flex items-center gap-1.5">
+          <span>Hello!</span>
+          <span className="inline-block animate-wiggle">👋</span>
         </span>
         <span className="w-10 h-0.5 bg-[#008F63] dark:bg-[#00B878] rounded-full" />
       </div>

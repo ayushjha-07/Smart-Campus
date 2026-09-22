@@ -133,6 +133,9 @@ export default function DeveloperPortrait() {
             <span className="pl-2">Builds</span><br />
             <span>Better Solutions</span>
           </div>
+          <div className="font-['Dancing_Script',cursive] text-sm sm:text-base font-bold text-[#008F63] dark:text-[#00B878] leading-tight -rotate-3 mt-1.5">
+            Same Campus Brighter Tomorrow
+          </div>
 
           {/* Hand-Drawn Style Curved Green SVG Arrow pointing to Prachi Priya */}
           <svg
