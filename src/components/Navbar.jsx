@@ -20,11 +20,10 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: 'Home', href: '#hero' },
+    { name: 'Home', href: '#hero', active: true },
     { name: 'How It Works', href: '#how-it-works' },
     { name: 'Features', href: '#features' },
     { name: 'Benefits', href: '#benefits' },
-    { name: 'Developer', href: '#developer' },
     { name: 'About', href: '#about' },
   ];
 
@@ -32,8 +31,8 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 dark:bg-[#07121A]/90 backdrop-blur-md border-b border-[#E2E9E6] dark:border-[#315C3A]/25 py-3 shadow-xs dark:shadow-black/40'
-          : 'bg-white/80 dark:bg-transparent backdrop-blur-sm md:backdrop-blur-none border-b border-[#E2E9E6]/60 dark:border-transparent py-4 sm:py-5'
+          ? 'bg-white/95 dark:bg-[#07121A]/95 backdrop-blur-md border-b border-[#E2E9E6] dark:border-[#315C3A]/25 py-2.5 shadow-xs dark:shadow-black/40'
+          : 'bg-white dark:bg-[#07121A] border-b border-[#E8EFEA] dark:border-white/5 py-3'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,61 +41,71 @@ export default function Navbar() {
           <UniversityLogo variant="navbar" />
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-2 bg-[#EEF4F1]/90 dark:bg-[#0D1B22]/70 px-4 py-1.5 rounded-full border border-[#DDE8E3] dark:border-white/5 backdrop-blur-sm shadow-xs dark:shadow-none">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             {navLinks.map((link) => (
-              link.to ? (
-                <Link
-                  key={link.name}
-                  to={link.to}
-                  className="px-3.5 py-1.5 text-sm font-medium text-[#536673] hover:text-[#008F63] hover:bg-white/90 dark:text-[#F5F5F0]/80 dark:hover:text-[#F5F5F0] dark:hover:bg-[#315C3A]/30 rounded-full transition-all duration-200"
-                >
-                  {link.name}
-                </Link>
-              ) : (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="px-3.5 py-1.5 text-sm font-medium text-[#536673] hover:text-[#008F63] hover:bg-white/90 dark:text-[#F5F5F0]/80 dark:hover:text-[#F5F5F0] dark:hover:bg-[#315C3A]/30 rounded-full transition-all duration-200"
-                >
-                  {link.name}
-                </a>
-              )
+              <a
+                key={link.name}
+                href={link.href}
+                className={`relative py-1 text-sm font-semibold transition-all duration-200 ${
+                  link.active
+                    ? 'text-[#008F63] font-bold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#008F63] after:rounded-full'
+                    : 'text-[#536673] hover:text-[#008F63] dark:text-[#9FB1BC] dark:hover:text-white'
+                }`}
+              >
+                {link.name}
+              </a>
             ))}
           </nav>
 
           {/* Desktop Right Actions */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Light / Dark Theme Toggle */}
-            <button
-              type="button"
+            {/* Segmented Light / Dark Toggle matching reference image */}
+            <div
               onClick={toggleTheme}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && toggleTheme()}
               title={isLight ? "Switch to Dark Mode" : "Switch to Light Mode"}
               aria-label="Toggle theme"
-              className={`p-2 rounded-xl border transition-all cursor-pointer ${
-                isLight
-                  ? 'bg-white hover:bg-slate-100 border-[#DDE8E3] text-[#071A2B] shadow-2xs'
-                  : 'bg-[#0D1B22] hover:bg-[#132630] border-white/10 text-[#D4A84F]'
-              }`}
+              className="flex items-center p-1 bg-[#EEF2EF] dark:bg-[#132630] rounded-full cursor-pointer select-none transition-colors border border-[#DCE4DF] dark:border-white/10"
             >
-              {isLight ? <Sun className="w-4 h-4 text-[#071A2B]" /> : <Moon className="w-4 h-4 text-[#D4A84F]" />}
-            </button>
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all duration-200 ${
+                  isLight
+                    ? 'bg-white text-[#008F63] shadow-xs'
+                    : 'text-[#60717A] dark:text-[#8E9FA8]'
+                }`}
+              >
+                <Sun className={`w-3.5 h-3.5 ${isLight ? 'text-[#E59819]' : 'text-current'}`} />
+                <span>Light</span>
+              </div>
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all duration-200 ${
+                  !isLight
+                    ? 'bg-[#07121A] text-white shadow-xs'
+                    : 'text-[#60717A] dark:text-[#8E9FA8]'
+                }`}
+              >
+                <span>Dark</span>
+                <Moon className={`w-3.5 h-3.5 ${!isLight ? 'text-[#00B878]' : 'text-current'}`} />
+              </div>
+            </div>
 
+            {/* Login Outline Button */}
             <Link
               to="/login"
-              className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
-                isLight
-                  ? 'bg-transparent text-[#183047] hover:text-[#008F63] hover:bg-[#EEF4F1]'
-                  : 'text-[#F5F5F0]/85 hover:text-[#F5F5F0] hover:bg-[#0D1B22]'
-              }`}
+              className="px-4 py-1.5 text-sm font-bold text-[#008F63] hover:text-[#007A54] border border-[#008F63]/35 hover:border-[#008F63] rounded-lg transition-all duration-200 hover:bg-[#008F63]/5"
             >
               Login
             </Link>
+
+            {/* Get Started Solid Button */}
             <Link
               to="/register"
-              className="relative group overflow-hidden px-5 py-2 text-sm font-semibold text-white rounded-lg bg-[#008F63] hover:bg-[#007A54] shadow-md shadow-emerald-950/20 transition-all duration-300 flex items-center gap-1.5"
+              className="px-4 py-1.5 text-sm font-bold text-white bg-[#008F63] hover:bg-[#007A54] rounded-lg shadow-xs transition-all duration-200 flex items-center gap-1.5 hover:shadow-md"
             >
               <span>Get Started</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 

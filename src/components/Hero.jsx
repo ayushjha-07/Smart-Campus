@@ -1,139 +1,138 @@
 import React from 'react';
-import { ArrowRight, PlusCircle, Sprout, Building2, Zap, Users } from 'lucide-react';
+import { ArrowRight, Play, Users, Building2, ShieldCheck, Leaf } from 'lucide-react';
 import { campusAssets } from '../assets/campusAssets';
 
 /**
- * Hero — Cinematic Landing Page Hero Section
- * 
- * Design specifications:
- * - Uses exact high-resolution CGC University Mohali aerial campus image (cgc_landing_campus_hd.jpg)
- * - Full-width, ~650–750px height on desktop
- * - Entrance and campus buildings clearly visible
- * - Directional dark navy/black gradient ONLY behind left-side text (rgba(3, 15, 20, 0.75))
- * - Right side remains bright, natural, and unobstructed showing the full campus view
- * - Clean feature chips: Clean Campus, Better Facilities, Quick Resolutions, Stronger Community
+ * Hero — Section 2 of the Smart Campus Landing Page
+ * Faithfully matches Section 2 in the reference image (scratch_sec2.png):
+ * - Left: "A SMARTER CAMPUS TOGETHER" pill badge,
+ *         "Your Voice for a Better Campus" headline,
+ *         Description paragraph,
+ *         "Submit a Complaint →" & "▶ Watch Video" action buttons,
+ *         and 3 platform stats: 10K+ Students, 50+ Departments, 100% Action Focused.
+ * - Right: The authentic CGC University Mohali campus photograph under blue sky,
+ *          lawns, trees, and "Clean Campus Bright Futures" calligraphy.
  */
 export default function Hero({ onOpenSubmitModal }) {
   return (
-    <section 
-      id="hero" 
-      className="relative w-full min-h-[660px] lg:h-[720px] xl:h-[750px] flex items-center overflow-hidden select-none"
+    <section
+      id="your-voice"
+      className="relative w-full bg-[#FAFBF9] dark:bg-[#07121A] pt-12 sm:pt-16 pb-12 sm:pb-16 overflow-hidden select-none transition-colors duration-300"
     >
-      {/* 1. Exact Uploaded CGC University Mohali Aerial Campus Photograph */}
-      <img
-        src={campusAssets.landingBg}
-        alt="CGC University Mohali Entrance & Campus Buildings"
-        className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none filter brightness-[0.98] contrast-[1.02] transition-transform duration-1000 ease-out"
-        loading="eager"
-      />
+      {/* Anchor alias for #hero links */}
+      <div id="hero" className="absolute -top-16 left-0" />
 
-      {/* 2. Directional Gradient Overlay ONLY on the Left / Center-Left Side */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(90deg, rgba(3, 15, 20, 0.88) 0%, rgba(3, 15, 20, 0.78) 32%, rgba(3, 15, 20, 0.40) 55%, rgba(3, 15, 20, 0.10) 75%, transparent 88%)'
-        }}
-      />
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(180deg, rgba(3, 15, 20, 0.65) 0%, transparent 28%, transparent 70%, rgba(3, 15, 20, 0.75) 100%)'
-        }}
-      />
-
-      {/* 3. Foreground Grid Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-20 pb-12 sm:pt-24 sm:pb-16 flex flex-col justify-between h-full">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
           
-          {/* Left Column: Smart Campus Branding & Hero Content */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-5 max-w-2xl">
+          {/* Left Column: Heading, Slogan, CTA & Stats */}
+          <div className="lg:col-span-6 flex flex-col items-start space-y-5">
             
-            {/* Institutional Pill Badge */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#051118]/80 border border-white/20 backdrop-blur-md shadow-md">
-              <span className="w-2 h-2 rounded-full bg-[#00B878] animate-pulse" />
-              <span className="text-xs font-bold uppercase tracking-wider text-[#D4A84F]">
-                CGC University Mohali
-              </span>
-              <span className="text-white/40">•</span>
-              <span className="text-xs font-medium text-white/90">
-                Digital Governance
-              </span>
+            {/* Pill Badge: A SMARTER CAMPUS TOGETHER */}
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#E8F5EE] dark:bg-[#008F63]/20 border border-[#008F63]/25 text-[#008F63] dark:text-[#00B878] text-xs font-bold tracking-wider uppercase shadow-2xs">
+              <Leaf className="w-3.5 h-3.5" />
+              <span>A SMARTER CAMPUS TOGETHER</span>
             </div>
 
-            {/* Main Heading */}
-            <div className="space-y-1">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1] drop-shadow-md">
-                CGC Smart <span className="text-[#00B878]">Campus</span>
-              </h1>
-              <p className="text-2xl sm:text-3xl font-extrabold text-[#D4A84F] tracking-tight drop-shadow-xs">
-                Complaint & Analytics
-              </p>
+            {/* Main Headline */}
+            <div className="space-y-0.5">
+              <h2 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black text-[#0B253A] dark:text-[#F5F5F0] leading-[1.08] tracking-tight">
+                Your Voice for a
+              </h2>
+              <h3 className="text-3xl sm:text-4xl lg:text-[46px] xl:text-[50px] font-black text-[#008F63] leading-[1.08] tracking-tight mt-1">
+                Better Campus
+              </h3>
             </div>
 
-            {/* Slogan */}
-            <div className="border-l-3 border-[#00B878] pl-4 py-0.5 space-y-1">
-              <p className="text-xl sm:text-2xl font-black text-white italic tracking-wide">
-                “Report. Track. Resolve. Improve.”
-              </p>
-              <p className="text-sm sm:text-base text-slate-200 font-medium leading-relaxed max-w-xl">
-                Smart digital complaint management for a better campus.
-              </p>
-            </div>
+            {/* Description Text */}
+            <p className="text-sm sm:text-base text-[#536673] dark:text-[#9FB1BC] leading-relaxed max-w-lg font-normal">
+              A digital platform to submit, track and resolve campus complaints — for a cleaner, safer and better CGC University Mohali.
+            </p>
 
             {/* Action Buttons */}
-            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto">
-              {/* Primary + Submit a Complaint */}
+            <div className="pt-1 flex flex-wrap items-center gap-3.5 w-full sm:w-auto">
               <button
                 type="button"
                 onClick={onOpenSubmitModal}
-                className="px-7 py-3.5 rounded-xl font-bold text-sm sm:text-base text-white bg-[#00B878] hover:bg-[#009e66] hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-emerald-950/30 hover:shadow-xl hover:shadow-emerald-950/40 transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
+                className="px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base text-white bg-[#008F63] hover:bg-[#007A54] shadow-md shadow-emerald-950/20 active:scale-[0.99] transition-all flex items-center gap-2 cursor-pointer"
               >
-                <PlusCircle className="w-5 h-5 stroke-[2.5]" />
-                <span>+ Submit a Complaint</span>
+                <span>Submit a Complaint</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
 
-              {/* Secondary Explore How It Works */}
               <a
                 href="#how-it-works"
-                className="px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base text-white bg-[#051118]/75 hover:bg-[#051118]/90 border border-white/20 hover:border-white/35 backdrop-blur-md hover:-translate-y-0.5 active:translate-y-0 shadow-md transition-all duration-200 flex items-center justify-center gap-2"
+                className="px-6 py-3.5 rounded-xl font-bold text-sm sm:text-base text-[#008F63] dark:text-[#00B878] bg-white dark:bg-[#0D1F2D] border border-[#008F63]/35 hover:border-[#008F63] transition-all flex items-center gap-2 shadow-2xs hover:bg-[#008F63]/5"
               >
-                <span>Explore How It Works</span>
-                <ArrowRight className="w-4 h-4 opacity-80" />
+                <Play className="w-4 h-4 fill-[#008F63] text-[#008F63]" />
+                <span>Watch Video</span>
               </a>
             </div>
 
-            {/* Subtle Hero Feature Chips in ONE single row */}
-            <div className="pt-4 flex flex-wrap sm:flex-nowrap items-center gap-2 text-xs">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#051118]/70 backdrop-blur-md border border-white/15 text-white font-medium whitespace-nowrap shadow-xs">
-                <Sprout className="w-3.5 h-3.5 text-[#00B878]" />
-                <span>Clean Campus</span>
-              </span>
+            {/* 3 Platform Stats Row matching reference */}
+            <div className="pt-5 flex flex-wrap sm:flex-nowrap items-center gap-5 sm:gap-7 border-t border-[#E8EFEA] dark:border-white/10 w-full">
+              {/* 10K+ Students */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F5EE] dark:bg-[#008F63]/20 flex items-center justify-center text-[#008F63] shrink-0">
+                  <Users className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-[#0B253A] dark:text-[#F5F5F0] leading-none">
+                    10K+
+                  </div>
+                  <div className="text-xs text-[#536673] dark:text-[#9FB1BC] font-semibold mt-1">
+                    Students
+                  </div>
+                </div>
+              </div>
 
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#051118]/70 backdrop-blur-md border border-white/15 text-white font-medium whitespace-nowrap shadow-xs">
-                <Building2 className="w-3.5 h-3.5 text-[#00B878]" />
-                <span>Better Facilities</span>
-              </span>
+              {/* 50+ Departments */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F5EE] dark:bg-[#008F63]/20 flex items-center justify-center text-[#008F63] shrink-0">
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-[#0B253A] dark:text-[#F5F5F0] leading-none">
+                    50+
+                  </div>
+                  <div className="text-xs text-[#536673] dark:text-[#9FB1BC] font-semibold mt-1">
+                    Departments
+                  </div>
+                </div>
+              </div>
 
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#051118]/70 backdrop-blur-md border border-white/15 text-white font-medium whitespace-nowrap shadow-xs">
-                <Zap className="w-3.5 h-3.5 text-[#FBBF24]" />
-                <span>Quick Resolutions</span>
-              </span>
-
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#051118]/70 backdrop-blur-md border border-white/15 text-white font-medium whitespace-nowrap shadow-xs">
-                <Users className="w-3.5 h-3.5 text-[#00B878]" />
-                <span>Stronger Community</span>
-              </span>
+              {/* 100% Action Focused */}
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#E8F5EE] dark:bg-[#008F63]/20 flex items-center justify-center text-[#008F63] shrink-0">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-[#0B253A] dark:text-[#F5F5F0] leading-none">
+                    100%
+                  </div>
+                  <div className="text-xs text-[#536673] dark:text-[#9FB1BC] font-semibold mt-1">
+                    Action Focused
+                  </div>
+                </div>
+              </div>
             </div>
 
           </div>
 
+          {/* Right Column: Authentic CGC University Campus Photo with Calligraphy */}
+          <div className="lg:col-span-6 flex items-center justify-center lg:justify-end">
+            <div className="relative w-full max-w-[540px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl shadow-slate-300/40 dark:shadow-black/70 border border-[#E2E9E6] dark:border-white/10 bg-white dark:bg-[#0A1822]">
+              <img
+                src={campusAssets.campusHeroSection2Art}
+                alt="CGC University Mohali Campus — Clean Campus Bright Futures"
+                className="w-full h-auto object-contain block select-none pointer-events-none"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
         </div>
-
       </div>
-
-      {/* Subtle bottom transition border */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#00B878]/30 to-transparent pointer-events-none" />
     </section>
   );
 }

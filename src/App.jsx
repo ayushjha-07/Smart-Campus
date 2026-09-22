@@ -9,7 +9,6 @@ import GlobalToast from './components/common/GlobalToast';
 import SmartCampusChatbot from './components/chatbot/SmartCampusChatbot';
 
 import LandingPage from './pages/LandingPage';
-import DeveloperIntroPage from './pages/DeveloperIntroPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import StudentDashboard from './pages/StudentDashboard';
@@ -43,7 +42,6 @@ export default function App() {
 
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
-          <Route path="/developer" element={<DeveloperIntroPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 

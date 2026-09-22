@@ -25,12 +25,12 @@ export default function UniversityLogo({
   // Variant-specific image dimensions and styles matching official sizing specifications
   const config = {
     navbar: {
-      imgClasses: 'h-10 sm:h-11 w-auto object-contain shrink-0',
-      containerClasses: 'flex items-center gap-3',
+      imgClasses: 'h-9 sm:h-10 w-auto object-contain shrink-0',
+      containerClasses: 'flex items-center gap-2.5',
       badgeClasses: 'flex items-center justify-center shrink-0',
-      titleClasses: 'text-base sm:text-lg font-extrabold tracking-tight text-[#F5F5F0] leading-none',
-      institutionClasses: 'text-[11px] sm:text-xs font-semibold text-[#D4A84F] tracking-wide mt-1',
-      taglineClasses: 'text-[9px] uppercase tracking-widest text-[#71844A] font-bold hidden md:block mt-0.5',
+      titleClasses: 'text-base sm:text-lg font-black tracking-tight text-[#071A2B] dark:text-[#F5F5F0] leading-none',
+      institutionClasses: 'text-[11px] sm:text-xs font-bold text-[#183047] dark:text-[#D4A84F] tracking-wide mt-0.5',
+      taglineClasses: 'text-[8.5px] uppercase tracking-widest text-[#536673] dark:text-[#71844A] font-extrabold hidden sm:block mt-0.5',
     },
     sidebar: {
       imgClasses: 'h-16 sm:h-20 w-auto object-contain mx-auto shrink-0',
@@ -109,16 +109,16 @@ export default function UniversityLogo({
             </>
           ) : (
             <>
-              <div className="flex items-center gap-1.5 leading-none">
+              <div className="flex items-center gap-1 leading-none">
                 <span className={current.titleClasses}>
-                  Smart <span className="text-[#D4A84F]">Campus</span>
+                  Smart <span className="text-[#008F63]">Campus</span>
                 </span>
               </div>
               <span className={current.institutionClasses}>
-                CGC University
+                CGC University, Mohali
               </span>
               <span className={current.taglineClasses}>
-                {subtitle || "Report. Track. Resolve. Improve."}
+                {subtitle || "REPORT. TRACK. RESOLVE. IMPROVE."}
               </span>
             </>
           )}
