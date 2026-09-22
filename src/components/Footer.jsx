@@ -89,14 +89,26 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Copyright & Back to Top */}
+        {/* Bottom Copyright & Back to Top matching reference */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6B7C83] dark:text-[#9FB1BC]/70 font-medium">
           <div>
-            &copy; {new Date().getFullYear()} Smart Campus Complaint & Analytics System. All rights reserved.
+            &copy; 2026 Smart Campus. All rights reserved.
+          </div>
+
+          <div className="hidden md:flex items-center gap-3 text-[11px] tracking-wider text-[#71844A] dark:text-[#D4A84F] uppercase font-bold">
+            <span>PEOPLE</span>
+            <span>|</span>
+            <span>IDEAS</span>
+            <span>|</span>
+            <span>TECHNOLOGY</span>
+            <span>|</span>
+            <span>A BRIGHTER TOMORROW</span>
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-[#008F63] dark:text-[#71844A] font-semibold">Report. Track. Resolve. Improve.</span>
+            <span className="text-[#071A2B] dark:text-[#F5F5F0] font-medium flex items-center gap-1.5">
+              Built with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> by Prachi Priya
+            </span>
             <button
               onClick={scrollToTop}
               aria-label="Back to top"

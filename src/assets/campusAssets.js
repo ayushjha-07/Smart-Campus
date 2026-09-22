@@ -7,6 +7,7 @@ import loginBg from './cgc_campus_login_bg.jpg';
 import landingBg from './cgc_landing_campus_hd.jpg';
 import prachiPriyaPortrait from './prachi_priya.jpg';
 import developerDaylightPortrait from './developer_daylight_portrait_perfect.png';
+import developerShowcaseArt from './developer_showcase_art_perfect.png';
 
 /**
  * Global Campus Visual Identity System
@@ -21,6 +22,7 @@ import developerDaylightPortrait from './developer_daylight_portrait_perfect.png
  * 7. landingBg: Uploaded CGC University Mohali Campus Entrance/Buildings Photo -> Landing Page Background
  * 8. prachiPriyaPortrait: High-Resolution Developer Portrait of Prachi Priya
  * 9. developerDaylightPortrait: Daylight Campus Portrait Composition with Floating Cards
+ * 10. developerShowcaseArt: Pristine Developer Showcase Master Artwork
  */
 export const campusAssets = {
   gateImage,
@@ -32,6 +34,7 @@ export const campusAssets = {
   landingBg,
   prachiPriyaPortrait,
   developerDaylightPortrait,
+  developerShowcaseArt,
 };
 
 export default campusAssets;
