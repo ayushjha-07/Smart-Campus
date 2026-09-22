@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useApp } from '../../context/useApp';
+import { useAuth } from '../../context/AuthContext';
 import ChatbotButton from './ChatbotButton';
 import ChatbotPanel from './ChatbotPanel';
 import { generateChatbotResponse } from './chatbotKnowledge';
@@ -14,6 +15,7 @@ export default function SmartCampusChatbot() {
   const location = useLocation();
   const navigate = useNavigate();
   const { complaints = [], notifications = [], unreadNotificationCount = 0 } = useApp();
+  const { currentUser } = useAuth();
 
   // Show strictly on student portal routes
   const isStudentRoute = location.pathname.startsWith('/student');
@@ -21,8 +23,13 @@ export default function SmartCampusChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
-  // Student greeting name
-  const studentName = 'Ayush';
+  // Dynamically resolve student greeting name from auth state / localStorage
+  const studentName = 
+    currentUser?.name || 
+    currentUser?.first_name || 
+    currentUser?.firstName || 
+    currentUser?.full_name?.split(' ')[0] || 
+    'Student';
 
   // Initial welcome message
   const initialMessages = useMemo(() => [

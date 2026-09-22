@@ -47,14 +47,47 @@ function buildMockAuthData(email, roleHint) {
     };
   }
 
-  // 3. Student (Default)
+  // 3. Student (Default) — Dynamically derived from login identifier
+  let studentName = 'Student';
+  let studentFullName = 'Student';
+  let initials = 'ST';
+
+  if (cleanEmail) {
+    if (cleanEmail.includes('prachi')) {
+      studentName = 'Prachi';
+      studentFullName = 'Prachi Priya';
+      initials = 'PP';
+    } else if (cleanEmail.includes('rahul')) {
+      studentName = 'Rahul';
+      studentFullName = 'Rahul Sharma';
+      initials = 'RS';
+    } else if (cleanEmail.includes('ayush')) {
+      studentName = 'Ayush';
+      studentFullName = 'Ayush Kumar Jha';
+      initials = 'AJ';
+    } else {
+      // General case: derive name from email prefix (e.g. "rohit.verma@..." -> "Rohit")
+      const prefix = cleanEmail.split('@')[0];
+      const parts = prefix.split(/[._-]/).filter(Boolean);
+      if (parts.length > 0 && isNaN(parts[0])) {
+        studentName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
+        studentFullName = parts.map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
+        initials = parts.map(p => p.charAt(0).toUpperCase()).slice(0, 2).join('');
+      }
+    }
+  }
+
   return {
     access_token: 'mock-jwt-student-' + Date.now(),
     token_type: 'bearer',
     user: {
-      id: 'USR-STU-01',
-      full_name: 'Ayush Kumar Jha',
-      email: cleanEmail || 'student@smartcampus.edu',
+      id: 'USR-STU-' + (cleanEmail.replace(/[^a-z0-9]/g, '').slice(0, 8) || '01'),
+      name: studentName,
+      first_name: studentName,
+      firstName: studentName,
+      full_name: studentFullName,
+      initials: initials,
+      email: cleanEmail.includes('@') ? cleanEmail : `${cleanEmail || 'student'}@smartcampus.edu`,
       role: 'STUDENT',
       student_id: '2024CSB1042',
       branch: 'Computer Science & Engineering',
@@ -115,12 +148,17 @@ export const authApi = {
    * Registers a new student or department staff account.
    */
   register: async (userData) => {
+    const rawFullName = userData.full_name || userData.name || 'Student';
+    const firstName = rawFullName.trim().split(' ')[0] || 'Student';
     if (isMockMode) {
       return {
         message: 'Registration successful',
         user: {
           id: 'USR-' + Date.now(),
-          full_name: userData.full_name,
+          name: firstName,
+          first_name: firstName,
+          firstName: firstName,
+          full_name: rawFullName,
           email: userData.email,
           role: userData.role || 'STUDENT',
           status: 'ACTIVE',
@@ -139,7 +177,10 @@ export const authApi = {
           message: 'Registration successful (offline simulation)',
           user: {
             id: 'USR-' + Date.now(),
-            full_name: userData.full_name,
+            name: firstName,
+            first_name: firstName,
+            firstName: firstName,
+            full_name: rawFullName,
             email: userData.email,
             role: userData.role || 'STUDENT',
             status: 'ACTIVE',

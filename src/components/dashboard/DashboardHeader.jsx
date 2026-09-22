@@ -15,16 +15,40 @@ import {
 import { studentProfile } from '../../data/mockStudentData';
 import { useApp } from '../../context/useApp';
 import { useNotifications } from '../../context/NotificationContext';
+import { useAuth } from '../../context/AuthContext';
 import { formatTimeAgo } from '../../utils/date';
 
 import campusAssets from '../../assets/campusAssets';
 
 export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchChange, forceLight = false }) {
   const { theme, toggleTheme, openSearch } = useApp();
+  const { currentUser } = useAuth();
   const isLight = forceLight ? true : theme === 'light';
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  // Dynamic user data resolution
+  const headerDisplayName = 
+    currentUser?.name || 
+    currentUser?.first_name || 
+    currentUser?.firstName || 
+    currentUser?.full_name?.split(' ')[0] || 
+    'Student';
+
+  const headerFullName = 
+    currentUser?.full_name || 
+    currentUser?.name || 
+    'Student';
+
+  const headerInitials = 
+    currentUser?.initials || 
+    (headerFullName && headerFullName !== 'Student' 
+      ? headerFullName.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase() 
+      : 'ST');
+
+  const headerEmail = currentUser?.email || studentProfile.email;
+  const headerRole = currentUser?.role ? `${currentUser.role.charAt(0) + currentUser.role.slice(1).toLowerCase()} User` : 'Undergraduate Student';
 
   // In reference screenshot, badge shows '3'
   const displayBadge = unreadCount > 0 ? unreadCount : 3;
@@ -66,7 +90,7 @@ export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchC
             CGC <span className={isLight ? 'text-[#078B5B]' : 'text-[#19C784]'}>Smart Campus</span>
           </h1>
           <p className={`text-[11px] sm:text-xs mt-0.5 ${isLight ? 'text-[#607080]' : 'text-[#9AA9A6]'}`}>
-            Welcome back, <span className={isLight ? 'text-[#078B5B] font-bold' : 'text-[#19C784] font-bold'}>Ayush</span>
+            Welcome back, <span className={isLight ? 'text-[#078B5B] font-bold' : 'text-[#19C784] font-bold'}>{headerDisplayName}</span>
           </p>
         </div>
       </div>
@@ -252,15 +276,15 @@ export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchC
           >
             {/* Avatar Circle */}
             <div className="w-7 h-7 rounded-full bg-[#087F5B] dark:bg-[#16B978] text-white font-bold text-xs flex items-center justify-center shadow-2xs">
-              AJ
+              {headerInitials}
             </div>
 
             <div className="hidden sm:block text-left leading-none">
               <span className={`block text-xs font-bold ${isLight ? 'text-[#0B1736]' : 'text-[#F5F7F5]'}`}>
-                Ayush Kumar Jha
+                {headerFullName}
               </span>
               <span className={`block text-[10px] mt-1 font-medium ${isLight ? 'text-[#607080]' : 'text-[#A8B5B1]'}`}>
-                Undergraduate Student
+                {headerRole}
               </span>
             </div>
 
@@ -272,8 +296,8 @@ export default function DashboardHeader({ onToggleMobile, searchQuery, onSearchC
               isLight ? 'bg-white border-[#DDE6E2]' : 'bg-[#0B1B22] border-[#1C3A42]'
             }`}>
               <div className={`p-3 border-b mb-1 ${isLight ? 'border-[#DDE6E2]' : 'border-[#1C3A42]'}`}>
-                <span className={`block text-xs font-bold ${isLight ? 'text-[#0B1736]' : 'text-[#F5F7F5]'}`}>Ayush Kumar Jha</span>
-                <span className={`block text-[10px] truncate ${isLight ? 'text-[#607080]' : 'text-[#A8B5B1]'}`}>{studentProfile.email}</span>
+                <span className={`block text-xs font-bold ${isLight ? 'text-[#0B1736]' : 'text-[#F5F7F5]'}`}>{headerFullName}</span>
+                <span className={`block text-[10px] truncate ${isLight ? 'text-[#607080]' : 'text-[#A8B5B1]'}`}>{headerEmail}</span>
                 <span className={`inline-block mt-1.5 text-[9px] font-mono font-semibold px-2 py-0.5 rounded border ${
                   isLight ? 'bg-emerald-50 text-[#087F5B] border-emerald-200' : 'bg-[#10242B] text-[#16B978] border-[#1C3A42]'
                 }`}>

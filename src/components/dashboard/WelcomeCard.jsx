@@ -6,8 +6,42 @@ import {
 } from 'lucide-react';
 import campusAssets from '../../assets/campusAssets';
 import HeroCalligraphy from '../common/HeroCalligraphy';
+import { useAuth } from '../../context/AuthContext';
+import { USER_STORAGE_KEY } from '../../services/apiClient';
 
 export default function WelcomeCard() {
+  const { currentUser } = useAuth();
+
+  // Dynamically resolve greeting name from authenticated user / localStorage
+  const getGreetingName = () => {
+    // 1. Read from currentUser state in AuthContext
+    if (currentUser) {
+      const candidate = currentUser.name || currentUser.first_name || currentUser.firstName || currentUser.full_name;
+      if (candidate && typeof candidate === 'string' && candidate.trim()) {
+        return candidate.trim().split(' ')[0];
+      }
+    }
+
+    // 2. Direct localStorage fallback to guarantee instant persistence across page refreshes
+    try {
+      const saved = localStorage.getItem(USER_STORAGE_KEY) || localStorage.getItem('smart_campus_user');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        const candidate = parsed?.name || parsed?.first_name || parsed?.firstName || parsed?.full_name;
+        if (candidate && typeof candidate === 'string' && candidate.trim()) {
+          return candidate.trim().split(' ')[0];
+        }
+      }
+    } catch {
+      // Ignore JSON parse error
+    }
+
+    // 3. Safe fallback if unauthenticated / no user available
+    return 'Student';
+  };
+
+  const userName = getGreetingName();
+
   return (
     <div className="relative rounded-3xl overflow-hidden border border-[#DDE7E2] dark:border-white/10 p-6 sm:p-7 lg:p-8 shadow-xl min-h-[230px] sm:min-h-[260px] flex items-center transition-all">
       
@@ -41,10 +75,10 @@ export default function WelcomeCard() {
           </div>
         </div>
 
-        {/* Main Heading: White with Ayush! in Bright Green #00B878 */}
+        {/* Main Heading: Dynamic Authenticated User Greeting */}
         <div className="space-y-1">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight drop-shadow-md">
-            Good to see you, <span className="text-[#00B878]">Ayush!</span>
+            Good to see you, <span className="text-[#00B878]">{userName}!</span>
           </h1>
 
           <p className="text-xs sm:text-sm text-slate-100 max-w-lg leading-relaxed font-medium drop-shadow-xs">

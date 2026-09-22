@@ -77,7 +77,7 @@ export default function LoginForm() {
     try {
       const data = await login(identifier, password, role);
       setSubmitState('success');
-      showToast(`Welcome back, ${data?.user?.full_name || 'Ayush'}!`, 'success');
+      showToast(`Welcome back, ${data?.user?.name || data?.user?.first_name || data?.user?.full_name?.split(' ')[0] || 'Student'}!`, 'success');
 
       // Role-based routing
       setTimeout(() => {
