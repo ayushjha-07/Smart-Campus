@@ -1,313 +1,352 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   X,
-  FileText,
-  User,
   MapPin,
   Clock,
   Sparkles,
-  RefreshCw,
-  MessageSquarePlus,
-  StickyNote,
+  Paperclip,
   CheckCircle2,
-  Lock
+  RefreshCw,
+  User,
+  ShieldCheck,
+  Tag,
+  Building2,
+  AlertTriangle,
+  Flame,
+  Download
 } from 'lucide-react';
-
-const priorityBadges = {
-  LOW: { bg: 'rgba(113, 132, 74, 0.15)', text: '#A7C481', border: '#71844A' },
-  MEDIUM: { bg: 'rgba(212, 168, 79, 0.15)', text: '#E5BF6E', border: '#D4A84F' },
-  HIGH: { bg: 'rgba(249, 115, 22, 0.15)', text: '#FDBA74', border: '#F97316' },
-  CRITICAL: { bg: 'rgba(239, 68, 68, 0.18)', text: '#FCA5A5', border: '#EF4444' },
-};
-
-const statusBadges = {
-  'Pending': { bg: 'rgba(245, 158, 11, 0.15)', text: '#FBBF24', border: '#F59E0B' },
-  'Under Review': { bg: 'rgba(139, 92, 246, 0.15)', text: '#A78BFA', border: '#8B5CF6' },
-  'Assigned': { bg: 'rgba(6, 182, 212, 0.15)', text: '#22D3EE', border: '#06B6D4' },
-  'In Progress': { bg: 'rgba(59, 130, 246, 0.15)', text: '#60A5FA', border: '#3B82F6' },
-  'Resolved': { bg: 'rgba(49, 92, 58, 0.25)', text: '#A7C481', border: '#315C3A' },
-};
+import ProgressUpdate from './ProgressUpdate';
+import StudentNotification from './StudentNotification';
 
 export default function ComplaintDetailsDrawer({
   isOpen,
   onClose,
   complaint,
-  onOpenUpdateStatus,
-  onOpenProgressUpdate,
-  onOpenInternalNote,
+  onUpdateStatus,
+  onPostProgressUpdate,
+  onSendStudentNotification,
   onOpenResolve
 }) {
+  const [selectedStatus, setSelectedStatus] = useState(complaint?.status || 'In Progress');
+
+  React.useEffect(() => {
+    if (complaint) {
+      setSelectedStatus(complaint.status);
+    }
+  }, [complaint]);
+
   if (!isOpen || !complaint) return null;
 
-  const prio = priorityBadges[complaint.priority] || priorityBadges.MEDIUM;
-  const stat = statusBadges[complaint.status] || statusBadges.Pending;
+  const handleStatusSubmit = (e) => {
+    e.preventDefault();
+    if (selectedStatus === 'Resolved') {
+      onOpenResolve(complaint);
+    } else {
+      onUpdateStatus(complaint.id, selectedStatus);
+    }
+  };
+
+  const getPriorityBadge = (priority) => {
+    switch (priority) {
+      case 'Critical':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20">Critical</span>;
+      case 'High':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20">High</span>;
+      case 'Medium':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#D4A84F]/10 text-[#B88728] dark:text-[#D4A84F] border border-[#D4A84F]/25">Medium</span>;
+      default:
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#71844A]/10 text-[#71844A] dark:text-[#A7C481] border border-[#71844A]/25">Low</span>;
+    }
+  };
+
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'Resolved':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#315C3A]/20 text-[#315C3A] dark:text-[#71844A] border border-[#315C3A]/30">Resolved</span>;
+      case 'In Progress':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#008F63]/10 text-[#008F63] dark:text-[#00A875] border border-[#008F63]/25">In Progress</span>;
+      case 'Under Review':
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">Under Review</span>;
+      default:
+        return <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">Pending</span>;
+    }
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[92vh] bg-[#0D1B22] border border-[#1A2E3B] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-        {/* Top Accent Strip */}
-        <div className="h-1 bg-gradient-to-r from-[#315C3A] via-[#D4A84F] to-[#71844A]" />
+    <div className="fixed inset-0 z-50 overflow-hidden animate-in fade-in duration-200">
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+        onClick={onClose}
+        aria-hidden="true"
+      />
 
-        {/* Modal Header */}
-        <div className="p-4 sm:p-5 border-b border-[#1A2E3B] flex items-center justify-between bg-[#07121A]/60">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-[#315C3A]/20 border border-[#315C3A]/50 text-[#D4A84F]">
-              <FileText className="w-5 h-5" />
-            </div>
-            <div>
+      <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
+        <div className="w-screen max-w-2xl bg-white dark:bg-[#0C1518] border-l border-[#DDE8E3] dark:border-[#243338] shadow-2xl flex flex-col justify-between">
+          {/* Drawer Top Header */}
+          <div className="p-4 sm:p-6 border-b border-[#DDE8E3] dark:border-[#243338] flex items-center justify-between bg-[#F5F5F0]/50 dark:bg-[#07121A]/80">
+            <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <span className="font-mono text-sm font-extrabold text-[#D4A84F]">
+                <span className="font-mono text-base sm:text-lg font-black text-[#008F63] dark:text-[#D4A84F]">
                   {complaint.id}
                 </span>
-                <span
-                  className="text-[10px] font-bold px-2 py-0.5 rounded tracking-wider"
-                  style={{
-                    backgroundColor: prio.bg,
-                    color: prio.text,
-                    border: `1px solid ${prio.border}40`,
-                  }}
-                >
-                  {complaint.priority}
-                </span>
-                <span
-                  className="text-[10px] font-semibold px-2 py-0.5 rounded"
-                  style={{
-                    backgroundColor: stat.bg,
-                    color: stat.text,
-                    border: `1px solid ${stat.border}40`,
-                  }}
-                >
-                  {complaint.status}
-                </span>
+                {getPriorityBadge(complaint.priority)}
+                {getStatusBadge(complaint.status)}
               </div>
-              <p className="text-xs text-[#9FB1BC] mt-0.5">
-                Submitted on {complaint.submittedAt || '20 September 2026, 10:32 AM'}
+              <p className="text-xs text-[#60717A] dark:text-[#9FB1BC] flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5" />
+                <span>Submitted: {complaint.submittedFull || complaint.submitted}</span>
               </p>
             </div>
+
+            <button
+              onClick={onClose}
+              className="p-2 rounded-xl text-[#60717A] dark:text-[#9FB1BC] hover:bg-slate-100 dark:hover:bg-[#13242E] transition-colors"
+              aria-label="Close drawer"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-1.5 text-[#9FB1BC] hover:text-[#F5F5F0] hover:bg-[#13242E] rounded-lg transition-colors"
-            aria-label="Close modal"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+          {/* Drawer Scrollable Content */}
+          <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scrollbar-thin">
+            {/* Title & Metadata Grid */}
+            <div className="space-y-3">
+              <h2 className="text-lg sm:text-xl font-black text-[#071A2B] dark:text-[#F5F5F0] tracking-tight">
+                {complaint.title}
+              </h2>
 
-        {/* Scrollable Body */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-4 text-xs scrollbar-thin">
-          {/* Title & Description */}
-          <div className="p-4 rounded-xl bg-[#07121A] border border-[#1A2E3B] space-y-1.5">
-            <h3 className="text-sm sm:text-base font-bold text-[#F5F5F0]">
-              {complaint.title}
-            </h3>
-            <p className="text-xs text-[#9FB1BC] leading-relaxed">
-              {complaint.description || 'Water supply has been interrupted in Hostel Block B since this morning. Several rooms are currently affected.'}
-            </p>
-          </div>
-
-          {/* Student & Location Details Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="p-3.5 rounded-xl bg-[#07121A]/70 border border-[#1A2E3B] space-y-1">
-              <span className="text-[10px] uppercase font-bold text-[#71844A] flex items-center gap-1">
-                <User className="w-3 h-3" /> Student Information
-              </span>
-              <div className="font-bold text-[#F5F5F0]">{complaint.student}</div>
-              <div className="font-mono text-[11px] text-[#9FB1BC]">
-                {complaint.studentId || 'SC-STU-2026-014'}
-              </div>
-              <div className="text-[11px] text-[#9FB1BC]">
-                Category: <span className="text-[#F5F5F0] font-medium">{complaint.category}</span>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3.5 rounded-xl bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-xs">
+                <div>
+                  <span className="block text-[10px] font-bold uppercase text-[#60717A] dark:text-[#71844A]">Student</span>
+                  <span className="font-bold text-[#071A2B] dark:text-[#F5F5F0] mt-0.5 block truncate">
+                    {complaint.student}
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase text-[#60717A] dark:text-[#71844A]">Student ID</span>
+                  <span className="font-mono font-semibold text-[#008F63] dark:text-[#D4A84F] mt-0.5 block truncate">
+                    {complaint.studentId}
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase text-[#60717A] dark:text-[#71844A]">Category</span>
+                  <span className="font-semibold text-[#071A2B] dark:text-[#F5F5F0] mt-0.5 block truncate">
+                    {complaint.category}
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase text-[#60717A] dark:text-[#71844A]">Location</span>
+                  <span className="font-semibold text-[#071A2B] dark:text-[#F5F5F0] mt-0.5 flex items-center gap-1 truncate">
+                    <MapPin className="w-3 h-3 text-[#71844A] shrink-0" />
+                    <span className="truncate">{complaint.location}</span>
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase text-[#60717A] dark:text-[#71844A]">Department</span>
+                  <span className="font-semibold text-[#071A2B] dark:text-[#F5F5F0] mt-0.5 block truncate">
+                    {complaint.department || 'Hostel Department'}
+                  </span>
+                </div>
+                <div>
+                  <span className="block text-[10px] font-bold uppercase text-[#60717A] dark:text-[#71844A]">SLA Due</span>
+                  <span className="font-bold text-amber-600 dark:text-amber-400 mt-0.5 block truncate">
+                    {complaint.due || 'Standard'}
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-[#07121A]/70 border border-[#1A2E3B] space-y-1">
-              <span className="text-[10px] uppercase font-bold text-[#71844A] flex items-center gap-1">
-                <MapPin className="w-3 h-3" /> Campus Location
-              </span>
-              <div className="font-bold text-[#F5F5F0]">{complaint.location}</div>
-              <div className="text-[11px] text-[#9FB1BC]">
-                Assigned Unit: <span className="text-[#D4A84F] font-semibold">{complaint.department}</span>
-              </div>
-              <div className="text-[11px] text-[#A7C481] flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                <span>Assigned: {complaint.assignedAt || 'Recent'}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* AI Analysis Panel */}
-          <div className="p-3.5 rounded-xl bg-gradient-to-r from-[#315C3A]/15 via-[#0D1B22] to-[#07121A] border border-[#315C3A]/40 space-y-2.5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#D4A84F]" />
-                <span className="font-bold text-[#F5F5F0] text-xs">
-                  AI Complaint Classification
-                </span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#315C3A]/30 text-[#A7C481]">
-                  Demo Triage
-                </span>
-              </div>
-              <span className="font-mono text-[11px] text-[#D4A84F]">
-                Confidence: {complaint.aiConfidence ?? 92}%
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2 rounded-lg bg-[#07121A]/80 border border-[#1A2E3B]">
-                <span className="text-[10px] text-[#9FB1BC] block">Detected Category</span>
-                <span className="font-semibold text-[#F5F5F0]">
-                  {complaint.aiCategory || complaint.category}
-                </span>
-              </div>
-              <div className="p-2 rounded-lg bg-[#07121A]/80 border border-[#1A2E3B]">
-                <span className="text-[10px] text-[#9FB1BC] block">Detected Priority</span>
-                <span className="font-semibold text-[#D4A84F]">
-                  {complaint.aiPriority || complaint.priority}
-                </span>
+            {/* Description */}
+            <div className="space-y-1.5">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#60717A] dark:text-[#71844A]">
+                Description
+              </h4>
+              <div className="p-3.5 rounded-xl bg-white dark:bg-[#07121A]/60 border border-[#DDE8E3] dark:border-[#243338] text-xs leading-relaxed text-[#071A2B] dark:text-[#F5F5F0]">
+                {complaint.description || 'No detailed description provided.'}
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="text-[10px] text-[#9FB1BC]">Keywords:</span>
-              {(complaint.keywords || ['water', 'supply', 'hostel', 'interruption']).map((kw) => (
-                <span
-                  key={kw}
-                  className="px-1.5 py-0.2 rounded bg-[#13242E] text-[10px] text-[#9FB1BC] border border-[#1A2E3B]"
+            {/* Attachments */}
+            {complaint.attachments && complaint.attachments.length > 0 && (
+              <div className="space-y-1.5">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#60717A] dark:text-[#71844A]">
+                  Attachment
+                </h4>
+                <div className="space-y-2">
+                  {complaint.attachments.map((att, i) => (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between p-3 rounded-xl bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-xs"
+                    >
+                      <div className="flex items-center gap-2.5 truncate">
+                        <div className="w-8 h-8 rounded-lg bg-[#008F63]/10 dark:bg-[#00A875]/20 flex items-center justify-center text-[#008F63] dark:text-[#00A875] shrink-0 font-mono text-[10px] font-bold">
+                          IMG
+                        </div>
+                        <div className="truncate">
+                          <span className="font-bold text-[#071A2B] dark:text-[#F5F5F0] block truncate">
+                            {att.name}
+                          </span>
+                          <span className="text-[10px] text-[#60717A] dark:text-[#9FB1BC]">
+                            {att.size} • Attached by student
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => alert(`Downloading attachment: ${att.name}`)}
+                        className="p-1.5 rounded-lg text-[#60717A] dark:text-[#9FB1BC] hover:text-[#008F63] dark:hover:text-[#D4A84F] transition-colors"
+                        title="Download Attachment"
+                      >
+                        <Download className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* AI Analysis Card */}
+            <div className="rounded-xl p-4 bg-gradient-to-br from-[#EAF7F1]/80 via-white to-[#F5F5F0] dark:from-[#0C1A1C] dark:via-[#0E1F21] dark:to-[#07121A] border border-[#008F63]/30 dark:border-[#00A875]/30 space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg bg-[#008F63]/15 dark:bg-[#00A875]/20 flex items-center justify-center text-[#008F63] dark:text-[#00A875]">
+                    <Sparkles className="w-4 h-4" />
+                  </div>
+                  <h4 className="text-xs font-bold text-[#071A2B] dark:text-[#F5F5F0]">
+                    AI Analysis
+                  </h4>
+                </div>
+                <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#D4A84F]/20 text-[#B88728] dark:text-[#D4A84F] border border-[#D4A84F]/30">
+                  Demo AI Analysis
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2.5 rounded-lg bg-white/80 dark:bg-[#07121A]/80 border border-[#DDE8E3] dark:border-[#243338]">
+                  <span className="text-[10px] font-bold text-[#60717A] dark:text-[#71844A] block">AI Priority</span>
+                  <span className="font-extrabold text-orange-600 dark:text-orange-400">
+                    {complaint.aiAnalysis?.priority || complaint.priority}
+                  </span>
+                </div>
+                <div className="p-2.5 rounded-lg bg-white/80 dark:bg-[#07121A]/80 border border-[#DDE8E3] dark:border-[#243338]">
+                  <span className="text-[10px] font-bold text-[#60717A] dark:text-[#71844A] block">Confidence</span>
+                  <span className="font-extrabold text-[#008F63] dark:text-[#00A875]">
+                    {complaint.aiAnalysis?.confidence || 94}%
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-white/80 dark:bg-[#07121A]/80 border border-[#DDE8E3] dark:border-[#243338] text-xs">
+                <span className="text-[10px] font-bold text-[#60717A] dark:text-[#71844A] block mb-0.5">
+                  Suggested Action:
+                </span>
+                <p className="font-medium text-[#071A2B] dark:text-[#F5F5F0]">
+                  {complaint.aiAnalysis?.suggestedAction || 'Review water supply infrastructure and test main inlet valve.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Status Update Quick Form */}
+            <div className="rounded-xl p-4 bg-[#F5F5F0]/60 dark:bg-[#07121A]/80 border border-[#DDE8E3] dark:border-[#243338] space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4 text-blue-500" />
+                  <h4 className="text-xs font-bold text-[#071A2B] dark:text-[#F5F5F0]">
+                    Update Complaint Status
+                  </h4>
+                </div>
+                <span className="text-[10px] text-[#60717A] dark:text-[#9FB1BC]">
+                  Current: <strong>{complaint.status}</strong>
+                </span>
+              </div>
+
+              <form onSubmit={handleStatusSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                <select
+                  value={selectedStatus}
+                  onChange={(e) => setSelectedStatus(e.target.value)}
+                  className="flex-1 px-3 py-2 rounded-xl text-xs bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] focus:outline-none focus:border-[#008F63] cursor-pointer"
                 >
-                  #{kw}
-                </span>
-              ))}
+                  <option value="Under Review">Under Review</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Resolved">Resolved</option>
+                </select>
+
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold inline-flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xs"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Update Status</span>
+                </button>
+              </form>
             </div>
 
-            <p className="text-[10px] text-[#9FB1BC]/70 italic">
-              Demonstration data only. Do not claim that an actual AI model is running.
-            </p>
-          </div>
+            {/* Progress Update Component */}
+            <ProgressUpdate
+              complaintId={complaint.id}
+              onPostUpdate={(msg) => onPostProgressUpdate(complaint.id, msg)}
+            />
 
-          {/* Latest Update Banner */}
-          {complaint.latestUpdate && (
-            <div className="p-3 rounded-xl bg-[#07121A] border-l-4 border-[#D4A84F] border-t border-r border-b border-[#1A2E3B]">
-              <span className="text-[10px] uppercase font-bold text-[#D4A84F] flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" /> Latest Department Update
-              </span>
-              <p className="text-xs text-[#F5F5F0] mt-1">{complaint.latestUpdate}</p>
-            </div>
-          )}
+            {/* Notify Student Component */}
+            <StudentNotification
+              studentName={complaint.student}
+              onSendNotification={(msg) => onSendStudentNotification(complaint.id, msg)}
+            />
 
-          {/* Timeline & Notes Side-by-Side */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {/* Timeline */}
-            <div className="p-3.5 rounded-xl bg-[#07121A]/80 border border-[#1A2E3B]">
-              <h4 className="font-bold text-[#F5F5F0] text-xs flex items-center gap-1.5 mb-2.5">
-                <Clock className="w-3.5 h-3.5 text-[#9FB1BC]" />
-                Complaint Timeline
+            {/* Complaint Timeline */}
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#60717A] dark:text-[#71844A]">
+                Complaint Audit Timeline
               </h4>
 
-              <div className="space-y-2.5 relative before:absolute before:top-2 before:bottom-2 before:left-[11px] before:w-px before:bg-[#1A2E3B] pl-1">
-                {(complaint.timeline || [
-                  { time: '10:32 AM', title: 'Submitted', desc: 'Complaint registered.' },
-                  { time: '10:40 AM', title: 'Under Review', desc: 'Auto-triaged by system.' },
-                  { time: '11:05 AM', title: 'Assigned to Maintenance', desc: 'Shift Lead alerted.' },
-                  { time: '12:45 PM', title: 'In Progress', desc: 'Technician on-site.' },
-                  { time: 'Pending', title: 'Resolution', desc: 'Work underway.' }
-                ]).map((step, idx) => (
-                  <div key={idx} className="relative flex items-start gap-2.5 text-xs">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#315C3A] ring-2 ring-[#0D1B22] mt-1 shrink-0" />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-[#D4A84F] text-[11px] font-bold">
-                          {step.time}
+              <div className="relative pl-6 space-y-4 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#DDE8E3] dark:before:bg-[#243338]">
+                {(complaint.timeline || []).map((tl, index) => (
+                  <div key={index} className="relative group">
+                    <div className="absolute -left-6 top-1 w-5 h-5 rounded-full bg-white dark:bg-[#0C1518] border-2 border-[#008F63] dark:border-[#D4A84F] flex items-center justify-center">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#008F63] dark:bg-[#D4A84F]" />
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-[#F5F5F0]/60 dark:bg-[#07121A]/60 border border-[#DDE8E3]/60 dark:border-[#243338]/60 space-y-1">
+                      <div className="flex items-center justify-between text-xs font-bold text-[#071A2B] dark:text-[#F5F5F0]">
+                        <span>{tl.title}</span>
+                        <span className="text-[10px] text-[#60717A] dark:text-[#9FB1BC] font-normal">
+                          {tl.time}
                         </span>
-                        <span className="font-semibold text-[#F5F5F0]">{step.title}</span>
                       </div>
-                      <p className="text-[11px] text-[#9FB1BC] mt-0.5">{step.desc}</p>
+                      <p className="text-[11px] text-[#60717A] dark:text-[#9FB1BC] leading-relaxed">
+                        {tl.desc}
+                      </p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Internal Staff Notes */}
-            <div className="p-3.5 rounded-xl bg-[#07121A]/80 border border-[#1A2E3B] flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-2.5">
-                  <h4 className="font-bold text-[#F5F5F0] text-xs flex items-center gap-1.5">
-                    <Lock className="w-3.5 h-3.5 text-[#D4A84F]" />
-                    Internal Department Notes
-                  </h4>
-                  <button
-                    onClick={() => onOpenInternalNote(complaint)}
-                    className="text-[11px] text-[#D4A84F] hover:underline font-semibold"
-                  >
-                    + Add Note
-                  </button>
-                </div>
-
-                <div className="space-y-2 max-h-40 overflow-y-auto pr-1 scrollbar-thin">
-                  {complaint.internalNotes && complaint.internalNotes.length > 0 ? (
-                    complaint.internalNotes.map((note) => (
-                      <div
-                        key={note.id}
-                        className="p-2 rounded-lg bg-[#13242E] border border-[#1A2E3B] text-xs space-y-1"
-                      >
-                        <div className="flex items-center justify-between text-[10px] text-[#9FB1BC]">
-                          <span className="font-semibold text-[#F5F5F0]">{note.author}</span>
-                          <span>{note.date}</span>
-                        </div>
-                        <p className="text-xs text-[#9FB1BC]">{note.text}</p>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="p-2.5 rounded-lg bg-[#13242E]/40 text-[11px] text-[#9FB1BC] text-center">
-                      No internal notes recorded yet.
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <span className="text-[10px] text-[#9FB1BC]/70 pt-2 border-t border-[#1A2E3B] mt-2 block">
-                Private to Maintenance Department staff members.
-              </span>
-            </div>
           </div>
-        </div>
 
-        {/* Staff Action Panel Footer */}
-        <div className="p-4 border-t border-[#1A2E3B] bg-[#07121A]/90 flex flex-wrap items-center justify-end gap-2.5">
-          <button
-            onClick={() => onOpenUpdateStatus(complaint)}
-            className="px-3.5 py-2 rounded-lg bg-[#13242E] hover:bg-[#1A2E3B] text-xs font-semibold text-[#F5F5F0] border border-[#1A2E3B] flex items-center gap-1.5 transition-colors"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-blue-400" />
-            <span>Update Status</span>
-          </button>
+          {/* Drawer Bottom Actions */}
+          <div className="p-4 sm:p-5 border-t border-[#DDE8E3] dark:border-[#243338] bg-[#F5F5F0]/40 dark:bg-[#07121A]/60 flex items-center justify-between gap-3">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-[#13242E] dark:hover:bg-[#1A2E3B] text-xs font-bold text-[#60717A] dark:text-[#9FB1BC] transition-colors cursor-pointer"
+            >
+              Close
+            </button>
 
-          <button
-            onClick={() => onOpenProgressUpdate(complaint)}
-            className="px-3.5 py-2 rounded-lg bg-[#13242E] hover:bg-[#1A2E3B] text-xs font-semibold text-[#D4A84F] border border-[#1A2E3B] flex items-center gap-1.5 transition-colors"
-          >
-            <MessageSquarePlus className="w-3.5 h-3.5" />
-            <span>Add Progress Update</span>
-          </button>
-
-          <button
-            onClick={() => onOpenInternalNote(complaint)}
-            className="px-3.5 py-2 rounded-lg bg-[#13242E] hover:bg-[#1A2E3B] text-xs font-semibold text-[#9FB1BC] hover:text-[#F5F5F0] border border-[#1A2E3B] flex items-center gap-1.5 transition-colors"
-          >
-            <StickyNote className="w-3.5 h-3.5" />
-            <span>Add Internal Note</span>
-          </button>
-
-          <button
-            onClick={() => onOpenResolve(complaint)}
-            disabled={complaint.status === 'Resolved'}
-            className="px-4 py-2 rounded-lg bg-[#315C3A] hover:bg-[#3D7349] text-xs font-semibold text-[#F5F5F0] border border-[#315C3A] flex items-center gap-1.5 transition-all shadow-glow-green disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#A7C481]" />
-            <span>Mark Resolved</span>
-          </button>
+            {complaint.status !== 'Resolved' ? (
+              <button
+                onClick={() => onOpenResolve(complaint)}
+                className="px-5 py-2 rounded-xl bg-[#008F63] hover:bg-[#007A54] dark:bg-[#00A875] dark:hover:bg-[#008F63] text-white text-xs font-bold inline-flex items-center gap-2 transition-all shadow-xs cursor-pointer"
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Mark as Resolved</span>
+              </button>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Ticket Closed & Resolved</span>
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
