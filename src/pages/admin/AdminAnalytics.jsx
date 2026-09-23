@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { CheckCircle2, AlertTriangle, Info, X } from 'lucide-react';
 
 // Layout Components
@@ -7,67 +7,75 @@ import AdminSidebar from '../../components/admin/AdminSidebar';
 import AdminHeader from '../../components/admin/AdminHeader';
 import AdminFooter from '../../components/admin/AdminFooter';
 
-// Analytics Components
+// Analytics UI Components
 import AnalyticsHeader from '../../components/admin/analytics/AnalyticsHeader';
 import AnalyticsFilters from '../../components/admin/analytics/AnalyticsFilters';
-import MetricCards from '../../components/admin/analytics/MetricCards';
+import AnalyticsKpiCards from '../../components/admin/analytics/AnalyticsKpiCards';
 import ComplaintTrendChart from '../../components/admin/analytics/ComplaintTrendChart';
-import CategoryAnalysis from '../../components/admin/analytics/CategoryAnalysis';
-import PriorityDistribution from '../../components/admin/analytics/PriorityDistribution';
 import StatusDistribution from '../../components/admin/analytics/StatusDistribution';
-import DepartmentPerformance from '../../components/admin/analytics/DepartmentPerformance';
+import PriorityDistribution from '../../components/admin/analytics/PriorityDistribution';
+import DepartmentAnalytics from '../../components/admin/analytics/DepartmentAnalytics';
+import CategoryAnalytics from '../../components/admin/analytics/CategoryAnalytics';
 import ResolutionTimeChart from '../../components/admin/analytics/ResolutionTimeChart';
-import ComplaintHotspots from '../../components/admin/analytics/ComplaintHotspots';
+import MonthlyPerformance from '../../components/admin/analytics/MonthlyPerformance';
 import AIInsights from '../../components/admin/analytics/AIInsights';
-import RecurringIssues from '../../components/admin/analytics/RecurringIssues';
-import ReportGenerator from '../../components/admin/analytics/ReportGenerator';
-import AnalyticsActivity from '../../components/admin/analytics/AnalyticsActivity';
+import CriticalComplaints from '../../components/admin/analytics/CriticalComplaints';
+import CampusInsights from '../../components/admin/analytics/CampusInsights';
 
-// Modals
-import ReportModal from '../../components/admin/analytics/ReportModal';
-import DepartmentDetailsModal from '../../components/admin/analytics/DepartmentDetailsModal';
-
-// Mock Data
+// Mock Master Dataset
 import {
-  METRIC_CARDS_DATA,
-  COMPLAINT_TREND_DATA,
-  CATEGORY_DATA,
-  PRIORITY_DATA,
-  STATUS_DATA,
-  DEPARTMENT_PERFORMANCE_DATA,
-  RESOLUTION_TIME_DATA,
-  exportAnalyticsCSV
-} from '../../data/analyticsMockData';
-import { analyticsApi } from '../../services/analyticsApi';
-import { dataSource } from '../../services/dataSource';
+  ANALYTICS_KPIS,
+  WEEKLY_TREND_DATA,
+  STATUS_DISTRIBUTION_DATA,
+  PRIORITY_DISTRIBUTION_DATA,
+  DEPARTMENT_ANALYTICS_DATA,
+  CATEGORY_ANALYTICS_DATA,
+  RESOLUTION_TIME_BREAKDOWN,
+  MONTHLY_PERFORMANCE_DATA,
+} from '../../data/analyticsData';
 
-const FILTER_STORAGE_KEY = 'smart_campus_analytics_filters';
+import { useApp } from '../../context/useApp';
+
+const STORAGE_FILTER_KEY = 'smart_campus_analytics_filters_v2';
 
 export default function AdminAnalytics() {
-  const navigate = useNavigate();
+  const { theme, toggleTheme } = useApp();
+  const [searchParams] = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [apiOverview, setApiOverview] = useState(null);
 
-  // Filters State with LocalStorage Persistence
+  // Sync theme with URL query param if present (e.g., ?theme=dark or ?theme=light)
+  useEffect(() => {
+    const themeParam = searchParams.get('theme');
+    if (themeParam === 'dark' && theme !== 'dark') {
+      document.documentElement.classList.add('dark');
+      toggleTheme();
+    } else if (themeParam === 'light' && theme !== 'light') {
+      document.documentElement.classList.remove('dark');
+      toggleTheme();
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.title = 'Analytics & Insights | CGC University Mohali';
+  }, []);
+
+  // Filter State with localStorage recovery
   const [filters, setFilters] = useState(() => {
     try {
-      const saved = localStorage.getItem(FILTER_STORAGE_KEY);
+      const saved = localStorage.getItem(STORAGE_FILTER_KEY);
       if (saved) return JSON.parse(saved);
     } catch {
       // Fallback
     }
     return {
-      dateRange: 'Last 7 Days',
+      dateRange: 'Last 30 Days',
       department: 'All Departments',
       category: 'All Categories',
-      priority: 'All'
+      priority: 'All Priorities',
+      status: 'All Status',
     };
   });
-
-  // Modal States
-  const [reportModalOpen, setReportModalOpen] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
 
   // Toast Notification State
   const [toast, setToast] = useState(null);
@@ -79,188 +87,125 @@ export default function AdminAnalytics() {
     }, 4500);
   };
 
-  const fetchAnalytics = async () => {
-    if (dataSource.isMockMode()) return;
-    try {
-      const res = await analyticsApi.getOverview();
-      if (res) {
-        setApiOverview(res);
-      }
-    } catch (err) {
-      console.warn('Could not fetch analytics overview, falling back to mock:', err);
-    }
-  };
-
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
-
-  // Persist filter changes
+  // Persist filter modifications
   useEffect(() => {
     try {
-      localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(filters));
+      localStorage.setItem(STORAGE_FILTER_KEY, JSON.stringify(filters));
     } catch {
       // Ignore storage errors
     }
   }, [filters]);
 
-  // Handle Filter Application
-  const handleApplyFilters = (newFilters) => {
-    setFilters(newFilters);
-    const activeSummary = [];
-    if (newFilters.department !== 'All Departments') activeSummary.push(newFilters.department);
-    if (newFilters.category !== 'All Categories') activeSummary.push(newFilters.category);
-    if (newFilters.priority !== 'All') activeSummary.push(newFilters.priority);
-    if (newFilters.dateRange !== 'Last 7 Days') activeSummary.push(newFilters.dateRange);
-
-    const desc = activeSummary.length > 0 ? activeSummary.join(' • ') : 'Full campus scope';
-    showToast(`Filters updated: ${desc}`);
+  const handleFilterChange = (key, val) => {
+    setFilters((prev) => ({
+      ...prev,
+      [key]: val,
+    }));
+    showToast(`Filter applied: ${val}`);
   };
 
-  const handleResetFilters = (defaultFilters) => {
-    setFilters(defaultFilters);
-    showToast('Analytics filters reset to default (Last 7 Days, All Departments).', 'info');
+  const handleResetFilters = () => {
+    setFilters({
+      dateRange: 'Last 30 Days',
+      department: 'All Departments',
+      category: 'All Categories',
+      priority: 'All Priorities',
+      status: 'All Status',
+    });
+    showToast('Analytics filters reset to default (Last 30 Days, All Departments).', 'info');
   };
 
-  // Refresh Trigger
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await fetchAnalytics();
-    setIsRefreshing(false);
-    showToast('Analytics data synchronized with campus telemetry.');
-  };
-
-  // CSV Export Trigger
-  const handleExportCSV = () => {
-    exportAnalyticsCSV(filters);
-    showToast('Analytics summary exported as CSV successfully.');
-  };
-
-  // Navigation to related complaints
-  const handleViewRelatedComplaints = () => {
-    navigate('/admin/complaints');
-  };
-
-  // Dynamically scale/filter data according to active filters
-  const dynamicMetrics = useMemo(() => {
-    let base = METRIC_CARDS_DATA;
-    if (apiOverview) {
-      base = [
-        {
-          ...METRIC_CARDS_DATA[0],
-          value: String(apiOverview.total_complaints ?? 248),
-        },
-        {
-          ...METRIC_CARDS_DATA[1],
-          value: String(apiOverview.resolved_complaints ?? 139),
-        },
-        {
-          ...METRIC_CARDS_DATA[2],
-          value: `${apiOverview.resolution_rate ?? 56}%`,
-        },
-        {
-          ...METRIC_CARDS_DATA[3],
-          value: `${apiOverview.avg_resolution_hours ?? 28.5} hrs`,
-        },
-        {
-          ...METRIC_CARDS_DATA[4],
-          value: String((apiOverview.pending_complaints || 0) + (apiOverview.in_progress_complaints || 0)),
-        },
-        {
-          ...METRIC_CARDS_DATA[5],
-          value: `${apiOverview.sla_compliance_rate ?? 92.4}%`,
-        },
-      ];
+  // Dynamically scale/filter KPIs based on active department or priority
+  const dynamicKpis = useMemo(() => {
+    if (filters.department === 'All Departments') {
+      return ANALYTICS_KPIS;
     }
 
-    if (filters.department === 'All Departments' && filters.category === 'All Categories' && filters.priority === 'All') {
-      return base;
-    }
+    const dept = DEPARTMENT_ANALYTICS_DATA.find((d) => d.department === filters.department);
+    if (!dept) return ANALYTICS_KPIS;
 
-    // If specific department is chosen
-    if (filters.department !== 'All Departments') {
-      const dept = DEPARTMENT_PERFORMANCE_DATA.find((d) => d.department === filters.department);
-      if (dept) {
-        return [
-          {
-            id: 'total',
-            title: 'Department Complaints',
-            value: `${dept.total}`,
-            change: '+5.2%',
-            trend: 'up',
-            subtitle: `${dept.department} Queue`,
-            color: '#315C3A'
-          },
-          {
-            id: 'resolved',
-            title: 'Resolved Complaints',
-            value: `${dept.resolved}`,
-            change: `${dept.resolutionRate}%`,
-            trend: 'neutral',
-            subtitle: `${dept.resolutionRate}% of dept`,
-            color: '#10B981'
-          },
-          {
-            id: 'rate',
-            title: 'Resolution Rate',
-            value: `${dept.resolutionRate}%`,
-            change: '+4.1%',
-            trend: 'up',
-            subtitle: 'Division benchmark',
-            color: '#D4A84F'
-          },
-          {
-            id: 'avg_time',
-            title: 'Avg. Resolution Time',
-            value: `${dept.avgResolutionHours} hrs`,
-            change: '-8%',
-            trend: 'down',
-            subtitle: `${dept.avgResolutionDays} days turnaround`,
-            color: '#71844A'
-          },
-          {
-            id: 'high_priority',
-            title: 'Active In Progress',
-            value: `${dept.inProgress}`,
-            change: 'Active',
-            trend: 'neutral',
-            subtitle: 'Field operations',
-            color: '#F97316'
-          },
-          {
-            id: 'critical',
-            title: 'Pending Review',
-            value: `${dept.pending}`,
-            change: 'Triage',
-            trend: 'neutral',
-            subtitle: 'Requires action',
-            color: '#EF4444'
-          }
-        ];
-      }
-    }
+    return [
+      {
+        id: 'total',
+        title: `${dept.department} Complaints`,
+        value: `${dept.total}`,
+        rawValue: dept.total,
+        change: '+8.4%',
+        trend: 'up',
+        label: 'vs previous period',
+        description: `Total complaints logged for ${dept.department}`,
+        color: '#008F63',
+        darkColor: '#00A875',
+      },
+      {
+        id: 'resolved',
+        title: 'Resolved Complaints',
+        value: `${dept.resolved}`,
+        rawValue: dept.resolved,
+        change: '+14.2%',
+        trend: 'up',
+        label: `${dept.rate}% of dept volume`,
+        description: 'Successfully closed tickets',
+        color: '#315C3A',
+        darkColor: '#43784F',
+      },
+      {
+        id: 'pending',
+        title: 'Pending Review',
+        value: `${dept.pending}`,
+        rawValue: dept.pending,
+        change: '-5.1%',
+        trend: 'down',
+        label: 'vs previous period',
+        description: 'Awaiting triage or assignment',
+        color: '#71844A',
+        darkColor: '#8CA45C',
+      },
+      {
+        id: 'resolution_time',
+        title: 'Avg. Resolution Time',
+        value: `${dept.avgDays} Days`,
+        rawValue: dept.avgDays,
+        change: '-10.2%',
+        trend: 'down',
+        label: 'Department turnaround',
+        description: 'Average closure duration',
+        color: '#D4A84F',
+        darkColor: '#E5BF6E',
+      },
+      {
+        id: 'critical',
+        title: 'Active High Priority',
+        value: `${dept.inProgress}`,
+        rawValue: dept.inProgress,
+        change: '+2.0%',
+        trend: 'up',
+        label: 'Active operations',
+        description: 'In-progress field assignments',
+        color: '#EF4444',
+        darkColor: '#F87171',
+      },
+    ];
+  }, [filters.department]);
 
-    return METRIC_CARDS_DATA;
-  }, [filters, apiOverview]);
-
+  // Dynamically scale trend line data if a specific department is chosen
   const dynamicTrendData = useMemo(() => {
     if (filters.department === 'All Departments') {
-      return COMPLAINT_TREND_DATA;
+      return WEEKLY_TREND_DATA;
     }
-    // Scale trend data proportionally for selected department
-    const dept = DEPARTMENT_PERFORMANCE_DATA.find((d) => d.department === filters.department);
-    const ratio = dept ? dept.total / 248 : 0.25;
+    const dept = DEPARTMENT_ANALYTICS_DATA.find((d) => d.department === filters.department);
+    const ratio = dept ? dept.total / 1248 : 0.2;
 
-    return COMPLAINT_TREND_DATA.map((item) => ({
-      date: item.date,
-      Submitted: Math.max(1, Math.round(item.Submitted * ratio)),
-      Resolved: Math.max(1, Math.round(item.Resolved * ratio)),
-      Active: Math.max(2, Math.round(item.Active * ratio))
+    return WEEKLY_TREND_DATA.map((item) => ({
+      week: item.week,
+      received: Math.max(8, Math.round(item.received * ratio)),
+      resolved: Math.max(5, Math.round(item.resolved * ratio)),
+      active: Math.max(4, Math.round(item.active * ratio)),
     }));
-  }, [filters]);
+  }, [filters.department]);
 
   return (
-    <div className="min-h-screen bg-[#07121A] text-[#F5F5F0] flex font-sans selection:bg-[#315C3A] selection:text-[#D4A84F]">
+    <div className="min-h-screen bg-[#F7F9F8] dark:bg-[#050A0C] text-[#071A2B] dark:text-[#F5F5F0] flex font-sans selection:bg-[#008F63] selection:text-white transition-colors duration-200">
       {/* Fixed Admin Sidebar */}
       <AdminSidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 
@@ -270,124 +215,80 @@ export default function AdminAnalytics() {
         <AdminHeader
           onToggleMobile={() => setMobileOpen(true)}
           title="Analytics & Insights"
-          subtitle="Understand complaint trends, department performance, and campus issues."
+          subtitle="Understand campus complaints, identify trends, and make data-driven decisions."
         />
 
         {/* Dashboard Body */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl w-full mx-auto">
-          {/* Top Analytics Action Header */}
+        <main className="flex-1 max-w-[1440px] w-full mx-auto p-4 sm:p-6 lg:p-6 space-y-6">
+          {/* Top Page Action Header */}
           <AnalyticsHeader
-            onOpenReportModal={() => setReportModalOpen(true)}
-            onExportCSV={handleExportCSV}
-            onRefresh={handleRefresh}
-            isRefreshing={isRefreshing}
+            dateRange={filters.dateRange}
+            onDateRangeChange={(val) => handleFilterChange('dateRange', val)}
+            filters={filters}
+            onShowToast={showToast}
           />
 
-          {/* Top Filter Bar */}
+          {/* Filter Bar */}
           <AnalyticsFilters
             filters={filters}
-            onApplyFilters={handleApplyFilters}
+            onFilterChange={handleFilterChange}
             onResetFilters={handleResetFilters}
           />
 
-          {/* KPI Metrics Cards (6 Cards) */}
-          <MetricCards metrics={dynamicMetrics} />
+          {/* 5 Top KPI Cards */}
+          <AnalyticsKpiCards kpiData={dynamicKpis} />
 
-          {/* Large Complaint Trend Chart */}
-          <div className="grid grid-cols-1 gap-6">
-            <ComplaintTrendChart data={dynamicTrendData} />
+          {/* Complaint Trend LineChart (Large Section) */}
+          <ComplaintTrendChart data={dynamicTrendData} />
+
+          {/* Status & Priority Donut Charts (2 Columns) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <StatusDistribution data={STATUS_DISTRIBUTION_DATA} />
+            <PriorityDistribution data={PRIORITY_DISTRIBUTION_DATA} />
           </div>
 
-          {/* Category & Distribution Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-1">
-              <CategoryAnalysis data={CATEGORY_DATA} />
-            </div>
-            <div className="lg:col-span-1">
-              <PriorityDistribution data={PRIORITY_DATA} />
-            </div>
-            <div className="lg:col-span-1">
-              <StatusDistribution data={STATUS_DATA} />
-            </div>
+          {/* Department-wise Complaints (Horizontal BarChart) */}
+          <DepartmentAnalytics data={DEPARTMENT_ANALYTICS_DATA} />
+
+          {/* Category Analytics & Turnaround Duration (2 Columns) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <CategoryAnalytics data={CATEGORY_ANALYTICS_DATA} />
+            <ResolutionTimeChart breakdown={RESOLUTION_TIME_BREAKDOWN} />
           </div>
 
-          {/* Department Performance Table */}
-          <div className="grid grid-cols-1 gap-6">
-            <DepartmentPerformance
-              data={DEPARTMENT_PERFORMANCE_DATA}
-              onViewDepartmentDetails={(dept) => setSelectedDepartment(dept)}
-            />
-          </div>
-
-          {/* Turnaround Time Analysis & Campus Hotspots */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-5">
-              <ResolutionTimeChart data={RESOLUTION_TIME_DATA} />
-            </div>
-            <div className="lg:col-span-7">
-              <ComplaintHotspots />
-            </div>
-          </div>
+          {/* Monthly Performance Combo Chart */}
+          <MonthlyPerformance data={MONTHLY_PERFORMANCE_DATA} />
 
           {/* AI-Powered Automated Insights */}
-          <div className="grid grid-cols-1 gap-6">
-            <AIInsights />
-          </div>
+          <AIInsights />
 
-          {/* Recurring Issues & Top Reported Problem */}
-          <div className="grid grid-cols-1 gap-6">
-            <RecurringIssues
-              onViewRelatedComplaints={handleViewRelatedComplaints}
-            />
-          </div>
+          {/* Critical Complaints Table */}
+          <CriticalComplaints />
 
-          {/* Report Generation Banner */}
-          <div className="grid grid-cols-1 gap-6">
-            <ReportGenerator
-              onOpenModal={() => setReportModalOpen(true)}
-              onExportCSV={handleExportCSV}
-            />
-          </div>
-
-          {/* Recent Analytics Activity Timeline */}
-          <div className="grid grid-cols-1 gap-6">
-            <AnalyticsActivity />
-          </div>
+          {/* Campus Insights Executive Summary */}
+          <CampusInsights />
         </main>
 
         {/* Global Admin Footer */}
         <AdminFooter />
       </div>
 
-      {/* Report Generation Modal */}
-      <ReportModal
-        isOpen={reportModalOpen}
-        onClose={() => setReportModalOpen(false)}
-        defaultFilters={filters}
-        onReportSuccess={(msg) => showToast(msg)}
-      />
-
-      {/* Department Details Modal */}
-      <DepartmentDetailsModal
-        isOpen={Boolean(selectedDepartment)}
-        onClose={() => setSelectedDepartment(null)}
-        department={selectedDepartment}
-      />
-
-      {/* Floating Toast Alert */}
+      {/* Floating Toast Notification */}
       {toast && (
-        <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-[#0D1B22] border border-[#315C3A] text-[#F5F5F0] shadow-2xl text-xs animate-in slide-in-from-bottom-5 duration-200 max-w-md">
+        <div className="fixed bottom-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-xl bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] shadow-2xl text-xs animate-in slide-in-from-bottom-5 duration-200 max-w-md">
           {toast.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#008F63] dark:text-[#00A875] shrink-0" />
           ) : toast.type === 'warning' ? (
-            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+            <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
           ) : (
             <Info className="w-4 h-4 text-[#D4A84F] shrink-0" />
           )}
-          <span className="flex-1 font-medium">{toast.message}</span>
+          <span className="flex-1 font-semibold">{toast.message}</span>
           <button
+            type="button"
             onClick={() => setToast(null)}
-            className="p-1 text-[#9FB1BC] hover:text-[#F5F5F0] rounded"
+            className="p-1 text-[#60717A] hover:text-[#071A2B] dark:hover:text-white rounded"
+            aria-label="Dismiss Notification"
           >
             <X className="w-3.5 h-3.5" />
           </button>

@@ -1,134 +1,95 @@
-import React, { useState } from 'react';
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  CartesianGrid,
-  ReferenceLine
-} from 'recharts';
-import { Clock } from 'lucide-react';
+import React from 'react';
+import { Timer, CheckCircle, Clock, AlertCircle } from 'lucide-react';
 
-const CustomTooltip = ({ active, payload, unit }) => {
-  if (active && payload && payload.length) {
-    const data = payload[0].payload;
-    const value = unit === 'hours' ? `${data.hours} hrs` : `${data.days} days`;
-    return (
-      <div className="bg-[#050A0C]/95 border border-[#1A2E3B] rounded-lg p-2.5 shadow-xl text-xs backdrop-blur-md">
-        <div className="font-semibold text-[#F5F5F0] mb-1">{data.department}</div>
-        <div className="flex items-center justify-between gap-4 text-[#9FB1BC]">
-          <span>Avg Turnaround:</span>
-          <span className="font-bold text-[#D4A84F]">{value}</span>
-        </div>
-        <div className="text-[10px] text-[#71844A] mt-1 border-t border-[#1A2E3B] pt-1">
-          {data.hours <= 16 ? 'Within optimal SLA' : 'Slightly elevated backlog'}
-        </div>
-      </div>
-    );
-  }
-  return null;
-};
+export default function ResolutionTimeChart({ breakdown }) {
+  const overallDays = breakdown?.overall || '2.8 Days';
+  const departments = breakdown?.departments || [];
 
-export default function ResolutionTimeChart({ data }) {
-  const [unit, setUnit] = useState('hours'); // 'hours' | 'days'
+  // Maximum value for scaling percentage bars (highest is 3.4 days, use 4.0 as scale max)
+  const maxDays = 4.0;
 
   return (
-    <div className="bg-[#0D1B22] border border-[#1A2E3B] rounded-xl p-5 shadow-lg flex flex-col justify-between h-full">
+    <div className="bg-white dark:bg-[#0C1518] rounded-2xl border border-[#DDE8E3] dark:border-[#243338] p-5 sm:p-6 shadow-2xs flex flex-col justify-between">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-[#1A2E3B]/80">
-        <div>
-          <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-[#71844A]" />
-            <h2 className="text-sm sm:text-base font-bold text-[#F5F5F0]">
-              Average Resolution Time
-            </h2>
+      <div>
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="text-base font-bold tracking-tight text-[#071A2B] dark:text-[#F5F5F0]">
+            Average Resolution Time
+          </h2>
+          <span className="text-[11px] font-semibold text-[#008F63] dark:text-[#00A875]">
+            Turnaround Benchmark
+          </span>
+        </div>
+        <p className="text-xs text-[#60717A] dark:text-[#A8B3B0]">
+          Department-level average duration from ticket creation to verification
+        </p>
+
+        {/* Overall Benchmark Banner */}
+        <div className="my-4 p-3.5 rounded-xl bg-[#F7F9F8] dark:bg-[#050A0C] border border-[#DDE8E3] dark:border-[#243338] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#008F63]/10 dark:bg-[#00A875]/20 text-[#008F63] dark:text-[#00A875] flex items-center justify-center shrink-0">
+              <Timer className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-wider text-[#60717A] dark:text-[#A8B3B0]">
+                Overall Campus Average
+              </div>
+              <div className="text-2xl font-black text-[#071A2B] dark:text-[#F5F5F0]">
+                {overallDays}
+              </div>
+            </div>
           </div>
-          <p className="text-xs text-[#9FB1BC] mt-0.5">
-            Average time taken to resolve complaints by department
-          </p>
-        </div>
-
-        {/* Hours / Days Toggle */}
-        <div className="flex items-center gap-1 bg-[#07121A] p-0.5 rounded-lg border border-[#1A2E3B] self-start sm:self-auto">
-          <button
-            type="button"
-            onClick={() => setUnit('hours')}
-            className={`px-3 py-1 text-[11px] font-medium rounded-md transition-colors ${
-              unit === 'hours'
-                ? 'bg-[#315C3A] text-[#F5F5F0] shadow-sm'
-                : 'text-[#9FB1BC] hover:text-[#F5F5F0]'
-            }`}
-          >
-            Hours
-          </button>
-          <button
-            type="button"
-            onClick={() => setUnit('days')}
-            className={`px-3 py-1 text-[11px] font-medium rounded-md transition-colors ${
-              unit === 'days'
-                ? 'bg-[#315C3A] text-[#F5F5F0] shadow-sm'
-                : 'text-[#9FB1BC] hover:text-[#F5F5F0]'
-            }`}
-          >
-            Days
-          </button>
+          <div className="text-right">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">
+              -14.5% vs Prev Period
+            </span>
+            <div className="text-[10px] text-[#60717A] dark:text-[#A8B3B0] mt-0.5">
+              Target: ≤ 3.0 Days
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Bar Chart */}
-      <div className="h-72 w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={data}
-            margin={{ top: 10, right: 15, left: -15, bottom: 25 }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="#1A2E3B" vertical={false} />
-            <XAxis
-              dataKey="department"
-              stroke="#9FB1BC"
-              fontSize={11}
-              tickLine={false}
-              axisLine={{ stroke: '#1A2E3B' }}
-              angle={-25}
-              textAnchor="end"
-              height={35}
-            />
-            <YAxis
-              stroke="#9FB1BC"
-              fontSize={11}
-              tickLine={false}
-              axisLine={{ stroke: '#1A2E3B' }}
-              unit={unit === 'hours' ? 'h' : 'd'}
-            />
-            <Tooltip content={<CustomTooltip unit={unit} />} />
-            <ReferenceLine
-              y={unit === 'hours' ? 18 : 0.75}
-              stroke="#D4A84F"
-              strokeDasharray="4 4"
-              label={{
-                value: `Campus SLA Target (${unit === 'hours' ? '18h' : '0.75d'})`,
-                fill: '#D4A84F',
-                fontSize: 10,
-                position: 'top'
-              }}
-            />
-            <Bar
-              dataKey={unit === 'hours' ? 'hours' : 'days'}
-              fill="#71844A"
-              radius={[4, 4, 0, 0]}
-              maxBarSize={32}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+      {/* Horizontal Bar Breakdown */}
+      <div className="space-y-2.5 my-2">
+        {departments.map((dept) => {
+          const percentage = Math.min(100, Math.round((dept.days / maxDays) * 100));
+
+          return (
+            <div key={dept.department} className="space-y-1">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-semibold text-[#071A2B] dark:text-[#F5F5F0]">
+                  {dept.department}
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-[#60717A] dark:text-[#A8B3B0]">
+                    {dept.benchmark}
+                  </span>
+                  <span className="font-extrabold text-[#071A2B] dark:text-[#F5F5F0] w-14 text-right">
+                    {dept.days} days
+                  </span>
+                </div>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="h-2 w-full bg-[#EAF0ED] dark:bg-[#1A2E3B] rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-300"
+                  style={{
+                    width: `${percentage}%`,
+                    backgroundColor: dept.color,
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Footer Info */}
-      <div className="mt-2 pt-2 border-t border-[#1A2E3B]/60 flex items-center justify-between text-[11px] text-[#9FB1BC]">
-        <span>Fastest: <strong className="text-[#10B981]">Security (13.6h)</strong></span>
-        <span>Target SLA: <strong className="text-[#D4A84F]">18.0 hrs</strong></span>
-        <span>Highest: <strong className="text-amber-400">Hostel (22.5h)</strong></span>
+      {/* Bottom Educational Note */}
+      <div className="mt-4 pt-3 border-t border-[#DDE8E3] dark:border-[#243338] text-[11px] text-[#60717A] dark:text-[#A8B3B0] italic flex items-center gap-2">
+        <CheckCircle className="w-3.5 h-3.5 text-[#008F63] dark:text-[#00A875] shrink-0" />
+        <span>Lower resolution time indicates faster complaint closure.</span>
       </div>
     </div>
   );
