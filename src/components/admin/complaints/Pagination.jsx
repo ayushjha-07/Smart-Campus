@@ -12,7 +12,6 @@ export default function Pagination({
   const startItem = totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1;
   const endItem = Math.min(totalItems, currentPage * pageSize);
 
-  // Generate page numbers with ellipsis
   const getPageNumbers = () => {
     const pages = [];
     if (totalPages <= 7) {
@@ -32,20 +31,20 @@ export default function Pagination({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-2 py-3 text-xs text-[#9FB1BC]">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-2 py-3 text-xs text-[#60717A] dark:text-[#9FB1BC]">
       {/* Left items summary & page size */}
       <div className="flex items-center gap-3">
         <span>
-          Showing <strong className="text-[#F5F5F0] font-mono">{startItem}–{endItem}</strong> of{' '}
-          <strong className="text-[#F5F5F0] font-mono">{totalItems}</strong> complaints
+          Showing <strong className="text-[#071A2B] dark:text-[#F5F5F0] font-mono">{startItem}–{endItem}</strong> of{' '}
+          <strong className="text-[#071A2B] dark:text-[#F5F5F0] font-mono">{totalItems.toLocaleString()}</strong> complaints
         </span>
 
-        <div className="flex items-center gap-1.5 pl-2 border-l border-[#1A2E3B]">
-          <span className="text-[11px] text-[#9FB1BC]">Per page:</span>
+        <div className="flex items-center gap-1.5 pl-2 border-l border-[#DDE8E3] dark:border-[#243338]">
+          <span className="text-[11px] text-[#60717A] dark:text-[#9FB1BC]">Per page:</span>
           <select
             value={pageSize}
             onChange={(e) => onPageSizeChange(Number(e.target.value))}
-            className="bg-[#07121A] border border-[#1A2E3B] rounded px-2 py-1 text-xs text-[#F5F5F0] focus:outline-none focus:border-[#D4A84F] cursor-pointer"
+            className="bg-white dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] rounded px-2 py-1 text-xs text-[#071A2B] dark:text-[#F5F5F0] focus:outline-none focus:border-[#008F63] dark:focus:border-[#00A875] cursor-pointer"
             aria-label="Select number of complaints per page"
           >
             <option value={10}>10</option>
@@ -60,7 +59,7 @@ export default function Pagination({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="p-1.5 rounded-lg bg-[#0D1B22] border border-[#1A2E3B] text-[#F5F5F0] hover:bg-[#13242E] disabled:opacity-30 disabled:hover:bg-[#0D1B22] disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-lg bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] hover:bg-[#F5F5F0] dark:hover:bg-[#13242E] disabled:opacity-30 disabled:hover:bg-white dark:disabled:hover:bg-[#0C1518] disabled:cursor-not-allowed transition-colors"
           aria-label="Previous page"
         >
           <ChevronLeft className="w-4 h-4" />
@@ -69,7 +68,7 @@ export default function Pagination({
         {getPageNumbers().map((p, idx) => {
           if (p === '...') {
             return (
-              <span key={`dots-${idx}`} className="px-2 py-1 text-[#9FB1BC]">
+              <span key={`dots-${idx}`} className="px-2 py-1 text-[#60717A] dark:text-[#9FB1BC]">
                 ...
               </span>
             );
@@ -81,10 +80,10 @@ export default function Pagination({
             <button
               key={`page-${p}`}
               onClick={() => onPageChange(p)}
-              className={`min-w-[30px] h-[30px] rounded-lg text-xs font-semibold transition-colors ${
+              className={`min-w-[32px] h-[32px] rounded-lg text-xs font-bold transition-colors ${
                 isCurrent
-                  ? 'bg-[#315C3A] text-[#F5F5F0] border border-[#315C3A] shadow-sm'
-                  : 'bg-[#0D1B22] border border-[#1A2E3B] text-[#9FB1BC] hover:text-[#F5F5F0] hover:bg-[#13242E]'
+                  ? 'bg-[#008F63] text-white dark:bg-[#00A875] shadow-xs'
+                  : 'bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] text-[#60717A] dark:text-[#9FB1BC] hover:text-[#071A2B] dark:hover:text-[#F5F5F0] hover:bg-[#F5F5F0] dark:hover:bg-[#13242E]'
               }`}
             >
               {p}
@@ -95,7 +94,7 @@ export default function Pagination({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="p-1.5 rounded-lg bg-[#0D1B22] border border-[#1A2E3B] text-[#F5F5F0] hover:bg-[#13242E] disabled:opacity-30 disabled:hover:bg-[#0D1B22] disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-lg bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] hover:bg-[#F5F5F0] dark:hover:bg-[#13242E] disabled:opacity-30 disabled:hover:bg-white dark:disabled:hover:bg-[#0C1518] disabled:cursor-not-allowed transition-colors"
           aria-label="Next page"
         >
           <ChevronRight className="w-4 h-4" />

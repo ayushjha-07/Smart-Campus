@@ -1,7 +1,7 @@
 import React from 'react';
 import { FileSearch, RotateCcw } from 'lucide-react';
 import ComplaintRow from './ComplaintRow';
-import ComplaintMobileCard from './ComplaintMobileCard';
+import ComplaintCard from './ComplaintCard';
 
 export default function ComplaintTable({
   complaints = [],
@@ -9,60 +9,63 @@ export default function ComplaintTable({
   onToggleSelect,
   onToggleSelectAll,
   onViewDetails,
-  onAssignDept,
-  onChangePriority,
+  onAssign,
   onChangeStatus,
-  onAddNote,
-  onMarkResolved,
+  onChangePriority,
+  onAddRemark,
+  onDelete,
   onResetFilters,
   isAllSelected
 }) {
   if (complaints.length === 0) {
     return (
-      <div className="rounded-xl bg-[#0D1B22] border border-[#1A2E3B] p-12 text-center shadow-card-elevated">
-        <div className="w-14 h-14 rounded-2xl bg-[#13242E] border border-[#1A2E3B] flex items-center justify-center text-[#9FB1BC] mx-auto mb-3">
-          <FileSearch className="w-7 h-7 text-[#D4A84F]" />
+      <div className="rounded-xl p-12 text-center bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] shadow-xs">
+        <div className="w-14 h-14 rounded-2xl bg-[#008F63]/10 dark:bg-[#00A875]/20 flex items-center justify-center text-[#008F63] dark:text-[#00A875] mx-auto mb-3">
+          <FileSearch className="w-7 h-7" />
         </div>
-        <h3 className="text-base font-bold text-[#F5F5F0]">No complaints found</h3>
-        <p className="text-xs text-[#9FB1BC] mt-1 max-w-sm mx-auto">
-          No complaints match your active filters or search parameters. Try adjusting your criteria.
+        <h3 className="text-base font-bold text-[#071A2B] dark:text-[#F5F5F0]">
+          No matching complaints found
+        </h3>
+        <p className="text-xs text-[#60717A] dark:text-[#9FB1BC] mt-1 max-w-sm mx-auto">
+          No complaints match your active filters or search query. Try clearing filters to see all tickets.
         </p>
         <button
           onClick={onResetFilters}
-          className="mt-4 px-4 py-2 rounded-lg bg-[#315C3A] hover:bg-[#3D7349] text-xs font-semibold text-[#F5F5F0] inline-flex items-center gap-2 transition-colors shadow-sm"
+          className="mt-4 px-4 py-2 rounded-lg bg-[#008F63] hover:bg-[#007A54] dark:bg-[#00A875] dark:hover:bg-[#008F63] text-xs font-bold text-white inline-flex items-center gap-2 transition-colors shadow-xs"
         >
           <RotateCcw className="w-3.5 h-3.5" />
-          <span>Clear Filters</span>
+          <span>Reset Filters</span>
         </button>
       </div>
     );
   }
 
   return (
-    <div className="rounded-xl bg-[#0D1B22] border border-[#1A2E3B] shadow-card-elevated overflow-hidden">
-      {/* Desktop Table View */}
+    <div className="rounded-xl bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] shadow-xs overflow-hidden">
+      {/* Desktop & Tablet Table */}
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className="border-b border-[#1A2E3B] bg-[#07121A]/80 text-[#9FB1BC] uppercase font-semibold text-[10px] tracking-wider">
-              <th className="py-3 px-3.5 w-10">
+            <tr className="border-b border-[#DDE8E3] dark:border-[#243338] bg-[#F5F5F0]/60 dark:bg-[#07121A]/80 text-[#60717A] dark:text-[#9FB1BC] uppercase font-bold text-[10px] tracking-wider">
+              <th className="py-3 px-2 w-8">
                 <input
                   type="checkbox"
                   checked={isAllSelected}
                   onChange={onToggleSelectAll}
-                  className="w-4 h-4 rounded border-[#1A2E3B] bg-[#07121A] text-[#D4A84F] focus:ring-0 cursor-pointer accent-[#315C3A]"
+                  className="w-4 h-4 rounded border-[#DDE8E3] dark:border-[#243338] bg-white dark:bg-[#07121A] text-[#008F63] dark:text-[#00A875] focus:ring-0 cursor-pointer accent-[#008F63]"
                   aria-label="Select all complaints on current page"
                 />
               </th>
-              <th className="py-3 px-3">Complaint</th>
-              <th className="py-3 px-3">Student</th>
-              <th className="py-3 px-3">Category</th>
-              <th className="py-3 px-3">Department</th>
-              <th className="py-3 px-2.5 text-center">Priority</th>
-              <th className="py-3 px-2.5 text-center">Status</th>
-              <th className="py-3 px-3">Submitted</th>
-              <th className="py-3 px-3">Updated</th>
-              <th className="py-3 px-3 text-right">Actions</th>
+              <th className="py-3 px-2 whitespace-nowrap">Complaint ID</th>
+              <th className="py-3 px-2">Complaint</th>
+              <th className="py-3 px-2 whitespace-nowrap">Student</th>
+              <th className="py-3 px-1.5 whitespace-nowrap">Category</th>
+              <th className="py-3 px-1.5 whitespace-nowrap">Department</th>
+              <th className="py-3 px-1.5 whitespace-nowrap">Priority</th>
+              <th className="py-3 px-1.5 whitespace-nowrap">Status</th>
+              <th className="py-3 px-1.5 whitespace-nowrap">Submitted</th>
+              <th className="py-3 px-1.5 whitespace-nowrap">Assigned To</th>
+              <th className="py-3 px-2 text-right whitespace-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -73,11 +76,11 @@ export default function ComplaintTable({
                 isSelected={selectedIds.includes(item.id)}
                 onToggleSelect={onToggleSelect}
                 onViewDetails={onViewDetails}
-                onAssignDept={onAssignDept}
-                onChangePriority={onChangePriority}
+                onAssign={onAssign}
                 onChangeStatus={onChangeStatus}
-                onAddNote={onAddNote}
-                onMarkResolved={onMarkResolved}
+                onChangePriority={onChangePriority}
+                onAddRemark={onAddRemark}
+                onDelete={onDelete}
               />
             ))}
           </tbody>
@@ -87,17 +90,17 @@ export default function ComplaintTable({
       {/* Mobile Card Layout */}
       <div className="block md:hidden p-3 space-y-3">
         {complaints.map((item) => (
-          <ComplaintMobileCard
+          <ComplaintCard
             key={item.id}
             complaint={item}
             isSelected={selectedIds.includes(item.id)}
             onToggleSelect={onToggleSelect}
             onViewDetails={onViewDetails}
-            onAssignDept={onAssignDept}
-            onChangePriority={onChangePriority}
+            onAssign={onAssign}
             onChangeStatus={onChangeStatus}
-            onAddNote={onAddNote}
-            onMarkResolved={onMarkResolved}
+            onChangePriority={onChangePriority}
+            onAddRemark={onAddRemark}
+            onDelete={onDelete}
           />
         ))}
       </div>

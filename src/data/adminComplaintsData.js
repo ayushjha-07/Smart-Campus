@@ -1,19 +1,20 @@
-// Master dataset for Admin Complaint Management (Step 11)
-// Includes realistic university complaints, metadata, AI triage insights, and localStorage persistence
+/**
+ * Admin Complaint Management Master Dataset
+ * CGC University Mohali - Smart Campus Complaint & Analytics Portal
+ */
 
 export const COMPLAINT_CATEGORIES = [
+  'Hostel',
   'Infrastructure',
-  'Water Supply',
   'Electricity',
-  'IT / Wi-Fi',
+  'Water Supply',
   'Cleanliness',
   'Academic',
   'Transport',
   'Security',
-  'Hostel',
+  'IT / Wi-Fi',
   'Library',
-  'Food / Cafeteria',
-  'Other',
+  'Cafeteria'
 ];
 
 export const COMPLAINT_DEPARTMENTS = [
@@ -25,8 +26,7 @@ export const COMPLAINT_DEPARTMENTS = [
   'Security',
   'Transport',
   'Library',
-  'Cafeteria',
-  'Housekeeping',
+  'Cafeteria'
 ];
 
 export const COMPLAINT_STATUSES = [
@@ -35,558 +35,526 @@ export const COMPLAINT_STATUSES = [
   'Assigned',
   'In Progress',
   'Resolved',
+  'Rejected'
 ];
 
 export const COMPLAINT_PRIORITIES = [
-  'LOW',
-  'MEDIUM',
-  'HIGH',
-  'CRITICAL',
+  'Low',
+  'Medium',
+  'High',
+  'Critical'
 ];
+
+export const DEPARTMENT_STAFF_MAP = {
+  'Hostel': ['Rohit Kumar', 'Sunita Rao', 'Devendra Singh'],
+  'IT Support': ['Aman Singh', 'Rajesh Mehta', 'Priyanka Sen'],
+  'Maintenance': ['Neeraj Sharma', 'Vikas Kumar', 'Rakesh Yadav'],
+  'Cafeteria': ['Anita Roy', 'Chef Harish', 'Suresh Pal'],
+  'Academics': ['Dr. K.S. Brar', 'Prof. N. Walia', 'Dr. Reena Kaur'],
+  'Security': ['Inspector Baljit Singh', 'Gurpreet Singh', 'Harvinder Singh'],
+  'Administration': ['Registrar Office', 'S. Kapoor', 'Anil Sood'],
+  'Transport': ['Manjit Singh', 'Harnek Singh', 'Gurmail Singh'],
+  'Library': ['Archana Devi', 'P.K. Sharma', 'Meenakshi Joshi']
+};
+
+export const QUICK_INSIGHTS = {
+  mostReported: { title: 'Most Reported', value: 'Hostel', metric: '32% of total' },
+  highestPriority: { title: 'Highest Priority', value: 'Maintenance', metric: '18 critical' },
+  fastestResolution: { title: 'Fastest Resolution', value: 'IT Support', metric: 'Avg 4.2 hrs' },
+  needsAttention: { title: 'Needs Attention', value: 'Hostel', metric: '48 pending' }
+};
+
+export const SUMMARY_STATS = {
+  total: 1248,
+  pending: 186,
+  inProgress: 324,
+  resolved: 738,
+  critical: 24
+};
 
 export const INITIAL_ADMIN_COMPLAINTS = [
   {
-    id: 'SC-2026-1848',
+    id: 'SC-2026-1847',
     title: 'Water supply issue in Hostel Block B',
     student: 'Rahul Sharma',
     studentId: 'SC-STU-2026-014',
-    studentEmail: 'rahul.sharma@campus.edu',
+    studentEmail: 'rahul.sharma@campus.cgc.edu.in',
     category: 'Water Supply',
-    department: 'Maintenance',
+    department: 'Hostel',
     priority: 'HIGH',
     status: 'In Progress',
-    location: 'Hostel Block B, 2nd Floor',
-    description: 'Water supply has been interrupted in Hostel Block B since this morning. Several rooms are currently affected.',
-    submittedAt: '20 Sep 2026, 10:32 AM',
-    submittedTimestamp: 1789842720000,
-    submittedRelative: '10 min ago',
-    updatedAt: '10 min ago',
-    aiCategory: 'Water Supply',
-    aiPriority: 'High',
-    aiConfidence: 92,
-    keywords: ['water', 'supply', 'hostel', 'interruption'],
-    timeline: [
-      { time: '10:32 AM', title: 'Submitted', desc: 'Complaint registered by Rahul Sharma.' },
-      { time: '10:40 AM', title: 'Under Review', desc: 'System validated hostel block assignment.' },
-      { time: '11:05 AM', title: 'Assigned to Maintenance', desc: 'Dispatched to plumbing maintenance team lead.' },
-      { time: '12:45 PM', title: 'In Progress', desc: 'Technician on-site inspecting the primary distribution valve.' },
-      { time: 'Pending', title: 'Expected Resolution', desc: 'Target restoration by 02:00 PM.' }
-    ],
-    latestUpdate: 'Maintenance team has been notified and is inspecting the water supply line.',
+    submittedAt: '22 Sep 2026, 10:32 AM',
+    submittedDate: '22 Sep 2026',
+    submittedTimestamp: 1790100720000,
+    assignedTo: 'Rohit Kumar',
+    location: 'Hostel Block B',
+    description: 'Water supply has been unavailable in Hostel Block B since morning. Several students are affected.',
     attachments: [
-      { id: 'att-1', name: 'pipe_pressure_gauge.jpg', size: '1.4 MB', type: 'image' }
+      { id: 'att-1', name: 'pipeline_pressure_gauge.jpg', size: '1.2 MB', type: 'image' }
+    ],
+    aiAnalysis: {
+      category: 'Water Supply',
+      priority: 'High',
+      confidence: '94%',
+      keywords: ['water', 'hostel', 'unavailable', 'students'],
+      suggestedDepartment: 'Hostel / Maintenance',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '22 Sep 2026 — 10:32 AM', title: 'Submitted', desc: 'Complaint registered by Rahul Sharma.' },
+      { time: '22 Sep 2026 — 10:40 AM', title: 'Under Review', desc: 'System validated hostel block assignment.' },
+      { time: '22 Sep 2026 — 11:05 AM', title: 'Assigned to Hostel Department', desc: 'Routed to Hostel operational desk.' },
+      { time: '22 Sep 2026 — 11:15 AM', title: 'Assigned to Rohit Kumar', desc: 'Staff member assigned for resolution.' },
+      { time: '22 Sep 2026 — 12:45 PM', title: 'In Progress', desc: 'Rohit Kumar inspecting the main distribution valve.' }
     ],
     internalNotes: [
-      { id: 'n-1', author: 'Campus Admin', date: '20 Sep, 10:45 AM', text: 'Main pump station line B had pressure drops earlier today.' }
+      { id: 'n-1', author: 'Administrator', date: '22 Sep 2026, 11:20 AM', text: 'Main pump station line B had pressure drops earlier today.' }
     ]
   },
   {
-    id: 'SC-2026-1847',
-    title: 'Wi-Fi connectivity issue in Central Library',
-    student: 'Priya Singh',
-    studentId: 'SC-STU-2026-089',
-    studentEmail: 'priya.singh@campus.edu',
+    id: 'SC-2026-1846',
+    title: 'Wi-Fi connectivity issue',
+    student: 'Prachi Priya',
+    studentId: '2024CSB1098',
+    studentEmail: 'prachi.priya@campus.cgc.edu.in',
     category: 'IT / Wi-Fi',
     department: 'IT Support',
     priority: 'MEDIUM',
     status: 'Under Review',
-    location: 'Central Library, 2nd Floor Reading Hall',
-    description: 'Wi-Fi access point frequent disconnects causing issues during research journal downloads.',
-    submittedAt: '20 Sep 2026, 10:18 AM',
-    submittedTimestamp: 1789841880000,
-    submittedRelative: '25 min ago',
-    updatedAt: '25 min ago',
-    aiCategory: 'IT / Wi-Fi',
-    aiPriority: 'Medium',
-    aiConfidence: 89,
-    keywords: ['wifi', 'network', 'disconnect', 'library'],
-    timeline: [
-      { time: '10:18 AM', title: 'Submitted', desc: 'Reported by Priya Singh.' },
-      { time: '10:22 AM', title: 'Under Review', desc: 'NOC initiated diagnostic ping on AP-LIB-04.' }
+    submittedAt: '22 Sep 2026, 09:15 AM',
+    submittedDate: '22 Sep 2026',
+    submittedTimestamp: 1790096100000,
+    assignedTo: 'Aman Singh',
+    location: 'Computer Science Lab 3',
+    description: 'High latency and frequent disconnects on Campus_Secure SSID in CS Lab 3 during practical exam sessions.',
+    attachments: [
+      { id: 'att-2', name: 'ping_test_report.png', size: '540 KB', type: 'image' }
     ],
-    latestUpdate: 'Network operations center pinging access point cluster AP-LIB-04.',
-    attachments: [],
-    internalNotes: []
-  },
-  {
-    id: 'SC-2026-1846',
-    title: 'Street light not working near hostel',
-    student: 'Aman Verma',
-    studentId: 'SC-STU-2026-112',
-    studentEmail: 'aman.verma@campus.edu',
-    category: 'Electricity',
-    department: 'Maintenance',
-    priority: 'MEDIUM',
-    status: 'Assigned',
-    location: 'North Walkway between Hostel C and Dining Hall',
-    description: 'Two consecutive solar path lights are completely dark, causing safety hazards for students walking back late.',
-    submittedAt: '20 Sep 2026, 09:54 AM',
-    submittedTimestamp: 1789840440000,
-    submittedRelative: '42 min ago',
-    updatedAt: '42 min ago',
-    aiCategory: 'Electricity',
-    aiPriority: 'Medium',
-    aiConfidence: 87,
-    keywords: ['lighting', 'walkway', 'safety', 'electrical'],
+    aiAnalysis: {
+      category: 'IT / Wi-Fi',
+      priority: 'Medium',
+      confidence: '91%',
+      keywords: ['wifi', 'connection', 'latency', 'cs lab'],
+      suggestedDepartment: 'IT Support',
+      label: 'Demo AI Analysis'
+    },
     timeline: [
-      { time: '09:54 AM', title: 'Submitted', desc: 'Complaint logged.' },
-      { time: '10:05 AM', title: 'Assigned', desc: 'Routed to campus electrical department.' }
+      { time: '22 Sep 2026 — 09:15 AM', title: 'Submitted', desc: 'Complaint registered by Prachi Priya.' },
+      { time: '22 Sep 2026 — 09:40 AM', title: 'Under Review', desc: 'NOC engineers analyzing access point telemetry.' },
+      { time: '22 Sep 2026 — 10:00 AM', title: 'Assigned to Aman Singh', desc: 'Assigned to network engineer for physical access point reboot.' }
     ],
-    latestUpdate: 'Assigned to evening electrical inspection crew.',
-    attachments: [],
     internalNotes: []
   },
   {
     id: 'SC-2026-1845',
     title: 'Library AC not working',
-    student: 'Neha Gupta',
-    studentId: 'SC-STU-2026-055',
-    studentEmail: 'neha.gupta@campus.edu',
+    student: 'Aman Verma',
+    studentId: 'SC-STU-2026-031',
+    studentEmail: 'aman.verma@campus.cgc.edu.in',
     category: 'Infrastructure',
     department: 'Maintenance',
     priority: 'HIGH',
     status: 'Resolved',
-    location: 'Main Library, Digital Lab 1',
-    description: 'AC unit in digital lab is making heavy rattling noise and blowing warm air.',
-    submittedAt: '20 Sep 2026, 09:31 AM',
-    submittedTimestamp: 1789839060000,
-    submittedRelative: '1 hr ago',
-    updatedAt: '15 min ago',
-    aiCategory: 'Infrastructure',
-    aiPriority: 'High',
-    aiConfidence: 94,
-    keywords: ['ac', 'cooling', 'hvac', 'temperature'],
-    timeline: [
-      { time: '09:31 AM', title: 'Submitted', desc: 'Complaint registered.' },
-      { time: '09:40 AM', title: 'In Progress', desc: 'HVAC technician dispatched.' },
-      { time: '10:15 AM', title: 'Resolved', desc: 'Compressor belt adjusted and filter replaced.' }
-    ],
-    latestUpdate: 'HVAC repair verified by Library Supervisor. Unit operational at 22°C.',
+    submittedAt: '21 Sep 2026, 02:20 PM',
+    submittedDate: '21 Sep 2026',
+    submittedTimestamp: 1790028000000,
+    assignedTo: 'Neeraj Sharma',
+    location: 'Central Library, 2nd Floor',
+    description: 'Central air conditioning in the 2nd-floor silent research wing has stopped functioning, leading to high humidity.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Infrastructure',
+      priority: 'High',
+      confidence: '95%',
+      keywords: ['ac', 'cooling', 'library', 'temperature'],
+      suggestedDepartment: 'Maintenance',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '21 Sep 2026 — 02:20 PM', title: 'Submitted', desc: 'Complaint registered by Aman Verma.' },
+      { time: '21 Sep 2026 — 02:45 PM', title: 'Assigned to Neeraj Sharma', desc: 'HVAC maintenance dispatched.' },
+      { time: '21 Sep 2026 — 03:30 PM', title: 'In Progress', desc: 'Compressor capacitor replaced and coolant topped up.' },
+      { time: '21 Sep 2026 — 05:15 PM', title: 'Resolved', desc: 'Chiller operating at nominal 21°C.' }
+    ],
     internalNotes: [
-      { id: 'n-2', author: 'Er. Suresh', date: '20 Sep, 10:16 AM', text: 'Cleaned intake filter and re-pressurized coolant.' }
+      { id: 'n-2', author: 'Administrator', date: '21 Sep 2026, 05:20 PM', text: 'Verified with Chief Librarian Archana Devi.' }
     ]
   },
   {
     id: 'SC-2026-1844',
     title: 'Cafeteria cleanliness issue',
-    student: 'Arjun Kumar',
-    studentId: 'SC-STU-2026-031',
-    studentEmail: 'arjun.kumar@campus.edu',
+    student: 'Neha Singh',
+    studentId: 'SC-STU-2026-077',
+    studentEmail: 'neha.singh@campus.cgc.edu.in',
     category: 'Cleanliness',
-    department: 'Housekeeping',
+    department: 'Cafeteria',
     priority: 'LOW',
-    status: 'Resolved',
-    location: 'Central Cafeteria, Counter 3',
-    description: 'Spilled beverages and overflowing waste bins near the beverage counter during breakfast hour.',
-    submittedAt: '20 Sep 2026, 09:10 AM',
-    submittedTimestamp: 1789837800000,
-    submittedRelative: '2 hrs ago',
-    updatedAt: '1 hr ago',
-    aiCategory: 'Cleanliness',
-    aiPriority: 'Low',
-    aiConfidence: 95,
-    keywords: ['cafeteria', 'waste', 'trash', 'hygiene'],
-    timeline: [
-      { time: '09:10 AM', title: 'Submitted', desc: 'Report logged.' },
-      { time: '09:20 AM', title: 'In Progress', desc: 'Housekeeping shift lead alerted.' },
-      { time: '09:45 AM', title: 'Resolved', desc: 'Sanitized area and deployed secondary bin.' }
-    ],
-    latestUpdate: 'Housekeeping supervisor verified sanitation of Dining Hall B.',
+    status: 'Pending',
+    submittedAt: '21 Sep 2026, 01:10 PM',
+    submittedDate: '21 Sep 2026',
+    submittedTimestamp: 1790023800000,
+    assignedTo: 'Unassigned',
+    location: 'Main Campus Food Court',
+    description: 'Dining tables and tray collection points in Zone B are uncleaned and overflowing after the lunch crowd.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Cleanliness',
+      priority: 'Low',
+      confidence: '88%',
+      keywords: ['cleanliness', 'cafeteria', 'tables', 'food court'],
+      suggestedDepartment: 'Cafeteria',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '21 Sep 2026 — 01:10 PM', title: 'Submitted', desc: 'Complaint registered by Neha Singh.' },
+      { time: '21 Sep 2026 — 01:25 PM', title: 'Pending', desc: 'Awaiting floor manager assignment.' }
+    ],
     internalNotes: []
   },
   {
     id: 'SC-2026-1843',
-    title: 'Bus timing issue on Route 4',
-    student: 'Riya Mehta',
-    studentId: 'SC-STU-2026-210',
-    studentEmail: 'riya.mehta@campus.edu',
-    category: 'Transport',
-    department: 'Transport',
-    priority: 'LOW',
-    status: 'Resolved',
-    location: 'East Campus Bus Terminal',
-    description: 'Route 4 shuttle arrived 35 minutes late without prior dispatch notification.',
-    submittedAt: '20 Sep 2026, 08:45 AM',
-    submittedTimestamp: 1789836300000,
-    submittedRelative: '3 hrs ago',
-    updatedAt: '2 hrs ago',
-    aiCategory: 'Transport',
-    aiPriority: 'Low',
-    aiConfidence: 88,
-    keywords: ['bus', 'shuttle', 'schedule', 'delay'],
-    timeline: [
-      { time: '08:45 AM', title: 'Submitted', desc: 'Complaint registered.' },
-      { time: '09:00 AM', title: 'Under Review', desc: 'Transport manager checked GPS logs.' },
-      { time: '09:30 AM', title: 'Resolved', desc: 'Route 4 backup shuttle scheduled.' }
-    ],
-    latestUpdate: 'GPS logs confirmed minor tyre inspection delay; backup shuttle assigned.',
+    title: 'Street light not working near hostel',
+    student: 'Riya Sharma',
+    studentId: 'SC-STU-2026-092',
+    studentEmail: 'riya.sharma@campus.cgc.edu.in',
+    category: 'Electricity',
+    department: 'Maintenance',
+    priority: 'MEDIUM',
+    status: 'Assigned',
+    submittedAt: '21 Sep 2026, 08:30 PM',
+    submittedDate: '21 Sep 2026',
+    submittedTimestamp: 1790050200000,
+    assignedTo: 'Vikas Kumar',
+    location: 'Pathway near Girls Hostel 2 and Gate 3',
+    description: 'Two consecutive pole lamps on the central walkway near Girls Hostel 2 are flickering and going completely dark.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Electricity',
+      priority: 'Medium',
+      confidence: '92%',
+      keywords: ['street light', 'electricity', 'dark', 'hostel pathway'],
+      suggestedDepartment: 'Maintenance',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '21 Sep 2026 — 08:30 PM', title: 'Submitted', desc: 'Complaint registered by Riya Sharma.' },
+      { time: '21 Sep 2026 — 09:00 PM', title: 'Assigned to Vikas Kumar', desc: 'Assigned to night electrical emergency staff.' }
+    ],
     internalNotes: []
   },
   {
     id: 'SC-2026-1842',
-    title: 'Power outage in Computer Lab 2',
-    student: 'Karan Singh',
-    studentId: 'SC-STU-2026-077',
-    studentEmail: 'karan.singh@campus.edu',
-    category: 'Electricity',
-    department: 'Maintenance',
-    priority: 'HIGH',
-    status: 'Under Review',
-    location: 'Academic Block 1, Room 204',
-    description: 'Sub-circuit breaker tripped during lecture practicals, cutting power to 25 workstations.',
-    submittedAt: '20 Sep 2026, 08:21 AM',
-    submittedTimestamp: 1789834860000,
-    submittedRelative: '3 hrs ago',
-    updatedAt: '3 hrs ago',
-    aiCategory: 'Electricity',
-    aiPriority: 'High',
-    aiConfidence: 93,
-    keywords: ['power', 'outage', 'lab', 'breaker'],
-    timeline: [
-      { time: '08:21 AM', title: 'Submitted', desc: 'Report logged by lab student assistant.' },
-      { time: '08:30 AM', title: 'Under Review', desc: 'Electrician dispatched to check primary MCB.' }
-    ],
-    latestUpdate: 'Electrician inspecting distribution board on floor 2.',
+    title: 'Campus shuttle delay on Route 4',
+    student: 'Simran Kaur',
+    studentId: 'SC-STU-2026-054',
+    studentEmail: 'simran.kaur@campus.cgc.edu.in',
+    category: 'Transport',
+    department: 'Transport',
+    priority: 'MEDIUM',
+    status: 'Resolved',
+    submittedAt: '20 Sep 2026, 08:45 AM',
+    submittedDate: '20 Sep 2026',
+    submittedTimestamp: 1789921500000,
+    assignedTo: 'Manjit Singh',
+    location: 'Campus Gate 1 Bus Bay',
+    description: 'Morning shuttle bus on Sector 70 - Landran route arrived 40 minutes behind schedule.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Transport',
+      priority: 'Medium',
+      confidence: '89%',
+      keywords: ['bus', 'shuttle', 'route 4', 'delay'],
+      suggestedDepartment: 'Transport',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '20 Sep 2026 — 08:45 AM', title: 'Submitted', desc: 'Complaint registered by Simran Kaur.' },
+      { time: '20 Sep 2026 — 09:10 AM', title: 'Assigned to Manjit Singh', desc: 'Fleet supervisor dispatched backup bus.' },
+      { time: '20 Sep 2026 — 11:30 AM', title: 'Resolved', desc: 'Route restored and GPS tracker recalibrated.' }
+    ],
     internalNotes: []
   },
   {
     id: 'SC-2026-1841',
-    title: 'Security concern near north gate',
-    student: 'Vivek Kumar',
-    studentId: 'SC-STU-2026-145',
-    studentEmail: 'vivek.kumar@campus.edu',
-    category: 'Security',
-    department: 'Security',
-    priority: 'CRITICAL',
-    status: 'Assigned',
-    location: 'North Gate Perimeter & Bike Stand',
-    description: 'Unauthorized persons gathering near perimeter fence; camera unit 6 appears offline.',
-    submittedAt: '20 Sep 2026, 08:02 AM',
-    submittedTimestamp: 1789833720000,
-    submittedRelative: '4 hrs ago',
-    updatedAt: '4 hrs ago',
-    aiCategory: 'Security',
-    aiPriority: 'Critical',
-    aiConfidence: 96,
-    keywords: ['security', 'perimeter', 'gate', 'camera'],
-    timeline: [
-      { time: '08:02 AM', title: 'Submitted', desc: 'Emergency flag logged.' },
-      { time: '08:05 AM', title: 'Assigned to Security', desc: 'Chief Security Officer notified.' }
-    ],
-    latestUpdate: 'Patrol dispatched to north boundary; CCTV feed repair initiated.',
+    title: 'Lab equipment calibration error',
+    student: 'Karan Malhotra',
+    studentId: 'SC-STU-2026-118',
+    studentEmail: 'karan.malhotra@campus.cgc.edu.in',
+    category: 'Academic',
+    department: 'Academics',
+    priority: 'HIGH',
+    status: 'In Progress',
+    submittedAt: '20 Sep 2026, 03:15 PM',
+    submittedDate: '20 Sep 2026',
+    submittedTimestamp: 1789944900000,
+    assignedTo: 'Dr. K.S. Brar',
+    location: 'Physics Research Center Lab 4',
+    description: 'Digital spectrometer showing fluctuating baseline values during laser spectroscopy lab trials.',
     attachments: [],
-    internalNotes: [
-      { id: 'n-3', author: 'Security Chief', date: '20 Sep, 08:10 AM', text: 'Stationed 2 security guards at North post.' }
-    ]
+    aiAnalysis: {
+      category: 'Academic',
+      priority: 'High',
+      confidence: '93%',
+      keywords: ['spectrometer', 'calibration', 'laser', 'physics lab'],
+      suggestedDepartment: 'Academics',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '20 Sep 2026 — 03:15 PM', title: 'Submitted', desc: 'Complaint registered by Karan Malhotra.' },
+      { time: '20 Sep 2026 — 04:00 PM', title: 'Assigned to Dr. K.S. Brar', desc: 'Lab in-charge notified.' },
+      { time: '21 Sep 2026 — 10:00 AM', title: 'In Progress', desc: 'OEM service technician on-site.' }
+    ],
+    internalNotes: []
   },
   {
     id: 'SC-2026-1840',
-    title: 'Hostel room maintenance request',
-    student: 'Simran Kaur',
-    studentId: 'SC-STU-2026-092',
-    studentEmail: 'simran.kaur@campus.edu',
-    category: 'Hostel',
-    department: 'Hostel',
-    priority: 'MEDIUM',
+    title: 'Broken window latch in Lecture Hall 204',
+    student: 'Tanvi Kapoor',
+    studentId: 'SC-STU-2026-062',
+    studentEmail: 'tanvi.kapoor@campus.cgc.edu.in',
+    category: 'Infrastructure',
+    department: 'Maintenance',
+    priority: 'LOW',
     status: 'Pending',
-    location: 'Hostel Block A, Room 312',
-    description: 'Door lock cylinder stuck and window latch broken in room 312.',
-    submittedAt: '19 Sep 2026, 06:40 PM',
-    submittedTimestamp: 1789785600000,
-    submittedRelative: 'Yesterday',
-    updatedAt: 'Yesterday',
-    aiCategory: 'Hostel',
-    aiPriority: 'Medium',
-    aiConfidence: 86,
-    keywords: ['lock', 'door', 'latch', 'hostel'],
-    timeline: [
-      { time: '06:40 PM', title: 'Submitted', desc: 'Complaint queued in student hostel portal.' }
-    ],
-    latestUpdate: 'Awaiting shift carpentry allocation.',
+    submittedAt: '20 Sep 2026, 11:30 AM',
+    submittedDate: '20 Sep 2026',
+    submittedTimestamp: 1789931400000,
+    assignedTo: 'Unassigned',
+    location: 'Academic Block 3, Room 204',
+    description: 'Window sash latch on north side is loose and bangs during windy afternoons.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Infrastructure',
+      priority: 'Low',
+      confidence: '87%',
+      keywords: ['window', 'latch', 'lecture hall', 'noise'],
+      suggestedDepartment: 'Maintenance',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '20 Sep 2026 — 11:30 AM', title: 'Submitted', desc: 'Complaint registered by Tanvi Kapoor.' }
+    ],
     internalNotes: []
   },
   {
     id: 'SC-2026-1839',
-    title: 'Unable to access student portal',
-    student: 'Anjali Sharma',
-    studentId: 'SC-STU-2026-063',
-    studentEmail: 'anjali.sharma@campus.edu',
+    title: 'Main server room temperature spike',
+    student: 'System Telemetry',
+    studentId: 'SC-SYS-NOC-01',
+    studentEmail: 'noc.admin@campus.cgc.edu.in',
     category: 'IT / Wi-Fi',
     department: 'IT Support',
-    priority: 'MEDIUM',
-    status: 'Resolved',
-    location: 'Online / ERP Gateway',
-    description: 'SSO login loop when attempting to download course registration receipt.',
-    submittedAt: '19 Sep 2026, 05:22 PM',
-    submittedTimestamp: 1789780920000,
-    submittedRelative: 'Yesterday',
-    updatedAt: 'Yesterday',
-    aiCategory: 'IT / Wi-Fi',
-    aiPriority: 'Medium',
-    aiConfidence: 91,
-    keywords: ['portal', 'login', 'sso', 'registration'],
-    timeline: [
-      { time: '05:22 PM', title: 'Submitted', desc: 'Report submitted.' },
-      { time: '05:40 PM', title: 'Resolved', desc: 'Account token cache purged by IT administrator.' }
-    ],
-    latestUpdate: 'SSO session cleared; student confirmed successful portal access.',
+    priority: 'CRITICAL',
+    status: 'In Progress',
+    submittedAt: '22 Sep 2026, 07:05 AM',
+    submittedDate: '22 Sep 2026',
+    submittedTimestamp: 1790088300000,
+    assignedTo: 'Rajesh Mehta',
+    location: 'Data Center B2, Administrative Block',
+    description: 'Automated thermal threshold exceeded: Rack 4 ambient temp reached 28.4°C. Requires immediate HVAC check.',
     attachments: [],
-    internalNotes: []
+    aiAnalysis: {
+      category: 'IT / Wi-Fi',
+      priority: 'Critical',
+      confidence: '99%',
+      keywords: ['server room', 'thermal', 'hvac', 'critical'],
+      suggestedDepartment: 'IT Support / Maintenance',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '22 Sep 2026 — 07:05 AM', title: 'Submitted', desc: 'Automated NOC alert raised.' },
+      { time: '22 Sep 2026 — 07:15 AM', title: 'Assigned to Rajesh Mehta', desc: 'Senior systems engineer dispatched.' },
+      { time: '22 Sep 2026 — 07:30 AM', title: 'In Progress', desc: 'Auxiliary split air conditioning activated.' }
+    ],
+    internalNotes: [
+      { id: 'n-3', author: 'Administrator', date: '22 Sep 2026, 07:20 AM', text: 'Critical cooling failover confirmed.' }
+    ]
   },
   {
     id: 'SC-2026-1838',
-    title: 'Water leakage near electrical panel in basement',
-    student: 'Vikram Mehta',
-    studentId: 'SC-STU-2026-118',
-    studentEmail: 'vikram.mehta@campus.edu',
-    category: 'Water Supply',
-    department: 'Maintenance',
+    title: 'Missing fire extinguisher inspection seal',
+    student: 'Harsh Vardhan',
+    studentId: 'SC-STU-2026-140',
+    studentEmail: 'harsh.vardhan@campus.cgc.edu.in',
+    category: 'Security',
+    department: 'Security',
     priority: 'CRITICAL',
-    status: 'Pending',
-    location: 'Hostel Block B, Basement Electrical Room',
-    description: 'Pipe seepage running near the main 415V distribution board. Urgent hazard.',
-    submittedAt: '19 Sep 2026, 04:15 PM',
-    submittedTimestamp: 1789776900000,
-    submittedRelative: 'Yesterday',
-    updatedAt: 'Yesterday',
-    aiCategory: 'Water Supply',
-    aiPriority: 'Critical',
-    aiConfidence: 97,
-    keywords: ['leakage', 'hazard', 'electrical', 'seepage'],
-    timeline: [
-      { time: '04:15 PM', title: 'Submitted', desc: 'Urgent ticket flagged.' }
-    ],
-    latestUpdate: 'Electrical supervisor notified for precautionary power isolation.',
+    status: 'Under Review',
+    submittedAt: '19 Sep 2026, 04:45 PM',
+    submittedDate: '19 Sep 2026',
+    submittedTimestamp: 1789863900000,
+    assignedTo: 'Inspector Baljit Singh',
+    location: 'Boys Hostel 1, Stairwell C',
+    description: 'Dry powder extinguisher tag shows last audit in 2024 and plastic safety seal is missing.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Security',
+      priority: 'Critical',
+      confidence: '96%',
+      keywords: ['fire safety', 'extinguisher', 'seal', 'hostel'],
+      suggestedDepartment: 'Security',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '19 Sep 2026 — 04:45 PM', title: 'Submitted', desc: 'Complaint registered by Harsh Vardhan.' },
+      { time: '19 Sep 2026 — 05:00 PM', title: 'Under Review', desc: 'Safety audit officer reviewing hostel zone.' }
+    ],
     internalNotes: []
   },
   {
     id: 'SC-2026-1837',
-    title: 'Classroom projector bulb blown in LH-2',
-    student: 'Divya Nambiar',
-    studentId: 'SC-STU-2026-154',
-    studentEmail: 'divya.nambiar@campus.edu',
+    title: 'Duplicate course fee debit in ERP portal',
+    student: 'Pooja Chawla',
+    studentId: 'SC-STU-2026-088',
+    studentEmail: 'pooja.chawla@campus.cgc.edu.in',
     category: 'Academic',
-    department: 'Academics',
-    priority: 'MEDIUM',
-    status: 'Assigned',
-    location: 'Lecture Hall Complex, Hall 2',
-    description: 'Epson ceiling projector lamp failure prevents lecture slides from being presented.',
-    submittedAt: '19 Sep 2026, 02:10 PM',
-    submittedTimestamp: 1789769400000,
-    submittedRelative: 'Yesterday',
-    updatedAt: 'Yesterday',
-    aiCategory: 'Academic',
-    aiPriority: 'Medium',
-    aiConfidence: 89,
-    keywords: ['projector', 'classroom', 'av', 'lamp'],
-    timeline: [
-      { time: '02:10 PM', title: 'Submitted', desc: 'Complaint registered.' },
-      { time: '02:30 PM', title: 'Assigned', desc: 'AV technician scheduled.' }
-    ],
-    latestUpdate: 'Replacement lamp requisitioned from AV equipment store.',
+    department: 'Administration',
+    priority: 'HIGH',
+    status: 'In Progress',
+    submittedAt: '19 Sep 2026, 11:10 AM',
+    submittedDate: '19 Sep 2026',
+    submittedTimestamp: 1789851000000,
+    assignedTo: 'Registrar Office',
+    location: 'Accounts & Finance Wing',
+    description: 'Exam registration fee of Rs. 2,500 was deducted twice from HDFC gateway with two distinct transaction reference numbers.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Academic',
+      priority: 'High',
+      confidence: '94%',
+      keywords: ['fee', 'duplicate debit', 'erp', 'gateway'],
+      suggestedDepartment: 'Administration',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '19 Sep 2026 — 11:10 AM', title: 'Submitted', desc: 'Complaint registered by Pooja Chawla.' },
+      { time: '19 Sep 2026 — 12:00 PM', title: 'Assigned to Registrar Office', desc: 'Finance reconciliation queue.' }
+    ],
     internalNotes: []
   },
   {
     id: 'SC-2026-1836',
-    title: 'Broken chair and desk in Room 102',
-    student: 'Harsh Vardhan',
-    studentId: 'SC-STU-2026-072',
-    studentEmail: 'harsh.vardhan@campus.edu',
-    category: 'Infrastructure',
-    department: 'Maintenance',
+    title: 'Overdue textbook fine calculation error',
+    student: 'Akash Deep',
+    studentId: 'SC-STU-2026-112',
+    studentEmail: 'akash.deep@campus.cgc.edu.in',
+    category: 'Library',
+    department: 'Library',
     priority: 'LOW',
-    status: 'In Progress',
-    location: 'Science Block, Room 102',
-    description: 'Desk armrest broken with sharp wood splinter.',
-    submittedAt: '19 Sep 2026, 11:30 AM',
-    submittedTimestamp: 1789759800000,
-    submittedRelative: 'Yesterday',
-    updatedAt: 'Yesterday',
-    aiCategory: 'Infrastructure',
-    aiPriority: 'Low',
-    aiConfidence: 84,
-    keywords: ['furniture', 'desk', 'chair', 'broken'],
-    timeline: [
-      { time: '11:30 AM', title: 'Submitted', desc: 'Report received.' },
-      { time: '01:00 PM', title: 'In Progress', desc: 'Carpentry unit scheduled desk swap.' }
-    ],
-    latestUpdate: 'Replacement student desk queued for delivery.',
+    status: 'Resolved',
+    submittedAt: '18 Sep 2026, 01:30 PM',
+    submittedDate: '18 Sep 2026',
+    submittedTimestamp: 1789773000000,
+    assignedTo: 'Archana Devi',
+    location: 'Central Library Circulation Desk',
+    description: 'Automated RFID return kiosk did not mark book as returned on Friday before public holiday.',
     attachments: [],
+    aiAnalysis: {
+      category: 'Library',
+      priority: 'Low',
+      confidence: '90%',
+      keywords: ['library', 'fine', 'book return', 'rfid'],
+      suggestedDepartment: 'Library',
+      label: 'Demo AI Analysis'
+    },
+    timeline: [
+      { time: '18 Sep 2026 — 01:30 PM', title: 'Submitted', desc: 'Complaint registered by Akash Deep.' },
+      { time: '18 Sep 2026 — 03:00 PM', title: 'Resolved', desc: 'Fine reversed manually after system log verification.' }
+    ],
     internalNotes: []
   },
   {
     id: 'SC-2026-1835',
-    title: 'Drinking water dispenser water filter change required',
-    student: 'Shreya Patel',
-    studentId: 'SC-STU-2026-188',
-    studentEmail: 'shreya.patel@campus.edu',
-    category: 'Water Supply',
+    title: 'Request to repaint badminton court markings',
+    student: 'Vivek Oberoi',
+    studentId: 'SC-STU-2026-173',
+    studentEmail: 'vivek.o@campus.cgc.edu.in',
+    category: 'Infrastructure',
     department: 'Maintenance',
-    priority: 'MEDIUM',
-    status: 'Pending',
-    location: 'Central Library, 1st Floor Cooler',
-    description: 'Filter indicator light is flashing red and water flow rate has slowed down significantly.',
-    submittedAt: '19 Sep 2026, 09:40 AM',
-    submittedTimestamp: 1789753200000,
-    submittedRelative: 'Yesterday',
-    updatedAt: 'Yesterday',
-    aiCategory: 'Water Supply',
-    aiPriority: 'Medium',
-    aiConfidence: 90,
-    keywords: ['filter', 'drinking', 'water', 'dispenser'],
-    timeline: [
-      { time: '09:40 AM', title: 'Submitted', desc: 'Complaint registered.' }
-    ],
-    latestUpdate: 'Awaiting consumable parts issue from maintenance stock.',
+    priority: 'LOW',
+    status: 'Rejected',
+    submittedAt: '17 Sep 2026, 10:15 AM',
+    submittedDate: '17 Sep 2026',
+    submittedTimestamp: 1789674900000,
+    assignedTo: 'Neeraj Sharma',
+    location: 'Sports Complex Indoor Court 2',
+    description: 'Badminton court lines are fading near the double sidelines.',
     attachments: [],
-    internalNotes: []
-  },
-  {
-    id: 'SC-2026-1834',
-    title: 'Food quality and temperature in South Mess',
-    student: 'Tanmay Joshi',
-    studentId: 'SC-STU-2026-202',
-    studentEmail: 'tanmay.joshi@campus.edu',
-    category: 'Food / Cafeteria',
-    department: 'Cafeteria',
-    priority: 'HIGH',
-    status: 'In Progress',
-    location: 'South Campus Dining Mess',
-    description: 'Evening dinner served cold with multiple student grievances regarding food hygiene.',
-    submittedAt: '18 Sep 2026, 08:50 PM',
-    submittedTimestamp: 1789707000000,
-    submittedRelative: '2 days ago',
-    updatedAt: '1 day ago',
-    aiCategory: 'Food / Cafeteria',
-    aiPriority: 'High',
-    aiConfidence: 94,
-    keywords: ['mess', 'food', 'hygiene', 'cafeteria'],
+    aiAnalysis: {
+      category: 'Infrastructure',
+      priority: 'Low',
+      confidence: '82%',
+      keywords: ['sports', 'court', 'painting'],
+      suggestedDepartment: 'Maintenance',
+      label: 'Demo AI Analysis'
+    },
     timeline: [
-      { time: '08:50 PM', title: 'Submitted', desc: 'Complaint logged.' },
-      { time: '09:15 AM', title: 'In Progress', desc: 'Mess committee inspection conducted.' }
+      { time: '17 Sep 2026 — 10:15 AM', title: 'Submitted', desc: 'Complaint registered.' },
+      { time: '17 Sep 2026 — 02:00 PM', title: 'Rejected', desc: 'Annual sports complex floor recoating already scheduled for December.' }
     ],
-    latestUpdate: 'Catering manager issued warning notice; warming trays replaced.',
-    attachments: [],
-    internalNotes: [
-      { id: 'n-4', author: 'Dean Student Welfare', date: '19 Sep, 10:00 AM', text: 'Mess committee to perform random audit on 22nd Sep.' }
-    ]
-  },
-  {
-    id: 'SC-2026-1833',
-    title: 'RFID Turnstile malfunction at Main Entrance',
-    student: 'Rohan Deshmukh',
-    studentId: 'SC-STU-2026-133',
-    studentEmail: 'rohan.deshmukh@campus.edu',
-    category: 'Security',
-    department: 'Security',
-    priority: 'MEDIUM',
-    status: 'Resolved',
-    location: 'Main Gate Pedestrian Access',
-    description: 'Gate 2 card reader failing on student smart cards causing heavy morning queue.',
-    submittedAt: '18 Sep 2026, 08:15 AM',
-    submittedTimestamp: 1789661700000,
-    submittedRelative: '2 days ago',
-    updatedAt: '2 days ago',
-    aiCategory: 'Security',
-    aiPriority: 'Medium',
-    aiConfidence: 91,
-    keywords: ['rfid', 'turnstile', 'access', 'gate'],
-    timeline: [
-      { time: '08:15 AM', title: 'Submitted', desc: 'Report logged.' },
-      { time: '09:00 AM', title: 'Resolved', desc: 'Optical sensor cleaned and controller rebooted.' }
-    ],
-    latestUpdate: 'Turnstile reader re-calibrated; traffic flow restored.',
-    attachments: [],
     internalNotes: []
   }
 ];
 
-export const SUMMARY_STATS = {
-  total: 248,
-  pending: 42,
-  underReview: 18,
-  inProgress: 67,
-  resolved: 139,
-};
-
-const STORAGE_KEY = 'smart_campus_admin_complaints';
+const LOCAL_STORAGE_KEY = 'smart_campus_admin_complaints_v2';
 
 export function loadAdminComplaints() {
+  if (typeof window === 'undefined') return INITIAL_ADMIN_COMPLAINTS;
   try {
-    const saved = localStorage.getItem('smart_campus_shared_complaints') || localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed;
-      }
+    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(INITIAL_ADMIN_COMPLAINTS));
+      return INITIAL_ADMIN_COMPLAINTS;
     }
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
+    return INITIAL_ADMIN_COMPLAINTS;
   } catch (err) {
-    console.error('Error loading admin complaints from localStorage:', err);
+    console.error('Failed to load admin complaints from storage:', err);
+    return INITIAL_ADMIN_COMPLAINTS;
   }
-  return INITIAL_ADMIN_COMPLAINTS;
 }
 
 export function saveAdminComplaints(complaints) {
+  if (typeof window === 'undefined') return;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(complaints));
-    localStorage.setItem('smart_campus_shared_complaints', JSON.stringify(complaints));
-    localStorage.setItem('smart_campus_user_complaints', JSON.stringify(complaints));
-    localStorage.setItem('smart_campus_department_complaints', JSON.stringify(complaints));
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(complaints));
   } catch (err) {
-    console.error('Error saving admin complaints to localStorage:', err);
+    console.error('Failed to save admin complaints to storage:', err);
   }
 }
 
-export function resetAdminComplaints() {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch (err) {
-    console.error('Error resetting admin complaints:', err);
-  }
-  return INITIAL_ADMIN_COMPLAINTS;
-}
-
-export function downloadCSV(data, filename = 'smart_campus_complaints.csv') {
-  if (!data || data.length === 0) {
-    alert('No complaint data to export.');
-    return;
-  }
+export function downloadCSV(data = [], filename = 'smart_campus_complaints.csv') {
+  if (!data || data.length === 0) return false;
 
   const headers = [
     'Complaint ID',
     'Title',
-    'Student Name',
+    'Student',
     'Student ID',
     'Category',
     'Department',
     'Priority',
     'Status',
-    'Location',
-    'Submitted At',
-    'Updated At',
-    'Latest Update'
+    'Submitted Date',
+    'Assigned To',
+    'Location'
   ];
 
-  const rows = data.map((item) => [
-    `"${item.id}"`,
-    `"${(item.title || '').replace(/"/g, '""')}"`,
-    `"${(item.student || '').replace(/"/g, '""')}"`,
-    `"${item.studentId || ''}"`,
-    `"${item.category || ''}"`,
-    `"${item.department || ''}"`,
-    `"${item.priority || ''}"`,
-    `"${item.status || ''}"`,
-    `"${(item.location || '').replace(/"/g, '""')}"`,
-    `"${item.submittedAt || ''}"`,
-    `"${item.updatedAt || ''}"`,
-    `"${(item.latestUpdate || '').replace(/"/g, '""')}"`
+  const rows = data.map((c) => [
+    `"${c.id || ''}"`,
+    `"${(c.title || '').replace(/"/g, '""')}"`,
+    `"${(c.student || '').replace(/"/g, '""')}"`,
+    `"${c.studentId || ''}"`,
+    `"${c.category || ''}"`,
+    `"${c.department || ''}"`,
+    `"${c.priority || ''}"`,
+    `"${c.status || ''}"`,
+    `"${c.submittedDate || c.submittedAt || ''}"`,
+    `"${c.assignedTo || 'Unassigned'}"`,
+    `"${(c.location || '').replace(/"/g, '""')}"`
   ]);
 
   const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
@@ -599,4 +567,5 @@ export function downloadCSV(data, filename = 'smart_campus_complaints.csv') {
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
+  return true;
 }

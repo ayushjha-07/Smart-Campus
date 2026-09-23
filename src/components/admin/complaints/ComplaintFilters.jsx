@@ -2,12 +2,9 @@ import React from 'react';
 import {
   Search,
   Filter,
+  RotateCcw,
   X,
-  Calendar,
-  ArrowUpDown,
-  Building2,
-  Tag,
-  AlertCircle
+  ChevronDown
 } from 'lucide-react';
 import {
   COMPLAINT_CATEGORIES,
@@ -23,201 +20,173 @@ export default function ComplaintFilters({
   setStatusFilter,
   priorityFilter,
   setPriorityFilter,
-  deptFilter,
-  setDeptFilter,
   categoryFilter,
   setCategoryFilter,
+  deptFilter,
+  setDeptFilter,
   dateFilter,
   setDateFilter,
-  sortBy,
-  setSortBy,
   onResetFilters,
-  totalResults
+  totalResults = 0
 }) {
   const isFiltered =
     Boolean(search) ||
-    statusFilter !== 'ALL' ||
-    priorityFilter !== 'ALL' ||
-    deptFilter !== 'ALL' ||
-    categoryFilter !== 'ALL' ||
-    dateFilter !== 'ALL_TIME';
+    statusFilter !== 'All Status' ||
+    priorityFilter !== 'All Priority' ||
+    categoryFilter !== 'All Categories' ||
+    deptFilter !== 'All Departments' ||
+    dateFilter !== 'All Dates';
 
   return (
-    <div className="rounded-xl bg-[#0D1B22] border border-[#1A2E3B] p-4 shadow-sm space-y-3">
-      {/* Top row: Search input & Active indicators */}
+    <div className="rounded-xl p-4 sm:p-5 bg-white dark:bg-[#0C1518] border border-[#DDE8E3] dark:border-[#243338] shadow-xs space-y-4">
+      {/* Top Bar: Search + Filter status */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-        {/* Search */}
         <div className="relative flex-1">
-          <Search className="w-4 h-4 text-[#9FB1BC] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-4 h-4 text-[#60717A] dark:text-[#9FB1BC] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
-            placeholder="Search complaint ID, title, student..."
+            placeholder="Search complaint ID, title, student or keyword…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-8 py-2 bg-[#07121A] border border-[#1A2E3B] hover:border-[#315C3A] rounded-lg text-xs text-[#F5F5F0] placeholder-[#9FB1BC]/60 focus:outline-none focus:border-[#D4A84F] transition-colors"
+            className="w-full pl-10 pr-9 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-colors bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] placeholder-[#60717A]/70 dark:placeholder-[#9FB1BC]/60 focus:outline-none focus:border-[#008F63] dark:focus:border-[#00A875]"
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9FB1BC] hover:text-[#F5F5F0]"
-              aria-label="Clear search text"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#60717A] hover:text-[#071A2B] dark:text-[#9FB1BC] dark:hover:text-[#F5F5F0] p-1"
+              aria-label="Clear search input"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           )}
         </div>
 
-        {/* Results summary & Clear Button */}
         <div className="flex items-center justify-between md:justify-end gap-3 text-xs">
-          <span className="text-[#9FB1BC]">
-            Showing <strong className="text-[#F5F5F0] font-mono">{totalResults}</strong> matching complaints
+          <span className="text-[#60717A] dark:text-[#9FB1BC] font-medium">
+            Showing <strong className="text-[#071A2B] dark:text-[#F5F5F0] font-mono">{totalResults}</strong> matching complaints
           </span>
 
           {isFiltered && (
             <button
               onClick={onResetFilters}
-              className="px-2.5 py-1.5 rounded-lg bg-[#13242E] hover:bg-[#1A2E3B] text-[#D4A84F] hover:text-[#E5BF6E] border border-[#1A2E3B] flex items-center gap-1.5 transition-colors font-medium text-xs"
+              type="button"
+              className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/25 flex items-center gap-1.5 transition-colors font-semibold text-xs cursor-pointer"
             >
-              <X className="w-3.5 h-3.5" />
-              <span>Clear Filters</span>
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Reset Filters</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* Bottom Filter Selectors Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+      {/* Filter Dropdowns Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3 text-xs">
         {/* Status Dropdown */}
-        <div className="relative">
-          <label className="text-[10px] uppercase font-semibold text-[#71844A] block mb-1">
+        <div>
+          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#60717A] dark:text-[#9FB1BC] mb-1">
             Status
           </label>
           <div className="relative">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full appearance-none bg-[#07121A] border border-[#1A2E3B] hover:border-[#315C3A] focus:border-[#D4A84F] text-[#F5F5F0] rounded-lg pl-2.5 pr-7 py-1.5 focus:outline-none cursor-pointer truncate transition-colors"
-              aria-label="Filter by status"
+              className="w-full appearance-none rounded-lg px-3 py-2 pr-8 text-xs font-semibold bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] hover:border-[#008F63] dark:hover:border-[#00A875] focus:outline-none cursor-pointer transition-colors"
             >
-              <option value="ALL">All Statuses</option>
-              {COMPLAINT_STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
+              <option value="All Status">All Status</option>
+              {COMPLAINT_STATUSES.map((st) => (
+                <option key={st} value={st}>
+                  {st}
                 </option>
               ))}
             </select>
-            <Filter className="w-3 h-3 text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#60717A] dark:text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
         {/* Priority Dropdown */}
-        <div className="relative">
-          <label className="text-[10px] uppercase font-semibold text-[#71844A] block mb-1">
+        <div>
+          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#60717A] dark:text-[#9FB1BC] mb-1">
             Priority
           </label>
           <div className="relative">
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="w-full appearance-none bg-[#07121A] border border-[#1A2E3B] hover:border-[#315C3A] focus:border-[#D4A84F] text-[#F5F5F0] rounded-lg pl-2.5 pr-7 py-1.5 focus:outline-none cursor-pointer truncate transition-colors"
-              aria-label="Filter by priority"
+              className="w-full appearance-none rounded-lg px-3 py-2 pr-8 text-xs font-semibold bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] hover:border-[#008F63] dark:hover:border-[#00A875] focus:outline-none cursor-pointer transition-colors"
             >
-              <option value="ALL">All Priorities</option>
-              {COMPLAINT_PRIORITIES.map((p) => (
-                <option key={p} value={p}>
-                  {p}
+              <option value="All Priority">All Priority</option>
+              {COMPLAINT_PRIORITIES.map((pr) => (
+                <option key={pr} value={pr}>
+                  {pr}
                 </option>
               ))}
             </select>
-            <AlertCircle className="w-3 h-3 text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-        </div>
-
-        {/* Department Dropdown */}
-        <div className="relative">
-          <label className="text-[10px] uppercase font-semibold text-[#71844A] block mb-1">
-            Department
-          </label>
-          <div className="relative">
-            <select
-              value={deptFilter}
-              onChange={(e) => setDeptFilter(e.target.value)}
-              className="w-full appearance-none bg-[#07121A] border border-[#1A2E3B] hover:border-[#315C3A] focus:border-[#D4A84F] text-[#F5F5F0] rounded-lg pl-2.5 pr-7 py-1.5 focus:outline-none cursor-pointer truncate transition-colors"
-              aria-label="Filter by department"
-            >
-              <option value="ALL">All Departments</option>
-              {COMPLAINT_DEPARTMENTS.map((d) => (
-                <option key={d} value={d}>
-                  {d}
-                </option>
-              ))}
-            </select>
-            <Building2 className="w-3 h-3 text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#60717A] dark:text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
         {/* Category Dropdown */}
-        <div className="relative">
-          <label className="text-[10px] uppercase font-semibold text-[#71844A] block mb-1">
+        <div>
+          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#60717A] dark:text-[#9FB1BC] mb-1">
             Category
           </label>
           <div className="relative">
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full appearance-none bg-[#07121A] border border-[#1A2E3B] hover:border-[#315C3A] focus:border-[#D4A84F] text-[#F5F5F0] rounded-lg pl-2.5 pr-7 py-1.5 focus:outline-none cursor-pointer truncate transition-colors"
-              aria-label="Filter by category"
+              className="w-full appearance-none rounded-lg px-3 py-2 pr-8 text-xs font-semibold bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] hover:border-[#008F63] dark:hover:border-[#00A875] focus:outline-none cursor-pointer transition-colors"
             >
-              <option value="ALL">All Categories</option>
-              {COMPLAINT_CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
+              <option value="All Categories">All Categories</option>
+              {COMPLAINT_CATEGORIES.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
                 </option>
               ))}
             </select>
-            <Tag className="w-3 h-3 text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#60717A] dark:text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
 
-        {/* Date Filter */}
-        <div className="relative">
-          <label className="text-[10px] uppercase font-semibold text-[#71844A] block mb-1">
+        {/* Department Dropdown */}
+        <div>
+          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#60717A] dark:text-[#9FB1BC] mb-1">
+            Department
+          </label>
+          <div className="relative">
+            <select
+              value={deptFilter}
+              onChange={(e) => setDeptFilter(e.target.value)}
+              className="w-full appearance-none rounded-lg px-3 py-2 pr-8 text-xs font-semibold bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] hover:border-[#008F63] dark:hover:border-[#00A875] focus:outline-none cursor-pointer transition-colors"
+            >
+              <option value="All Departments">All Departments</option>
+              {COMPLAINT_DEPARTMENTS.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-[#60717A] dark:text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          </div>
+        </div>
+
+        {/* Date Dropdown */}
+        <div className="col-span-2 sm:col-span-1">
+          <label className="block text-[11px] font-bold uppercase tracking-wider text-[#60717A] dark:text-[#9FB1BC] mb-1">
             Date
           </label>
           <div className="relative">
             <select
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="w-full appearance-none bg-[#07121A] border border-[#1A2E3B] hover:border-[#315C3A] focus:border-[#D4A84F] text-[#F5F5F0] rounded-lg pl-2.5 pr-7 py-1.5 focus:outline-none cursor-pointer truncate transition-colors"
-              aria-label="Filter by date submitted"
+              className="w-full appearance-none rounded-lg px-3 py-2 pr-8 text-xs font-semibold bg-[#F5F5F0]/60 dark:bg-[#07121A] border border-[#DDE8E3] dark:border-[#243338] text-[#071A2B] dark:text-[#F5F5F0] hover:border-[#008F63] dark:hover:border-[#00A875] focus:outline-none cursor-pointer transition-colors"
             >
-              <option value="ALL_TIME">All Time</option>
-              <option value="TODAY">Today (20 Sep)</option>
-              <option value="LAST_7_DAYS">Last 7 Days</option>
-              <option value="LAST_30_DAYS">Last 30 Days</option>
+              <option value="All Dates">All Dates</option>
+              <option value="Today">Today</option>
+              <option value="This Week">This Week</option>
+              <option value="This Month">This Month</option>
+              <option value="Custom">Custom</option>
             </select>
-            <Calendar className="w-3 h-3 text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-        </div>
-
-        {/* Sort Order */}
-        <div className="relative">
-          <label className="text-[10px] uppercase font-semibold text-[#71844A] block mb-1">
-            Sort
-          </label>
-          <div className="relative">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="w-full appearance-none bg-[#07121A] border border-[#1A2E3B] hover:border-[#315C3A] focus:border-[#D4A84F] text-[#F5F5F0] rounded-lg pl-2.5 pr-7 py-1.5 focus:outline-none cursor-pointer truncate transition-colors"
-              aria-label="Sort complaints order"
-            >
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="priority">Highest Priority</option>
-              <option value="updated">Recently Updated</option>
-            </select>
-            <ArrowUpDown className="w-3 h-3 text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#60717A] dark:text-[#9FB1BC] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
         </div>
       </div>
